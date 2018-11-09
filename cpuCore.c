@@ -45,7 +45,7 @@ void executeNextInstruction(void){
 			/* LD BC d16 */
 			cpuCore.B = gameboyMemoryMap[cpuCore.PC + 1];
 			cpuCore.C = gameboyMemoryMap[cpuCore.PC + 2];
-			clockCycles += 12;
+			clockCycles += 42;
 			cpuCore.PC += 3;
 			break;
 
@@ -93,114 +93,144 @@ void executeNextInstruction(void){
 			break;
 
 		case 0x07:
-			/* */
+			/* RLCA */
+			cpuCore.F = 0;
+			if(cpuCore.A & 0x80){
+				cpuCore.A <<= 1;
+				cpuCore.A |= 0x1;
+				cpuCore.F |= CPU_FLAG_C;
+			} else {
+				cpuCore.A <<= 1;
+			}
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
 		case 0x08:
-			/* */
+			/* LD (a16) SP*/
+			temp16 = (gameboyMemoryMap[cpuCore.pC + 1] << 8) | gameboyMemoryMap[cpuCore.pC + 2];
+			cpuCore.SP = gameboyMemoryMap[temp16];
 
-
-			clockCycles += 1;
-			cpuCore.PC += 1;
+			clockCycles += 20;
+			cpuCore.PC += 3;
 			break;
 
 		case 0x09:
-			/* */
+			/* ADD HL BC*/
+			temp16 = (cpuCore.B << 8) | cpuCore.C;
+			a16 = (cpuCore.H << 8) | cpuCore.L;
+			a16 += temp16;
+			cpuCore.H = (a16 & 0xff00) >> 8;
+			cpuCore.L = a16 & 0x00ff;
 
-
-			clockCycles += 1;
+			clockCycles += 8;
 			cpuCore.PC += 1;
 			break;
 
 		case 0x0a:
-			/* */
+			/* LD A (BC)*/
+			temp16 = FETCH_BC;
+			cpuCore.A = gameboyMemoryMap[temp16];
 
 
-			clockCycles += 1;
+			clockCycles += 8;
 			cpuCore.PC += 1;
 			break;
 
 		case 0x0b:
-			/* */
+			/* DEC BC*/
+			temp16 = FETCH_BC;
+			temp16--;
+			SET_BC(temp16);
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
 		case 0x0c:
-			/* */
+			/* INC C */
+			cpuCore.C++;
 
-
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
 		case 0x0d:
-			/* */
+			/* DEC C*/
+			cpuCore.C--;
 
-
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
 		case 0x0e:
-			/* */
+			/* LD C d8 */
+			cpuCore.C = gameboyMemoryMap[cpuCore.PC + 1];
 
 
-			clockCycles += 1;
-			cpuCore.PC += 1;
+			clockCycles += 4;
+			cpuCore.PC += 2;
 			break;
 
 		case 0x0f:
-			/* */
+			/* RRCA */
+			cpuCore.F = 0;
+			if(cpuCore.A & 0x01){
+				cpuCore.A >>= 1;
+				cpuCore.A |= 0x80;
+				cpuCore.F |= CPU_FLAG_C;
+			} else {
+				cpuCore.A >>= 1;
+			}
 
-
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
 		case 0x10:
-			/* */
+			/* STOP */
+			printf("STOP\n");
+			exit(0);
 
-
-			clockCycles += 1;
-			cpuCore.PC += 1;
+			clockCycles += 4;
+			cpuCore.PC += 2;
 			break;
 
 		case 0x11:
-			/* */
+			/* LD DE d16*/
+			temp16 = FETCH_16;
+			SET_DE(temp16);
 
-
-			clockCycles += 1;
-			cpuCore.PC += 1;
+			clockCycles += 12;
+			cpuCore.PC += 3;
 			break;
 
 		case 0x12:
-			/* */
+			/* LE (DE) A*/
+			cpuCore.A = gameboyMemoryMap[FETCH_DE];
 
-
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
 		case 0x13:
-			/* */
+			/* INC HL */
+			temp16 = FETCH_HL;
+			temp16++;
+			SET_HL(temp16);
 
-
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
 		case 0x14:
-			/* */
+			/* INC (HL)*/
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -208,7 +238,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -216,7 +246,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -224,7 +254,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -232,7 +262,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -240,7 +270,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -248,7 +278,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -256,7 +286,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -264,7 +294,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -272,7 +302,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -280,7 +310,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -288,7 +318,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -296,7 +326,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -304,7 +334,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -312,7 +342,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -320,7 +350,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -328,7 +358,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -336,7 +366,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -344,7 +374,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -352,7 +382,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -360,7 +390,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -368,7 +398,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -376,7 +406,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -384,7 +414,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -392,7 +422,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -400,7 +430,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -408,7 +438,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -416,7 +446,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -424,7 +454,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -432,7 +462,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -440,7 +470,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -448,7 +478,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -456,7 +486,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -464,7 +494,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -472,7 +502,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -480,7 +510,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -488,7 +518,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -496,7 +526,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -504,7 +534,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -512,7 +542,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -520,7 +550,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -528,7 +558,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -536,7 +566,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -544,7 +574,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -552,7 +582,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -560,7 +590,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -568,7 +598,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -576,7 +606,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -584,7 +614,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -592,7 +622,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -600,7 +630,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -608,7 +638,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -616,7 +646,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -624,7 +654,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -632,7 +662,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -640,7 +670,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -648,7 +678,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -656,7 +686,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -664,7 +694,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -672,7 +702,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -680,7 +710,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -688,7 +718,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -696,7 +726,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -704,7 +734,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -712,7 +742,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -720,7 +750,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -728,7 +758,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -736,7 +766,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -744,7 +774,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -752,7 +782,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -760,7 +790,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -768,7 +798,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -776,7 +806,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -784,7 +814,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -792,7 +822,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -800,7 +830,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -808,7 +838,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -816,7 +846,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -824,7 +854,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -832,7 +862,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -840,7 +870,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -848,7 +878,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -856,7 +886,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -864,7 +894,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -872,7 +902,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -880,7 +910,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -888,7 +918,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -896,7 +926,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -904,7 +934,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -912,7 +942,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -920,7 +950,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -928,7 +958,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -936,7 +966,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -944,7 +974,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -952,7 +982,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -960,7 +990,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -968,7 +998,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -976,7 +1006,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -984,7 +1014,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -992,7 +1022,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1000,7 +1030,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1008,7 +1038,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1016,7 +1046,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1024,7 +1054,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1032,7 +1062,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1040,7 +1070,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1048,7 +1078,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1056,7 +1086,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1064,7 +1094,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1072,7 +1102,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1080,7 +1110,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1088,7 +1118,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1096,7 +1126,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1104,7 +1134,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1112,7 +1142,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1120,7 +1150,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1128,7 +1158,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1136,7 +1166,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1144,7 +1174,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1152,7 +1182,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1160,7 +1190,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1168,7 +1198,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1176,7 +1206,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1184,7 +1214,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1192,7 +1222,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1200,7 +1230,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1208,7 +1238,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1216,7 +1246,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1224,7 +1254,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1232,7 +1262,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1240,7 +1270,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1248,7 +1278,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1256,7 +1286,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1264,7 +1294,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1272,7 +1302,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1280,7 +1310,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1288,7 +1318,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1296,7 +1326,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1304,7 +1334,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1312,7 +1342,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1320,7 +1350,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1328,7 +1358,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1336,7 +1366,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1344,7 +1374,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1352,7 +1382,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1360,7 +1390,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1368,7 +1398,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1376,7 +1406,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1384,7 +1414,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1392,7 +1422,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1400,7 +1430,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1408,7 +1438,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1416,7 +1446,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1424,7 +1454,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1432,7 +1462,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1440,7 +1470,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1448,7 +1478,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1456,7 +1486,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1464,7 +1494,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1472,7 +1502,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1480,7 +1510,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1488,7 +1518,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1496,7 +1526,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1504,7 +1534,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1512,7 +1542,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1520,7 +1550,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1528,7 +1558,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1536,7 +1566,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1544,7 +1574,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1552,7 +1582,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1560,7 +1590,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1568,7 +1598,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1576,7 +1606,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1584,7 +1614,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1592,7 +1622,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1600,7 +1630,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1608,7 +1638,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1616,7 +1646,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1624,7 +1654,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1632,7 +1662,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1640,7 +1670,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1648,7 +1678,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1656,7 +1686,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1664,7 +1694,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1672,7 +1702,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1680,7 +1710,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1688,7 +1718,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1696,7 +1726,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1704,7 +1734,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1712,7 +1742,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1720,7 +1750,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1728,7 +1758,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1736,7 +1766,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1744,7 +1774,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1752,7 +1782,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1760,7 +1790,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1768,7 +1798,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1776,7 +1806,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1784,7 +1814,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1792,7 +1822,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1800,7 +1830,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1808,7 +1838,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1816,7 +1846,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1824,7 +1854,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1832,7 +1862,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1840,7 +1870,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1848,7 +1878,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1856,7 +1886,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1864,7 +1894,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1872,7 +1902,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1880,7 +1910,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1888,7 +1918,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1896,7 +1926,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1904,7 +1934,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1912,7 +1942,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1920,7 +1950,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1928,7 +1958,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1936,7 +1966,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1944,7 +1974,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1952,7 +1982,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1960,7 +1990,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1968,7 +1998,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1976,7 +2006,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1984,7 +2014,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -1992,7 +2022,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -2000,7 +2030,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -2008,7 +2038,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -2016,7 +2046,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -2024,7 +2054,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -2032,7 +2062,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -2040,7 +2070,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -2048,7 +2078,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -2056,7 +2086,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -2064,7 +2094,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -2072,7 +2102,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
@@ -2080,7 +2110,7 @@ void executeNextInstruction(void){
 			/* */
 
 
-			clockCycles += 1;
+			clockCycles += 4;
 			cpuCore.PC += 1;
 			break;
 
