@@ -12,21 +12,26 @@ WARN = -Wall
 OPT = -O3
 LINK = -pthread
 
+SOURCE_FILES			:= $(C_SOURCE_FILES) $(CXX_SOURCE_FILES)
+SOURCE_FILES_BASE		:= $(C_SOURCE_FILES_BASE) $(CXX_SOURCE_FILES_BASE)
+OBJECT_FILES			:= $(C_OBJECT_FILES) $(CXX_OBJECT_FILES)
+SOURCE_DIRS				:= $(shell find ./$(SRC)/ -type d)
+DEP_FILES				:= $(C_DEP_FILES) $(CXX_DEP_FILES)
 
 EXE = $(NAME).exe
 DIS = $(NAME).asm
 
 
-all: $(EXE)
+TEST_SOURCE_FILES			:= $(C_TEST_SOURCE_FILES) $(CXX_TEST_SOURCE_FILES)
+TEST_SOURCE_FILES_BASE		:= $(C_TEST_SOURCE_FILES_BASE) $(CXX_TEST_SOURCE_FILES_BASE)
+TEST_OBJECT_FILES			:= $(C_TEST_OBJECT_FILES) $(CXX_TEST_OBJECT_FILES) $(filter-out $(BLD)/main.o, $(OBJECT_FILES))
+TEST_SOURCE_DIRS			:= $(shell find ./$(TST)/ -type d)
+TEST_DEP_FILES				:= $(C_TEST_DEP_FILES) $(CXX_TEST_DEP_FILES) 
 
-$(EXE): $(INIT) $(OBJS)
-	$(CC) $(WARN) $(OPT) -o $@ $^
-
-$(BLD)/%.o: %.c
-	$(CC) $(WARN) $(OPT) -o $@ -c $^
-
-$(BLD)/%.o: %.c %.h
-	$(CC) $(WARN) $(OPT) -o $@ -c $^
+CC 		:= gcc
+CXX		:= g++
+ASM_CMD := objdump
+IMG_CMD := objcopy
 
 .PHONY: all clean remake
 
