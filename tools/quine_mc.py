@@ -19,6 +19,11 @@ Load_Min_Terms = [2,6,10,14,18,22,26,30,34,38,42,46,50,54,58,62,64,65,66,67,68,6
 Logical_Min_Terms = [7,15,23,31,203]
 Misc_Min_Terms = [0,16,118,243,251]
 
+Load_IR_Terms = [6,14,22,30,38,46,62]
+Load_RR_Terms = [64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,119,120,121,122,123,124,125,126,127]
+POP_Terms = [0xc1, 0xd1, 0xe1, 0xf1]
+ADD_Terms = [0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87]
+
 qm = QuineMcCluskey(use_xor = False)
 
 Arithmetic_Min_Terms_res = qm.simplify(Arithmetic_Min_Terms,[])
@@ -35,3 +40,15 @@ print("%25s:         [%s]" % ("Logical_Min_Terms_res",format_set(Logical_Min_Ter
 
 Misc_Min_Terms_res = qm.simplify(Misc_Min_Terms,[])
 print("%25s:         [%s]" % ("Misc_Min_Terms_res",format_set(Misc_Min_Terms_res)))
+
+Load_IR_Terms_res = qm.simplify(Load_IR_Terms,[])
+print("%25s:         [%s]" % ("Load_IR_Terms_res",format_set(Load_IR_Terms_res)))
+
+Load_RR_Terms_res = qm.simplify(Load_RR_Terms,[])
+print("%25s:         [%s]" % ("Load_RR_Terms_res",format_set(Load_RR_Terms_res)))
+
+POP_Terms_res = qm.simplify(POP_Terms,[])
+print("%25s:         [%s]" % ("POP_Terms_res",format_set(POP_Terms_res)))
+
+ADD_Terms_res = qm.simplify(ADD_Terms,[])
+print("%25s:         [%s]" % ("ADD_Terms_res",format_set(ADD_Terms_res)))

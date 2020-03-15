@@ -7,15 +7,15 @@
 namespace CPU{
 
 struct CPU_flags{
-    bool sub;
-    bool zero;
-    bool parity;
-    bool carry;
-    bool half_carry;
+    bool sub        : 1;
+    bool zero       : 1;
+    bool carry      : 1;
+    bool half_carry : 1;
 };
 
 enum CPU_Failure_Modes{
-    INVALID_INSTRUCTION
+    INVALID_INSTRUCTION,
+    UNKNOWN_INSTRUCTION
 };
 
 class LR35902{
@@ -35,9 +35,23 @@ public:
 
     void crash_cpu(enum CPU_Failure_Modes);
 
-    inline uint16_t get_HL_indirect(){
-        return ((uint16_t)H << 8) | L;
+    inline uint16_t get_BC_indirect(){return (static_cast<uint16_t>(B) << 8) | C;}
+    inline uint16_t get_DE_indirect(){return (static_cast<uint16_t>(D) << 8) | E;}
+    inline uint16_t get_HL_indirect(){return (static_cast<uint16_t>(H) << 8) | L;}
+    
+    inline void HL_inc(void){ L++; if(L == 0) { H++;}}
+    inline void HL_dec(void){ L--; if(L == 0xFF) { H--;}}
+
+    inline bool check_bits(uint8_t instr, uint8_t term_mask, uint8_t term){
+        instr &= term_mask;
+        if((instr ^ term) == 0){
+            return true;
+        } else {
+            return false;
+        }
     }
+
+    uint8_t* get_reg_ptr_from_number(uint8_t num);
 
     struct CPU_flags    flags;
     uint8_t             A;

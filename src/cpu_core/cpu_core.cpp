@@ -5,7 +5,6 @@ namespace CPU{
 LR35902::LR35902(Bus::Main_Bus &bus) : memory_bus(bus){
     flags.sub           = false;
     flags.zero          = false;
-    flags.parity        = false;
     flags.carry         = false;
     flags.half_carry    = false;
 

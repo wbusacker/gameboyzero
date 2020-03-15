@@ -32,6 +32,8 @@ uint8_t* LR35902::get_reg_ptr_from_number(uint8_t num){
         case 0b111:
             return &A;
     }
+
+    return NULL;
     
 }
 
