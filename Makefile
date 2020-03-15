@@ -28,10 +28,10 @@ TEST_OBJECT_FILES			:= $(C_TEST_OBJECT_FILES) $(CXX_TEST_OBJECT_FILES) $(filter-
 TEST_SOURCE_DIRS			:= $(shell find ./$(TST)/ -type d)
 TEST_DEP_FILES				:= $(C_TEST_DEP_FILES) $(CXX_TEST_DEP_FILES) 
 
-CC 		:= gcc
-CXX		:= g++
-ASM_CMD := objdump
-IMG_CMD := objcopy
+CC 		:= /opt/gcc-9.3/bin/gcc
+CXX		:= /opt/gcc-9.3/bin/g++
+ASM_CMD := /opt/gcc-9.3/bin/objdump
+IMG_CMD := /opt/gcc-9.3/bin/objcopy
 
 .PHONY: all clean remake
 

@@ -35,6 +35,10 @@ public:
 
     void crash_cpu(enum CPU_Failure_Modes);
 
+    inline uint16_t get_HL_indirect(){
+        return ((uint16_t)H << 8) | L;
+    }
+
     struct CPU_flags    flags;
     uint8_t             A;
     uint8_t             B;
