@@ -2,17 +2,6 @@
 
 namespace CPU{
 
-inline bool check_bits(uint8_t instr, uint8_t term_mask, uint8_t term){
-
-    instr &= term_mask;
-    if((instr ^ term) == 0){
-        return true;
-    } else {
-        return false;
-    }
-
-}
-
 void LR35902::cycle_cpu(void){
 
     /* If the processor is halted, don't cycle */
@@ -33,12 +22,12 @@ void LR35902::cycle_cpu(void){
     program_counter++;
 
     /* Determine if we match an arithmetic instruction */
-    if(         check_bits(instr, 0b01001101, 0b00001001) || 
-                check_bits(instr, 0b01100011, 0b00100011) || 
-                check_bits(instr, 0b10000111, 0b10000110) || 
-                check_bits(instr, 0b01000110, 0b00000100) || 
-                check_bits(instr, 0b11000000, 0b10000000) || 
-                check_bits(instr, 0b10111111, 0b10101000) || 
+    if(         check_bits(instr, 0b01001101, 0b00001001) ||
+                check_bits(instr, 0b01100011, 0b00100011) ||
+                check_bits(instr, 0b10000111, 0b10000110) ||
+                check_bits(instr, 0b01000110, 0b00000100) ||
+                check_bits(instr, 0b11000000, 0b10000000) ||
+                check_bits(instr, 0b10111111, 0b10101000) ||
                 check_bits(instr, 0b01000111, 0b00000011) )
     {
         process_arith(instr);

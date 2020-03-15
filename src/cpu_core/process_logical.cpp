@@ -71,6 +71,9 @@ void LR35902::process_logical(uint8_t instr){
             process_cb();
             break;
 
+        default:
+            crash_cpu(CPU::UNKNOWN_INSTRUCTION);
+
     }
 
 }

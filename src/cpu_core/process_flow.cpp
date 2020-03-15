@@ -277,6 +277,9 @@ void LR35902::process_flow(uint8_t instr){
             program_counter = 0x38;
             break;
 
+        default:
+            crash_cpu(CPU::UNKNOWN_INSTRUCTION);
+
     }
 
 }
