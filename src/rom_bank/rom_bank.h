@@ -16,20 +16,6 @@ public:
         memory_buffer = new uint8_t[(stop_addr - start_addr)];
     }
 
-    virtual void load_memory(void* buf, uint16_t len){
-        memcpy(memory_buffer, buf, len);
-    }
-
-    virtual uint8_t fetch_memory(uint16_t addr){
-        return memory_buffer[addr - start_address];
-    }
-
-    virtual void store_memory(uint16_t addr, uint8_t val){
-        if((start_address <= val) && (stop_address >= val)){
-            memory_buffer[addr - start_address] = val;
-        }
-    }
-
 private:
 
 

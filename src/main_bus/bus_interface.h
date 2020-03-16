@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 namespace Bus{
 
@@ -19,12 +20,17 @@ public:
         memory_buffer = new uint8_t[(stop_addr - start_addr)];
     }
 
-    virtual void load_memory(void* buf, uint16_t len){
+    virtual void load_memory(uint8_t* buf, uint16_t len){
         memcpy(memory_buffer, buf, len);
     }
 
     virtual uint8_t fetch_memory(uint16_t addr){
-        return memory_buffer[addr - start_address];
+        // printf("Fetching memory from buffer\n");
+        fflush(stdout);
+        uint8_t ret_val = memory_buffer[addr - start_address];
+        // printf("Grabbed %d\n", ret_val);
+        fflush(stdout);
+        return ret_val;
     }
 
     virtual void store_memory(uint16_t addr, uint8_t val){

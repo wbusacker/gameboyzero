@@ -18,6 +18,8 @@ enum CPU_Failure_Modes{
     UNKNOWN_INSTRUCTION
 };
 
+void print_instr_mnemonic(uint8_t instr);
+
 class LR35902{
 
 public:

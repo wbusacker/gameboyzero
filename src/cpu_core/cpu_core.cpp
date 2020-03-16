@@ -18,6 +18,13 @@ LR35902::LR35902(Bus::Main_Bus &bus) : memory_bus(bus){
 
     stack_pointer   = 0;
     program_counter = 0x0100;
+
+    stall_processor = false;
+    instr_cycles = 0;
+    interrupts_enabled = true;
+    enable_interrupt = true;
+    disable_interrupt = false;
+
 }
 
 }

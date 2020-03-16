@@ -7,6 +7,8 @@
 
 namespace Bus{
 
+const uint8_t MAX_BUS_DEVICES = 100;
+
 class Main_Bus{
 
 public:
@@ -18,9 +20,13 @@ public:
     uint8_t fetch_addr(uint16_t addr);
     void    store_addr(uint16_t addr, uint8_t val);
 
+
+
 private:
 
-    std::vector<Bus::Bus_Interface*> device_list;
+    Bus::Bus_Interface* device_list[Bus::MAX_BUS_DEVICES];
+
+    uint8_t num_loaded_devices;
 
 };
 

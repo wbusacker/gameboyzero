@@ -1,4 +1,5 @@
 #include <cpu_core.h>
+#include <stdio.h>
 
 namespace CPU{
 
@@ -18,6 +19,11 @@ void LR35902::cycle_cpu(void){
     /* Fetch the next instruction */
 
     uint8_t instr = memory_bus.fetch_addr(program_counter);
+
+    printf("[EXE ] ADDR = %04X INSTR = %02X\n", program_counter, instr);
+    print_instr_mnemonic(instr);
+    fflush(stdout);
+
     /* Increment Program Counter */
     program_counter++;
 
