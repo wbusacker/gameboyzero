@@ -28,13 +28,13 @@ TEST_OBJECT_FILES			:= $(C_TEST_OBJECT_FILES) $(CXX_TEST_OBJECT_FILES) $(filter-
 TEST_SOURCE_DIRS			:= $(shell find ./$(TST)/ -type d)
 DEP_FILES					+= $(C_TEST_DEP_FILES) $(CXX_TEST_DEP_FILES) 
 
-CC 		:= /opt/gcc-9.3/bin/gcc
-CXX		:= /opt/gcc-9.3/bin/g++
-ASM_CMD := /opt/gcc-9.3/bin/objdump
-IMG_CMD := /opt/gcc-9.3/bin/objcopy
+CC 		:= gcc
+CXX		:= g++
+ASM_CMD := objdump
+IMG_CMD := objcopy
 
-OPT 			:= -O3 -g
-INCLUDE_DIRS 	:= $(addprefix -I, $(SOURCE_DIRS))
+OPT 			:= -O0 -g
+INCLUDE_DIRS 	:= $(addprefix -I, $(SOURCE_DIRS)) $(addprefix -I, $(TEST_SOURCE_DIRS))
 WARN			:= -Wall
 LINK			:= -lpthread -lncurses
 CFLAGS 			:= $(INCLUDE_DIRS) $(OPT) $(WARN) $(LINK)
@@ -65,7 +65,62 @@ stat:
 	@echo $(TEST_OBJECT_FILES)
 
 clean:
+<<<<<<< HEAD
 	rm -rf $(BLD)/* *.o *.exe *.asm
+=======
+	@echo Cleaning
+	@rm -rf $(BLD)/*.o $(EXE) $(IMG)
+
+cleanall:
+	@echo Cleaning all
+	@rm -rf $(BLD)/* $(EXE) $(IMG)	
+
+remake: clean all
+
+$(EXE): $(OBJECT_FILES)
+	@echo Linking
+	@$(CXX) $(CFLAGS) -o $@ $^
+
+$(IMG): $(EXE)
+	@echo Building Image
+	@$(IMG_CMD) -Obinary $^ $@
+
+$(GTS): $(TEST_OBJECT_FILES)
+	@echo Linking Test 
+	@$(CXX) $(CFLAGS) -o $@ $^ -lgtest -lgmock
+
+# Generic Rules
+$(BLD)/%.o: **/**/%.c **/**/%.h  | $(DEPDIR) $(DEPDIR)/%.d
+	@echo Compiling $(@F)
+	@$(CC) $(DEPFLAGS) $(CFLAGS) -o $@ -c $<
+
+$(BLD)/%.o: **/**/%.c | $(DEPDIR) $(DEPDIR)/%.d
+	@echo Compiling $(@F)
+	@$(CC) $(DEPFLAGS) $(CFLAGS) -o $@ -c $<
+
+$(BLD)/%.o: **/**/%.cpp **/**/%.h  | $(DEPDIR) $(DEPDIR)/%.d
+	@echo Compiling $(@F)
+	@$(CXX) $(DEPFLAGS) $(CFLAGS) -o $@ -c $<
+
+$(BLD)/%.o: **/**/%.cpp | $(DEPDIR) $(DEPDIR)/%.d
+	@echo Compiling $(@F)
+	@$(CXX) $(DEPFLAGS) $(CFLAGS) -o $@ -c $<
+
+.PHONY: all exe img clean remake test
+
+$(DEP_FILES):
+
+$(TEST_DEP_FILES):
+
+$(SRC):
+	mkdir $@
+
+$(BLD):
+	mkdir $@
+
+$(DEPDIR): 
+	mkdir $@
+>>>>>>> 9cb9829... Unit tested main Arithmetic Functions
 
 remake:
 	make clean; make

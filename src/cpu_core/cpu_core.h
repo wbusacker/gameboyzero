@@ -2,9 +2,12 @@
 #define CPU_CORE_H
 
 #include <stdint.h>
-#include <main_bus.h>
+#include <memory_map.h>
 
 namespace CPU{
+
+const uint8_t   MNEMONIC_LENGTH     = 32;
+const uint16_t  TRACE_BUFFER_LEN    = 2048;
 
 struct CPU_flags{
     bool sub        : 1;
@@ -23,7 +26,7 @@ void print_instr_mnemonic(uint8_t instr);
 class LR35902{
 
 public:
-    LR35902(Bus::Main_Bus &bus);
+    LR35902(Memory::Memory_Map &bus);
 
     void cycle_cpu(void);
 
@@ -67,7 +70,7 @@ public:
     uint16_t            stack_pointer;
     uint16_t            program_counter;
 
-    Bus::Main_Bus       &memory_bus;
+    Memory::Memory_Map  &memory_bus;
 
     bool                stall_processor;
     bool                interrupts_enabled;
@@ -75,6 +78,8 @@ public:
     bool                disable_interrupt;
 
     uint8_t             instr_cycles;
+
+    char                instruction_trace_buffer[TRACE_BUFFER_LEN][MNEMONIC_LENGTH];
 
 };
 

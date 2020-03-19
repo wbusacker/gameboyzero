@@ -512,7 +512,7 @@ void LR35902::process_arith(uint8_t instr){
         }
 
     /* DEC Register             */
-    } else if(check_bits(instr, 0b11000111, 0b00000100)) {
+    } else if(check_bits(instr, 0b11000111, 0b00000101)) {
     
         wr = get_reg_ptr_from_number(instr >> 3);
 
@@ -611,21 +611,32 @@ void LR35902::process_arith(uint8_t instr){
         instr_cycles = 2;
         switch(instr & 0xF0){
             case 0x00:
-                C--;
-                if(C == 0xFF){ 
-                    B--;
+                L += C;
+                H += B;
+                if(L == 0x00){ 
+                    H++;
                 }
                 break;
             case 0x10:
-                E--;
-                if(E == 0xFF){ 
-                    D--;
+                L += E;
+                H += D;
+                if(L == 0x00){ 
+                    H++;
                 }
                 break;
             case 0x20:
-                HL_dec();
+                L += L;
+                H += H;
+                if(L == 0x00){ 
+                    H++;
+                }
+                break;
             case 0x30:
-                stack_pointer--;
+                L += (stack_pointer & 0x00FF);
+                H += ((stack_pointer & 0xFF00) >> 8);
+                if(L == 0x00){ 
+                    H++;
+                }
                 break;
         }
 
@@ -633,18 +644,21 @@ void LR35902::process_arith(uint8_t instr){
     } else {
         switch(instr){
             case 0x27:  /* Decimal Adjust A */
+                new_A = A;
                 /* Check if lower nibble violates BCD */
                 if( ((A & 0x0F) > 9) || (flags.half_carry) ){
-                    A += 0x06;
+                    new_A += 0x06;
                 }
 
                 /* Check if upper nibble violates BCD */
-                if( ((A & 0xF0) > 9) || (flags.carry)){
-                    A += 0x60;
+                if( (((A & 0xF0) >> 4) > 9) || (flags.carry)){
+                    new_A += 0x60;
                     flags.carry = true;
                 } else {
                     flags.carry = false;
                 }
+
+                A = new_A;
 
                 if(A == 0){
                     flags.zero = true;
@@ -654,6 +668,8 @@ void LR35902::process_arith(uint8_t instr){
 
                 flags.half_carry = false;
                 instr_cycles = 1;
+
+
                 break;
 
             case 0x37:  /* Set Carry Flag   */

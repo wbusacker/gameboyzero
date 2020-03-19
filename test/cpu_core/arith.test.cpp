@@ -1,9 +1,15 @@
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <cpu_core.h>
+#include <mbc1.h>
+#include <memory_map_mock.h>
+
+
+using namespace testing;
 
 TEST(CPU_CORE_ARITH, ADD_HALF_CARRY){
-    class Bus::Main_Bus bus;
-    class CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL);
+    CPU::LR35902 core(bus);
 
     core.A = 0b01101011;
     core.B = 0b00111101;
@@ -16,8 +22,8 @@ TEST(CPU_CORE_ARITH, ADD_HALF_CARRY){
 }
 
 TEST(CPU_CORE_ARITH, ADD_CARRY){
-    class Bus::Main_Bus bus;
-    class CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL);
+    CPU::LR35902 core(bus);
 
     core.A = 0b01101011;
     core.B = 0b10111101;
@@ -31,8 +37,8 @@ TEST(CPU_CORE_ARITH, ADD_CARRY){
 }
 
 TEST(CPU_CORE_ARITH, ADD_WITH_CARRY){
-    class Bus::Main_Bus bus;
-    class CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL);
+    CPU::LR35902 core(bus);
 
     core.A = 0x11;
     core.B = 0x11;
@@ -46,9 +52,9 @@ TEST(CPU_CORE_ARITH, ADD_WITH_CARRY){
 }
 
 TEST(CPU_CORE_ARITH, SUB){
-
-    class Bus::Main_Bus bus;
-    class CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL);
+    CPU::LR35902 core(bus);
+    
 
     core.A = 0x11;
     core.B = 0x11;
@@ -60,9 +66,9 @@ TEST(CPU_CORE_ARITH, SUB){
 }
 
 TEST(CPU_CORE_ARITH, SUB_WITH_CARRY){
-
-    class Bus::Main_Bus bus;
-    class CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL);
+    CPU::LR35902 core(bus);
+    
 
     core.A = 0x11;
     core.B = 0x11;
