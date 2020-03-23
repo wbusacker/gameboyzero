@@ -8,7 +8,6 @@ void LR35902::process_ld(uint8_t instr){
     uint8_t*    dst_reg;
     uint8_t*    src_reg;
     uint8_t     hl_wr;
-    hl_wr = memory_bus.fetch_addr(get_HL_indirect());
     uint16_t    nn_lsb;
     uint16_t    nn_msb;
     uint16_t    nn;
@@ -26,6 +25,7 @@ void LR35902::process_ld(uint8_t instr){
             instr_cycles = 2;
         } else if (src_reg == NULL){
             src_reg = &hl_wr;
+            hl_wr = memory_bus.fetch_addr(get_HL_indirect());
             instr_cycles = 2;
         } else {
             instr_cycles = 1;
@@ -58,17 +58,17 @@ void LR35902::process_ld(uint8_t instr){
                 C = nn_lsb;
                 break;
 
-            case 0x01:
+            case 0x10:
                 D = nn_msb;
                 E = nn_lsb;
                 break;
             
-            case 0x02:
+            case 0x20:
                 H = nn_msb;
                 L = nn_lsb;
                 break;
 
-            case 0x03:
+            case 0x30:
                 stack_pointer = (static_cast<uint16_t>(nn_msb) << 8) | nn_lsb;
         }
 
@@ -103,7 +103,7 @@ void LR35902::process_ld(uint8_t instr){
                 break;
 
             case 0x12: /* A to DE Indirect                      */
-                memory_bus.store_addr(get_BC_indirect(), A);
+                memory_bus.store_addr(get_DE_indirect(), A);
                 instr_cycles = 2;
                 break;
 
@@ -151,7 +151,7 @@ void LR35902::process_ld(uint8_t instr){
             case 0xC5: /* PUSH BC                               */
                 stack_pointer--;
                 memory_bus.store_addr(stack_pointer--, B);
-                memory_bus.store_addr(stack_pointer--, C);
+                memory_bus.store_addr(stack_pointer, C);
                 instr_cycles = 4;
                 break;
 
@@ -164,7 +164,7 @@ void LR35902::process_ld(uint8_t instr){
             case 0xD5: /* PUSH DE                               */
                 stack_pointer--;
                 memory_bus.store_addr(stack_pointer--, D);
-                memory_bus.store_addr(stack_pointer--, E);
+                memory_bus.store_addr(stack_pointer, E);
                 instr_cycles = 4;
                 break;
 
@@ -188,7 +188,7 @@ void LR35902::process_ld(uint8_t instr){
             case 0xE5: /* PUSH HL                               */
                 stack_pointer--;
                 memory_bus.store_addr(stack_pointer--, H);
-                memory_bus.store_addr(stack_pointer--, L);
+                memory_bus.store_addr(stack_pointer, L);
                 instr_cycles = 4;
                 break;
 
@@ -221,7 +221,7 @@ void LR35902::process_ld(uint8_t instr){
                 stack_pointer--;
                 memory_bus.store_addr(stack_pointer--, A);
                 memcpy(&F, &flags, 1);
-                memory_bus.store_addr(stack_pointer--, F);
+                memory_bus.store_addr(stack_pointer, F);
                 instr_cycles = 3;
                 break;
 

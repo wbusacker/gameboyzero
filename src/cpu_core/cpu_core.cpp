@@ -9,6 +9,7 @@ LR35902::LR35902(Memory::Memory_Map &bus) : memory_bus(bus){
     flags.zero          = false;
     flags.carry         = false;
     flags.half_carry    = false;
+    flags.padding       = 0x0;
 
     A   = 0;
     B   = 0;
@@ -26,6 +27,17 @@ LR35902::LR35902(Memory::Memory_Map &bus) : memory_bus(bus){
     interrupts_enabled = true;
     enable_interrupt = true;
     disable_interrupt = false;
+
+    trace_buffer_overflow = false;
+    trace_buffer_bottom = 0;
+
+    static char* default_instr = "Default INSTR";
+
+    uint16_t i;
+    for(i = 0; i < CPU::TRACE_BUFFER_LEN; i++){
+        instruction_trace_buffer[i] = default_instr;
+        instruction_trace_buffer_addr[i] = 0xFFFF;
+    }
 
 }
 

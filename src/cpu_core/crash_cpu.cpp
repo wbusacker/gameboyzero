@@ -11,11 +11,18 @@ void LR35902::crash_cpu(enum CPU_Failure_Modes mode){
         case CPU::INVALID_INSTRUCTION:
             printf("Invalid Instruction\n");
             break;
+
+        case CPU::RESET_LOOP:
+            printf("Reset Loop\n");
+            break;
         
         default:
             printf("Unkown Exception");
             break;
+
     }
+
+    print_trace_buffer();
 
     printf("flag - sub          %01d\n", flags.sub);
     printf("flag - zero         %01d\n", flags.zero);

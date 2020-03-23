@@ -266,4 +266,8 @@ void print_instr_mnemonic(uint8_t instr){
     fflush(stdout);
 }
 
+char* get_instr_mnemonic(uint8_t instr){
+    return mnemonics[instr];
+}
+
 }

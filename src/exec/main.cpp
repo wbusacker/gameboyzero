@@ -71,8 +71,12 @@ int main(void){
 
     while(1){
         cpu.cycle_cpu();
-        usleep(100000);
+        /* Approx Gameboy Clock Speed   */
+        usleep(1);
+        /* Debug Speed                  */
+        // usleep(100000);
     }
+
 
 
 

@@ -14,14 +14,17 @@ struct CPU_flags{
     bool zero       : 1;
     bool carry      : 1;
     bool half_carry : 1;
+    uint8_t padding : 4;
 };
 
 enum CPU_Failure_Modes{
     INVALID_INSTRUCTION,
+    RESET_LOOP,
     UNKNOWN_INSTRUCTION
 };
 
 void print_instr_mnemonic(uint8_t instr);
+char* get_instr_mnemonic(uint8_t instr);
 
 extern bool    print_diagnostics;
 
@@ -39,6 +42,8 @@ public:
     void process_flow(uint8_t instr);
     void process_misc(uint8_t instr);
     void process_cb(void);
+
+    void print_trace_buffer(void);
 
     void crash_cpu(enum CPU_Failure_Modes);
 
@@ -81,7 +86,10 @@ public:
 
     uint8_t             instr_cycles;
 
-    char                instruction_trace_buffer[TRACE_BUFFER_LEN][MNEMONIC_LENGTH];
+    char*               instruction_trace_buffer[TRACE_BUFFER_LEN];
+    uint16_t            instruction_trace_buffer_addr[TRACE_BUFFER_LEN];
+    bool                trace_buffer_overflow;
+    uint16_t            trace_buffer_bottom;
 
 
 };

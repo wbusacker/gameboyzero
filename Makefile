@@ -45,6 +45,9 @@ EXE := $(PRJ_NAME).exe
 IMG := $(PRJ_NAME).img
 GTS := $(PRJ_NAME).test.exe
 
+# Surpress stdout
+M	:= @
+
 all: $(EXE) $(GTS)
 
 exe: $(EXE)
@@ -55,56 +58,61 @@ test: $(GTS)
 	./$(GTS)
 
 stat:
-	@echo Main Source Files
-	@echo $(SOURCE_FILES)
-	@echo Test Source Files
-	@echo $(TEST_SOURCE_FILES)
-	@echo Main OBJECT Files
-	@echo $(OBJECT_FILES)
-	@echo Test OBJECT Files
-	@echo $(TEST_OBJECT_FILES)
+	$(M)echo Main Source Files
+	$(M)echo $(SOURCE_FILES)
+	$(M)echo Test Source Files
+	$(M)echo $(TEST_SOURCE_FILES)
+	$(M)echo Main OBJECT Files
+	$(M)echo $(OBJECT_FILES)
+	$(M)echo Test OBJECT Files
+	$(M)echo $(TEST_OBJECT_FILES)
 
 clean:
+<<<<<<< HEAD
 <<<<<<< HEAD
 	rm -rf $(BLD)/* *.o *.exe *.asm
 =======
 	@echo Cleaning
 	@rm -rf $(BLD)/*.o $(EXE) $(GTS)
+=======
+	$(M)echo Cleaning
+	$(M)rm -rf $(BLD)/*.o $(EXE) $(GTS)
+>>>>>>> 45f3852... Added 16 bit loads
 
 cleanall:
-	@echo Cleaning all
-	@rm -rf $(BLD)/* $(EXE) $(GTS)	
+	$(M)echo Cleaning all
+	$(M)rm -rf $(BLD)/* $(EXE) $(GTS)	
 
 remake: clean all
 
 $(EXE): $(OBJECT_FILES)
-	@echo Linking
-	@$(CXX) $(CFLAGS) -o $@ $^
+	$(M)echo Linking
+	$(M)$(CXX) $(CFLAGS) -o $@ $^
 
 $(IMG): $(EXE)
-	@echo Building Image
-	@$(IMG_CMD) -Obinary $^ $@
+	$(M)echo Building Image
+	$(M)$(IMG_CMD) -Obinary $^ $@
 
 $(GTS): $(TEST_OBJECT_FILES)
-	@echo Linking Test 
-	@$(CXX) $(CFLAGS) -o $@ $^ -lgtest -lgmock
+	$(M)echo Linking Test 
+	$(M)$(CXX) $(CFLAGS) -o $@ $^ -lgtest -lgmock
 
 # Generic Rules
 $(BLD)/%.o: **/**/%.c **/**/%.h  | $(DEPDIR) $(DEPDIR)/%.d
-	@echo Compiling $(@F)
-	@$(CC) $(DEPFLAGS) $(CFLAGS) -o $@ -c $<
+	$(M)echo Compiling $(@F)
+	$(M)$(CC) $(DEPFLAGS) $(CFLAGS) -o $@ -c $<
 
 $(BLD)/%.o: **/**/%.c | $(DEPDIR) $(DEPDIR)/%.d
-	@echo Compiling $(@F)
-	@$(CC) $(DEPFLAGS) $(CFLAGS) -o $@ -c $<
+	$(M)echo Compiling $(@F)
+	$(M)$(CC) $(DEPFLAGS) $(CFLAGS) -o $@ -c $<
 
 $(BLD)/%.o: **/**/%.cpp **/**/%.h  | $(DEPDIR) $(DEPDIR)/%.d
-	@echo Compiling $(@F)
-	@$(CXX) $(DEPFLAGS) $(CFLAGS) -o $@ -c $<
+	$(M)echo Compiling $(@F)
+	$(M)$(CXX) $(DEPFLAGS) $(CFLAGS) -o $@ -c $<
 
 $(BLD)/%.o: **/**/%.cpp | $(DEPDIR) $(DEPDIR)/%.d
-	@echo Compiling $(@F)
-	@$(CXX) $(DEPFLAGS) $(CFLAGS) -o $@ -c $<
+	$(M)echo Compiling $(@F)
+	$(M)$(CXX) $(DEPFLAGS) $(CFLAGS) -o $@ -c $<
 
 .PHONY: all exe img clean remake test
 
