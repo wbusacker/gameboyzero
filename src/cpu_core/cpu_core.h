@@ -23,6 +23,8 @@ enum CPU_Failure_Modes{
 
 void print_instr_mnemonic(uint8_t instr);
 
+extern bool    print_diagnostics;
+
 class LR35902{
 
 public:
@@ -80,6 +82,7 @@ public:
     uint8_t             instr_cycles;
 
     char                instruction_trace_buffer[TRACE_BUFFER_LEN][MNEMONIC_LENGTH];
+
 
 };
 

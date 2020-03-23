@@ -2,6 +2,8 @@
 
 namespace CPU{
 
+bool    print_diagnostics = true;
+
 LR35902::LR35902(Memory::Memory_Map &bus) : memory_bus(bus){
     flags.sub           = false;
     flags.zero          = false;

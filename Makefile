@@ -69,11 +69,11 @@ clean:
 	rm -rf $(BLD)/* *.o *.exe *.asm
 =======
 	@echo Cleaning
-	@rm -rf $(BLD)/*.o $(EXE) $(IMG)
+	@rm -rf $(BLD)/*.o $(EXE) $(GTS)
 
 cleanall:
 	@echo Cleaning all
-	@rm -rf $(BLD)/* $(EXE) $(IMG)	
+	@rm -rf $(BLD)/* $(EXE) $(GTS)	
 
 remake: clean all
 

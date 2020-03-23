@@ -20,8 +20,10 @@ void LR35902::cycle_cpu(void){
 
     uint8_t instr = memory_bus.fetch_addr(program_counter);
 
-    // printf("[EXE ] ADDR = %04X INSTR = %02X\n", program_counter, instr);
-    // print_instr_mnemonic(instr);
+    if(print_diagnostics){
+        printf("[EXE ] ADDR = %04X INSTR = %02X\n", program_counter, instr);
+        print_instr_mnemonic(instr);
+    }
     fflush(stdout);
 
     /* Increment Program Counter */

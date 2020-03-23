@@ -23,8 +23,6 @@ void LR35902::process_cb(void){
 
     uint8_t HL;
 
-    HL = memory_bus.fetch_addr(get_HL_indirect());
-
     /* Select the target register */
     uint8_t *target_reg;
     switch(instr & 0x0F){
@@ -60,6 +58,7 @@ void LR35902::process_cb(void){
             
         case 0x06:
         case 0x0E:
+            HL = memory_bus.fetch_addr(get_HL_indirect());
             target_reg = &HL;
             break;
             
@@ -75,33 +74,33 @@ void LR35902::process_cb(void){
     switch(instr & 0xF0){
         case 0x00:
             if((instr & 0x08) == 0x08){
-                type = CPU::RLC;
-            } else {
                 type = CPU::RRC;
+            } else {
+                type = CPU::RLC;
             }
             break;
 
         case 0x10:
             if((instr & 0x08) == 0x08){
-                type = CPU::RL;
-            } else {
                 type = CPU::RR;
+            } else {
+                type = CPU::RL;
             }
             break;
 
         case 0x20:
             if((instr & 0x08) == 0x08){
-                type = CPU::SLA;
-            } else {
                 type = CPU::SRA;
+            } else {
+                type = CPU::SLA;
             }
             break;
 
         case 0x30:
             if((instr & 0x08) == 0x08){
-                type = CPU::SWAP;
-            } else {
                 type = CPU::SRL;
+            } else {
+                type = CPU::SWAP;
             }
             break;
 
@@ -126,7 +125,6 @@ void LR35902::process_cb(void){
             type = CPU::SET;
             break;
 
-
     }
 
     /* For the bit manipulation instructions, pick the target bit */
@@ -135,25 +133,25 @@ void LR35902::process_cb(void){
         case 0x40:
         case 0x80:
         case 0xC0:
-            target_bit = ((instr & 0x08) == 0x08) ? 0 : 1;
+            target_bit = ((instr & 0x08) == 0x08) ? 1 : 0;
             break;
 
         case 0x50:
         case 0x90:
         case 0xD0:
-            target_bit = ((instr & 0x08) == 0x08) ? 2 : 3;
+            target_bit = ((instr & 0x08) == 0x08) ? 3 : 2;
             break;
 
         case 0x60:
         case 0xA0:
         case 0xE0:
-            target_bit = ((instr & 0x08) == 0x08) ? 4 : 5;
+            target_bit = ((instr & 0x08) == 0x08) ? 5 : 4;
             break;
 
         case 0x70:
         case 0xB0:
         case 0xF0:
-            target_bit = ((instr & 0x08) == 0x08) ? 6 : 7;
+            target_bit = ((instr & 0x08) == 0x08) ? 7 : 6;
             break;
 
         default:
@@ -292,6 +290,8 @@ void LR35902::process_cb(void){
             check_mask = 1 << target_bit;
             if((wr & check_mask) == 0){
                 flags.zero = true;
+            } else {
+                flags.zero = false;
             }
             flags.sub           = false;
             flags.half_carry    = true;
