@@ -9,6 +9,9 @@ namespace CPU{
 const uint8_t   MNEMONIC_LENGTH     = 32;
 const uint16_t  TRACE_BUFFER_LEN    = 2048;
 
+const double    CORE_FREQUENCY      = 1.0485E6;
+const double    CORE_PERIOD         = 1.0 / CORE_FREQUENCY;
+
 struct CPU_flags{
     bool sub        : 1;
     bool zero       : 1;
@@ -21,6 +24,12 @@ enum CPU_Failure_Modes{
     INVALID_INSTRUCTION,
     RESET_LOOP,
     UNKNOWN_INSTRUCTION
+};
+
+struct TB_entry{
+    char*       mnemonic;
+    uint16_t    addr;
+    uint64_t    count;
 };
 
 void print_instr_mnemonic(uint8_t instr);
@@ -86,10 +95,11 @@ public:
 
     uint8_t             instr_cycles;
 
-    char*               instruction_trace_buffer[TRACE_BUFFER_LEN];
-    uint16_t            instruction_trace_buffer_addr[TRACE_BUFFER_LEN];
+    struct TB_entry     trace_buffer[TRACE_BUFFER_LEN];
+
     bool                trace_buffer_overflow;
     uint16_t            trace_buffer_bottom;
+    uint64_t            num_clock_cycles;
 
 
 };

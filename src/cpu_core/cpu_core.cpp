@@ -31,13 +31,18 @@ LR35902::LR35902(Memory::Memory_Map &bus) : memory_bus(bus){
     trace_buffer_overflow = false;
     trace_buffer_bottom = 0;
 
-    static char* default_instr = "Default INSTR";
+    static char default_instr[CPU::MNEMONIC_LENGTH] = "Default INSTR";
 
     uint16_t i;
     for(i = 0; i < CPU::TRACE_BUFFER_LEN; i++){
-        instruction_trace_buffer[i] = default_instr;
-        instruction_trace_buffer_addr[i] = 0xFFFF;
+
+        trace_buffer[i].addr        = 0xFFFF;
+        trace_buffer[i].count       = 0x0;
+        trace_buffer[i].mnemonic    = default_instr;
+
     }
+
+    num_clock_cycles = 0;
 
 }
 

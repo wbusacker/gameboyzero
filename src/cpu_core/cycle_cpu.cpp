@@ -6,12 +6,15 @@ namespace CPU{
 
 void LR35902::cycle_cpu(void){
 
-    /* If the processor is halted, don't cycle */
+    /* Up the cycle count                           */
+    num_clock_cycles++;
+
+    /* If the processor is halted, don't cycle      */
     if(stall_processor){
         return;
     }
 
-    /* Take into account multi-cycle instructions */
+    /* Take into account multi-cycle instructions   */
     if(instr_cycles > 1){
         instr_cycles--;
         return;
@@ -20,21 +23,16 @@ void LR35902::cycle_cpu(void){
     /* Fetch the next instruction */
     uint8_t instr = memory_bus.fetch_addr(program_counter);
 
-    // if(print_diagnostics){
-    //     printf("[EXE ] ADDR = %04X INSTR = %02X\n", program_counter, instr);
-    //     print_instr_mnemonic(instr);
-    // }
-    // fflush(stdout);
-
     /* Fill in the trace buffer     */
     trace_buffer_bottom = (trace_buffer_bottom + 1) % CPU::TRACE_BUFFER_LEN;
-    printf("TB Index = %d\n", trace_buffer_bottom);
+    // printf("TB Index = %d\n", trace_buffer_bottom);
     if(trace_buffer_bottom == 0){
         trace_buffer_overflow = true;
     }
 
-    instruction_trace_buffer_addr[trace_buffer_bottom]  = program_counter;
-    instruction_trace_buffer[trace_buffer_bottom]       = get_instr_mnemonic(instr);
+    trace_buffer[trace_buffer_bottom].count     = num_clock_cycles;
+    trace_buffer[trace_buffer_bottom].addr      = program_counter;
+    trace_buffer[trace_buffer_bottom].mnemonic  = get_instr_mnemonic(instr);
 
     /* Check for softlock           */
     if((instr == 0xff) && (memory_bus.fetch_addr(0x38 + 1) == 0xff)){

@@ -22,9 +22,11 @@ void LR35902::print_trace_buffer(void){
 
     for(i = 0; i < lines_to_print; i++){
         printf(
-            "%04X\t%s\n",
-            instruction_trace_buffer_addr[index],
-            instruction_trace_buffer[index]
+            "%12.6f | %12ld | %04X | %s\n",
+            trace_buffer[index].count * CPU::CORE_PERIOD,
+            trace_buffer[index].count,
+            trace_buffer[index].addr,
+            trace_buffer[index].mnemonic
         );
         index = (index + 1) % CPU::TRACE_BUFFER_LEN;
     }
