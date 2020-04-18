@@ -3,7 +3,7 @@
 namespace CPU {
 
 void
-  LR35902::process_flow(uint8_t instr) {
+LR35902::process_flow(uint8_t instr) {
 
     uint16_t nn_lsb;
     uint16_t nn_msb;

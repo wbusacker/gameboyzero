@@ -85,6 +85,9 @@ cleanall:
 
 remake: clean all
 
+format:
+	$(M)clang-format -i ./$(SRC)/**/* ./$(TST)/**/*
+
 $(EXE): $(OBJECT_FILES)
 	$(M)echo Linking
 	$(M)$(CXX) $(CFLAGS) -o $@ $^

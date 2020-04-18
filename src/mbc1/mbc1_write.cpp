@@ -3,7 +3,7 @@
 namespace Cart {
 
 void
-  MBC1::write_memory(uint16_t addr, uint8_t val) {
+MBC1::write_memory(uint16_t addr, uint8_t val) {
 
     /* RAM Gate Control         */
     if ((addr < 0x1FFF) && (addr >= 0x0000)) {

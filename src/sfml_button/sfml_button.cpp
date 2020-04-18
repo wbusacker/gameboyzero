@@ -14,7 +14,7 @@ SFML_Button::SFML_Button(sf::RenderWindow *scr, sf::Font *lf, int16_t x, int16_t
 }
 
 void
-  SFML_Button::configure(sf::RenderWindow *scr, sf::Font *lf, int16_t x, int16_t y, int16_t len, int16_t hgt) {
+SFML_Button::configure(sf::RenderWindow *scr, sf::Font *lf, int16_t x, int16_t y, int16_t len, int16_t hgt) {
     x_pos      = x;
     y_pos      = y;
     length     = len;

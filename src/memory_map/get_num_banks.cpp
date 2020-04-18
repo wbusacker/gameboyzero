@@ -3,7 +3,7 @@
 namespace Cart {
 
 uint8_t
-  get_num_rom_banks(FILE *fp) {
+get_num_rom_banks(FILE *fp) {
 
     /* Scan ahead to address 147 */
     if (fseek(fp, 0x148, SEEK_SET) != 0) {
@@ -54,7 +54,7 @@ uint8_t
 }
 
 uint8_t
-  get_num_ram_banks(FILE *fp) {
+get_num_ram_banks(FILE *fp) {
 
     /* Scan ahead to address 149 */
     if (fseek(fp, 0x149, SEEK_SET) != 0) {

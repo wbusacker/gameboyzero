@@ -5,7 +5,7 @@ namespace CPU {
 enum CB_TYPE { RLC, RRC, RL, RR, SLA, SRA, SWAP, SRL, BIT, RES, SET };
 
 void
-  LR35902::process_cb(void) {
+LR35902::process_cb(void) {
 
     /* Grab the next instruction */
     uint8_t instr = memory_bus.fetch_addr(program_counter++);

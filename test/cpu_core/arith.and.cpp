@@ -1,21 +1,18 @@
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
 #include <cpu_core.h>
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+#include <irq_controller_mock.h>
 #include <mbc1.h>
 #include <memory_map_mock.h>
-#include <irq_controller_mock.h>
 
 using namespace testing;
 
-
-TEST(ARITH_AND, AND_A){
+TEST(ARITH_AND, AND_A) {
     Mock_Memory_Map bus(NULL, NULL);
     Mock_Controller irq;
-    CPU::LR35902 core(bus, irq);
+    CPU::LR35902    core(bus, irq);
 
-    EXPECT_CALL(bus, fetch_addr(_))
-        .Times(1)
-        .WillOnce(Return(0xA7));
+    EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xA7));
 
     core.A = 0x55;
     core.A = 0x55;
@@ -23,17 +20,14 @@ TEST(ARITH_AND, AND_A){
     core.cycle_cpu();
 
     ASSERT_EQ(core.A, 0x55);
-
 }
 
-TEST(ARITH_AND, AND_B){
+TEST(ARITH_AND, AND_B) {
     Mock_Memory_Map bus(NULL, NULL);
     Mock_Controller irq;
-    CPU::LR35902 core(bus, irq);
+    CPU::LR35902    core(bus, irq);
 
-    EXPECT_CALL(bus, fetch_addr(_))
-        .Times(1)
-        .WillOnce(Return(0xA0));
+    EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xA0));
 
     core.A = 0xA5;
     core.B = 0x55;
@@ -41,17 +35,14 @@ TEST(ARITH_AND, AND_B){
     core.cycle_cpu();
 
     ASSERT_EQ(core.A, 0x05);
-
 }
 
-TEST(ARITH_AND, AND_C){
+TEST(ARITH_AND, AND_C) {
     Mock_Memory_Map bus(NULL, NULL);
     Mock_Controller irq;
-    CPU::LR35902 core(bus, irq);
+    CPU::LR35902    core(bus, irq);
 
-    EXPECT_CALL(bus, fetch_addr(_))
-        .Times(1)
-        .WillOnce(Return(0xA1));
+    EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xA1));
 
     core.A = 0xA5;
     core.C = 0x55;
@@ -59,17 +50,14 @@ TEST(ARITH_AND, AND_C){
     core.cycle_cpu();
 
     ASSERT_EQ(core.A, 0x05);
-
 }
 
-TEST(ARITH_AND, AND_D){
+TEST(ARITH_AND, AND_D) {
     Mock_Memory_Map bus(NULL, NULL);
     Mock_Controller irq;
-    CPU::LR35902 core(bus, irq);
+    CPU::LR35902    core(bus, irq);
 
-    EXPECT_CALL(bus, fetch_addr(_))
-        .Times(1)
-        .WillOnce(Return(0xA2));
+    EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xA2));
 
     core.A = 0xA5;
     core.D = 0x55;
@@ -77,17 +65,14 @@ TEST(ARITH_AND, AND_D){
     core.cycle_cpu();
 
     ASSERT_EQ(core.A, 0x05);
-
 }
 
-TEST(ARITH_AND, AND_E){
+TEST(ARITH_AND, AND_E) {
     Mock_Memory_Map bus(NULL, NULL);
     Mock_Controller irq;
-    CPU::LR35902 core(bus, irq);
+    CPU::LR35902    core(bus, irq);
 
-    EXPECT_CALL(bus, fetch_addr(_))
-        .Times(1)
-        .WillOnce(Return(0xA3));
+    EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xA3));
 
     core.A = 0xA5;
     core.E = 0x55;
@@ -95,17 +80,14 @@ TEST(ARITH_AND, AND_E){
     core.cycle_cpu();
 
     ASSERT_EQ(core.A, 0x05);
-
 }
 
-TEST(ARITH_AND, AND_H){
+TEST(ARITH_AND, AND_H) {
     Mock_Memory_Map bus(NULL, NULL);
     Mock_Controller irq;
-    CPU::LR35902 core(bus, irq);
+    CPU::LR35902    core(bus, irq);
 
-    EXPECT_CALL(bus, fetch_addr(_))
-        .Times(1)
-        .WillOnce(Return(0xA4));
+    EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xA4));
 
     core.A = 0xA5;
     core.H = 0x55;
@@ -113,17 +95,14 @@ TEST(ARITH_AND, AND_H){
     core.cycle_cpu();
 
     ASSERT_EQ(core.A, 0x05);
-
 }
 
-TEST(ARITH_AND, AND_L){
+TEST(ARITH_AND, AND_L) {
     Mock_Memory_Map bus(NULL, NULL);
     Mock_Controller irq;
-    CPU::LR35902 core(bus, irq);
+    CPU::LR35902    core(bus, irq);
 
-    EXPECT_CALL(bus, fetch_addr(_))
-        .Times(1)
-        .WillOnce(Return(0xA5));
+    EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xA5));
 
     core.A = 0xA5;
     core.L = 0x55;
@@ -131,41 +110,32 @@ TEST(ARITH_AND, AND_L){
     core.cycle_cpu();
 
     ASSERT_EQ(core.A, 0x05);
-
 }
 
-TEST(ARITH_AND, AND_HL){
+TEST(ARITH_AND, AND_HL) {
     Mock_Memory_Map bus(NULL, NULL);
     Mock_Controller irq;
-    CPU::LR35902 core(bus, irq);
+    CPU::LR35902    core(bus, irq);
 
-    EXPECT_CALL(bus, fetch_addr(_))
-        .Times(2)
-        .WillOnce(Return(0xA6))
-        .WillOnce(Return(0xA5));
+    EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0xA6)).WillOnce(Return(0xA5));
 
     core.A = 0x55;
-    
+
     core.cycle_cpu();
 
     ASSERT_EQ(core.A, 0x05);
-
 }
 
-TEST(ARITH_AND, AND_n){
+TEST(ARITH_AND, AND_n) {
     Mock_Memory_Map bus(NULL, NULL);
     Mock_Controller irq;
-    CPU::LR35902 core(bus, irq);
+    CPU::LR35902    core(bus, irq);
 
-    EXPECT_CALL(bus, fetch_addr(_))
-        .Times(2)
-        .WillOnce(Return(0xE6))
-        .WillOnce(Return(0xA5));
+    EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0xE6)).WillOnce(Return(0xA5));
 
     core.A = 0x55;
-    
+
     core.cycle_cpu();
 
     ASSERT_EQ(core.A, 0x05);
-
 }

@@ -16,12 +16,12 @@ class SFML_Text_Window {
     void     draw();
 
     inline void
-      set_string(std::string s) {
+    set_string(std::string s) {
         text_string = s;
     }
 
     inline void
-      clear_string() {
+    clear_string() {
         text_string = "";
     }
 

@@ -11,7 +11,7 @@
 CPU::LR35902 *global_cpu;
 
 void
-  error_catch(int sig_num) {
+error_catch(int sig_num) {
 
     if (sig_num == SIGSEGV) {
         printf("Segmentation Fault\n");
@@ -23,7 +23,7 @@ void
 }
 
 int
-  main(void) {
+main(void) {
 
     signal(SIGSEGV, error_catch);
     signal(SIGINT, error_catch);

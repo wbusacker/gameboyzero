@@ -4,7 +4,7 @@
 namespace CPU {
 
 uint8_t *
-  LR35902::get_reg_ptr_from_number(uint8_t num) {
+LR35902::get_reg_ptr_from_number(uint8_t num) {
 
     num &= 0b111;
 

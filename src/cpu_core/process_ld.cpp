@@ -5,7 +5,7 @@
 namespace CPU {
 
 void
-  LR35902::process_ld(uint8_t instr) {
+LR35902::process_ld(uint8_t instr) {
     uint8_t *dst_reg;
     uint8_t *src_reg;
     uint8_t  hl_wr;

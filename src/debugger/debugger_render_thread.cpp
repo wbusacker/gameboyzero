@@ -3,7 +3,7 @@
 namespace Debug {
 
 void *
-  GB_Debugger::render_thread(void *arg) {
+GB_Debugger::render_thread(void *arg) {
 
     Debug::GB_Debugger *gbdb = reinterpret_cast<Debug::GB_Debugger *>(arg);
 

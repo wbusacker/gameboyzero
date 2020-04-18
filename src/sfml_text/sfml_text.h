@@ -14,27 +14,27 @@ class SFML_Text {
     void draw();
 
     inline void
-      set_text_size(uint8_t s) {
+    set_text_size(uint8_t s) {
         text_size = s;
     }
 
     inline void
-      set_string(std::string s) {
+    set_string(std::string s) {
         text_string = s;
     }
 
     inline void
-      clear_string() {
+    clear_string() {
         text_string = "";
     }
 
     inline void
-      disable_border() {
+    disable_border() {
         draw_border = false;
     }
 
     inline void
-      enable_border() {
+    enable_border() {
         draw_border = true;
     }
 

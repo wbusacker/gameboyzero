@@ -8,12 +8,12 @@ Controller::Controller() {
 }
 
 void
-  Controller::raise_interrupt(Interrupt_Request request) {
+Controller::raise_interrupt(Interrupt_Request request) {
     interrupt_pending_mask |= 1 << request;
 }
 
 uint16_t
-  Controller::get_interrupt(void) {
+Controller::get_interrupt(void) {
 
     Interrupt_Request interrupt_flags;
 
@@ -44,7 +44,7 @@ uint16_t
 }
 
 void
-  Controller::set_enable_mask(uint8_t mask) {
+Controller::set_enable_mask(uint8_t mask) {
     interrupt_enable_mask = static_cast<Interrupt_Request>(mask);
     return;
 }

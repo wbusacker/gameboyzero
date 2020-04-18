@@ -4,7 +4,7 @@
 namespace CPU {
 
 bool
-  check_bit_for_carry(uint16_t A, uint16_t B, uint16_t bit_place) {
+check_bit_for_carry(uint16_t A, uint16_t B, uint16_t bit_place) {
     uint16_t A_bit = (A >> bit_place) & 0x1;
     uint16_t B_bit = (B >> bit_place) & 0x1;
     uint16_t S_bit = ((A + B) >> bit_place) & 0x1;
@@ -18,7 +18,7 @@ bool
 }
 
 void
-  LR35902::process_arith(uint8_t instr) {
+LR35902::process_arith(uint8_t instr) {
 
     uint8_t *wr;
     uint16_t wr_val;

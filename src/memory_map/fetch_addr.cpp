@@ -3,7 +3,7 @@
 namespace Memory {
 
 uint8_t
-  Memory_Map::fetch_addr(uint16_t addr) {
+Memory_Map::fetch_addr(uint16_t addr) {
 
     /* Overlay 0xE000 - 0xFE00 and 0xC000 - 0xDE00  */
 

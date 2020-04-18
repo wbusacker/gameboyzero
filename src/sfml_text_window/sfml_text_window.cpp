@@ -9,7 +9,7 @@ SFML_Text_Window::SFML_Text_Window(sf::RenderWindow *scr, sf::Font *lf, int16_t 
 }
 
 void
-  SFML_Text_Window::configure(sf::RenderWindow *scr, sf::Font *lf, int16_t x, int16_t y, int16_t len, int16_t hgt) {
+SFML_Text_Window::configure(sf::RenderWindow *scr, sf::Font *lf, int16_t x, int16_t y, int16_t len, int16_t hgt) {
     screen      = scr;
     loaded_font = lf;
     x_pos       = x;

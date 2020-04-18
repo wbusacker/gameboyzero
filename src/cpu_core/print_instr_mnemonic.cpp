@@ -70,13 +70,13 @@ static char mnemonics[256][128] = {
 };
 
 void
-  print_instr_mnemonic(uint8_t instr) {
+print_instr_mnemonic(uint8_t instr) {
     printf("[ISTR] %s\n", mnemonics[instr]);
     fflush(stdout);
 }
 
 char *
-  get_instr_mnemonic(uint8_t instr) {
+get_instr_mnemonic(uint8_t instr) {
     return mnemonics[instr];
 }
 

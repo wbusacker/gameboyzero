@@ -3,7 +3,7 @@
 namespace Cart {
 
 uint8_t
-  MBC1::read_memory(uint16_t addr) {
+MBC1::read_memory(uint16_t addr) {
 
     /* If addr is in the first 16KB its in the rom bank */
     uint8_t bank_number = 0;

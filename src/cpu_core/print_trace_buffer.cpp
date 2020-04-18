@@ -4,7 +4,7 @@
 namespace CPU {
 
 void
-  LR35902::print_trace_buffer(void) {
+LR35902::print_trace_buffer(void) {
 
     printf("CPU Trace Buffer\n");
 

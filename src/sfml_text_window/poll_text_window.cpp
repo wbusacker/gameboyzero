@@ -1,7 +1,7 @@
 #include <sfml_text_window.h>
 
 void
-  SFML_Text_Window::poll(sf::Event event) {
+SFML_Text_Window::poll(sf::Event event) {
     /* If the button was pressed, lets see if we're now in focus */
     if (event.type == sf::Event::MouseButtonPressed) {
         /* Check if the cursor is within the box */

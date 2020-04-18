@@ -2,7 +2,7 @@
 #include <string.h>
 
 void
-  SFML_Button::draw() {
+SFML_Button::draw() {
     sf::Text button_string;
 
     sf::RectangleShape outline;

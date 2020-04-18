@@ -2,7 +2,7 @@
 #include <string.h>
 
 void
-  SFML_Text_Window::draw() {
+SFML_Text_Window::draw() {
     sf::RectangleShape outline;
     sf::Text           ts;
 

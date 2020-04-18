@@ -4,7 +4,7 @@
 namespace CPU {
 
 void
-  LR35902::crash_cpu(enum CPU_Failure_Modes mode) {
+LR35902::crash_cpu(enum CPU_Failure_Modes mode) {
 
     printf("\nCPU Is Crashing!\n");
 

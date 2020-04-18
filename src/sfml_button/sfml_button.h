@@ -15,12 +15,12 @@ class SFML_Button {
     void draw();
 
     inline void
-      set_string(std::string s) {
+    set_string(std::string s) {
         text_string = s;
     }
 
     inline bool
-      check_pressed(void) {
+    check_pressed(void) {
 
         /* If the button was pressed but that hasn't been relayed, relay it */
         if (is_pressed && ! last_read_state) {

@@ -46,13 +46,13 @@ class LR35902 {
     void cycle_cpu(void);
 
     inline void
-      lock_cpu(void) {
+    lock_cpu(void) {
         pthread_mutex_lock(&cpu_control_lock);
         return;
     }
 
     inline void
-      unlock_cpu(void) {
+    unlock_cpu(void) {
         pthread_mutex_unlock(&cpu_control_lock);
         return;
     }
@@ -70,27 +70,27 @@ class LR35902 {
     void crash_cpu(enum CPU_Failure_Modes);
 
     inline uint16_t
-      get_BC_indirect() {
+    get_BC_indirect() {
         return (static_cast<uint16_t>(B) << 8) | C;
     }
     inline uint16_t
-      get_DE_indirect() {
+    get_DE_indirect() {
         return (static_cast<uint16_t>(D) << 8) | E;
     }
     inline uint16_t
-      get_HL_indirect() {
+    get_HL_indirect() {
         return (static_cast<uint16_t>(H) << 8) | L;
     }
 
     inline void
-      HL_inc(void) {
+    HL_inc(void) {
         L++;
         if (L == 0) {
             H++;
         }
     }
     inline void
-      HL_dec(void) {
+    HL_dec(void) {
         L--;
         if (L == 0xFF) {
             H--;
@@ -98,7 +98,7 @@ class LR35902 {
     }
 
     inline bool
-      check_bits(uint8_t instr, uint8_t term_mask, uint8_t term) {
+    check_bits(uint8_t instr, uint8_t term_mask, uint8_t term) {
         instr &= term_mask;
         if ((instr ^ term) == 0) {
             return true;

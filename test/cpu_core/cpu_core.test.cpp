@@ -1,7 +1,7 @@
-#include <gtest/gtest.h>
 #include <cpu_core.h>
+#include <gtest/gtest.h>
 
-TEST(CPU_CORE, FLAG_STRUCT_SIZE){
+TEST(CPU_CORE, FLAG_STRUCT_SIZE) {
     ASSERT_EQ(sizeof(CPU::CPU_flags), 1);
 }
 

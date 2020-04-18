@@ -6,7 +6,7 @@
 namespace CPU {
 
 void
-  LR35902::cycle_cpu(void) {
+LR35902::cycle_cpu(void) {
 
     pthread_mutex_lock(&cpu_control_lock);
 

@@ -3,7 +3,7 @@
 namespace CPU {
 
 void
-  LR35902::process_logical(uint8_t instr) {
+LR35902::process_logical(uint8_t instr) {
 
     uint8_t rotate_bit;
 
