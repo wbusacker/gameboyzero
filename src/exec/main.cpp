@@ -1,26 +1,47 @@
-#include <stdio.h>
-#include <cpu_core.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <time.h>
-#include <mbc1.h>
 #include <cartridge.h>
+#include <cpu_core.h>
+#include <display.h>
+#include <mbc1.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
 
-int main(void){
+CPU::LR35902 *global_cpu;
+
+void
+  error_catch(int sig_num) {
+
+    if (sig_num == SIGSEGV) {
+        printf("Segmentation Fault\n");
+    }
+
+    global_cpu->crash_cpu(CPU::SYSTEM_FAILURE);
+
+    exit(-1);
+}
+
+int
+  main(void) {
+
+    signal(SIGSEGV, error_catch);
+    signal(SIGINT, error_catch);
+
     printf("Starting Gameboy Zero\n");
 
     /* Load up the cartridge    */
     FILE *fp;
-    fp = fopen("loz_la.gb","r");
+    fp = fopen("loz_la.gb", "r");
 
-    if(fp == NULL){
+    if (fp == NULL) {
         perror("Cannot open file\n");
         exit(-1);
     }
 
     printf("Determining Cartridge Type\n");
     Cart::Cartridge *cart;
-    switch(Cart::determine_cart_type(fp)){
+    switch (Cart::determine_cart_type(fp)) {
         case Cart::CART_MBC1:
             printf("Type MBC1\n");
             cart = new Cart::MBC1();
@@ -56,29 +77,44 @@ int main(void){
 
     printf("Importing ROM File\n");
 
-    // class Cart::MBC1    cart;
     cart->init_cart(fp);
 
     fclose(fp);
 
+    /* Setup the IRQ Controller */
+    IRQ::Controller irqc;
+
     /* Create Main Memory Bus   */
-    Memory::Memory_Map main_memory(cart);
+    Memory::Memory_Map main_memory(cart, &irqc);
+
+    /* Setup Display controller */
+    Graphics::Display disp(irqc, main_memory);
 
     /* Create the CPU           */
-    CPU::LR35902  cpu(main_memory);
+    CPU::LR35902 cpu(main_memory, irqc);
+    global_cpu = &cpu;
 
-    /* Open the ROM file and import it into the ROM bank */
+    /* Begin cycling the CPU at the appropriate rate    */
 
-    while(1){
+    timespec timer_get;
+    double   last_cycle_time;
+    double   cur_cycle_time;
+
+    clock_gettime(CLOCK_MONOTONIC, &timer_get);
+    last_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
+
+    while (1) {
         cpu.cycle_cpu();
-        /* Approx Gameboy Clock Speed   */
-        usleep(1);
-        /* Debug Speed                  */
-        // usleep(100000);
+        disp.cycle_display();
+        // usleep(10);
+        // clock_gettime(CLOCK_MONOTONIC, &timer_get);
+        // cur_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
+        // if(cur_cycle_time > (last_cycle_time + CPU::CORE_PERIOD)){
+        //     printf("Cycle Time Blew by %10.9f ns\n", cur_cycle_time - last_cycle_time - CPU::CORE_PERIOD);
+        //     return 0;
+        // }
+        // last_cycle_time = cur_cycle_time;
     }
-
-
-
 
     return 0;
 }

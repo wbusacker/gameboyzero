@@ -3,12 +3,14 @@
 #include <cpu_core.h>
 #include <mbc1.h>
 #include <memory_map_mock.h>
+#include <irq_controller_mock.h>
 
 using namespace testing;
 
 TEST(CPU_16_BIT, INC_BC){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -23,8 +25,9 @@ TEST(CPU_16_BIT, INC_BC){
 }
 
 TEST(CPU_16_BIT, INC_DE){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -39,8 +42,9 @@ TEST(CPU_16_BIT, INC_DE){
 }
 
 TEST(CPU_16_BIT, INC_HL){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -55,8 +59,9 @@ TEST(CPU_16_BIT, INC_HL){
 }
 
 TEST(CPU_16_BIT, INC_SP){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -69,8 +74,9 @@ TEST(CPU_16_BIT, INC_SP){
 }
 
 TEST(CPU_16_BIT, DEC_BC){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -85,8 +91,9 @@ TEST(CPU_16_BIT, DEC_BC){
 }
 
 TEST(CPU_16_BIT, DEC_DE){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -101,8 +108,9 @@ TEST(CPU_16_BIT, DEC_DE){
 }
 
 TEST(CPU_16_BIT, DEC_HL){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -117,8 +125,9 @@ TEST(CPU_16_BIT, DEC_HL){
 }
 
 TEST(CPU_16_BIT, DEC_SP){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -131,8 +140,9 @@ TEST(CPU_16_BIT, DEC_SP){
 }
 
 TEST(CPU_16_BIT, ADD_HL_BC){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -149,8 +159,9 @@ TEST(CPU_16_BIT, ADD_HL_BC){
 }
 
 TEST(CPU_16_BIT, ADD_HL_DE){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -166,8 +177,9 @@ TEST(CPU_16_BIT, ADD_HL_DE){
 }
 
 TEST(CPU_16_BIT, ADD_HL_HL){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -184,8 +196,9 @@ TEST(CPU_16_BIT, ADD_HL_HL){
 }
 
 TEST(CPU_16_BIT, ADD_HL_SP){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -198,4 +211,20 @@ TEST(CPU_16_BIT, ADD_HL_SP){
 
     ASSERT_EQ(core.H, 0x02);
     ASSERT_EQ(core.L, 0x46);
+}
+
+TEST(CPU_16_BIT, ADD_SP_n){
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
+
+    EXPECT_CALL(bus, fetch_addr(_))
+        .Times(1)
+        .WillOnce(Return(0xE8))
+        .WillOnce(Return(0x01));
+
+    core.stack_pointer = 0x0123;
+    core.cycle_cpu();
+
+    ASSERT_EQ(core.stack_pointer, 0x0124);
 }

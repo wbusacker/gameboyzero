@@ -3,12 +3,14 @@
 #include <cpu_core.h>
 #include <mbc1.h>
 #include <memory_map_mock.h>
+#include <irq_controller_mock.h>
 
 using namespace testing;
 
 TEST(CPU_CB_SHIFT, SRL_A){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(2)
@@ -26,8 +28,9 @@ TEST(CPU_CB_SHIFT, SRL_A){
 }
 
 TEST(CPU_CB_SHIFT, SRL_B){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(2)
@@ -45,8 +48,9 @@ TEST(CPU_CB_SHIFT, SRL_B){
 }
 
 TEST(CPU_CB_SHIFT, SRL_C){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(2)
@@ -64,8 +68,9 @@ TEST(CPU_CB_SHIFT, SRL_C){
 }
 
 TEST(CPU_CB_SHIFT, SRL_D){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(2)
@@ -83,8 +88,9 @@ TEST(CPU_CB_SHIFT, SRL_D){
 }
 
 TEST(CPU_CB_SHIFT, SRL_E){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(2)
@@ -102,8 +108,9 @@ TEST(CPU_CB_SHIFT, SRL_E){
 }
 
 TEST(CPU_CB_SHIFT, SRL_H){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(2)
@@ -121,8 +128,9 @@ TEST(CPU_CB_SHIFT, SRL_H){
 }
 
 TEST(CPU_CB_SHIFT, SRL_L){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(2)
@@ -140,8 +148,9 @@ TEST(CPU_CB_SHIFT, SRL_L){
 }
 
 TEST(CPU_CB_SHIFT, SRL_HL){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(3)

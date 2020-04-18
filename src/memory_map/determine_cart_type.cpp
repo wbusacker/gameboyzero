@@ -1,8 +1,9 @@
 #include <cartridge.h>
 
-namespace Cart{
+namespace Cart {
 
-enum Cartridge_Type determine_cart_type(FILE *fp){
+enum Cartridge_Type
+  determine_cart_type(FILE *fp) {
 
     /* Scan ahead to address 147 */
     fseek(fp, 0x147, SEEK_SET);
@@ -11,7 +12,7 @@ enum Cartridge_Type determine_cart_type(FILE *fp){
 
     fseek(fp, 0, SEEK_SET);
 
-    switch(type){
+    switch (type) {
         case 1:
         case 2:
         case 3:
@@ -22,4 +23,4 @@ enum Cartridge_Type determine_cart_type(FILE *fp){
     return CART_UNKNOWN;
 }
 
-}
+}    // namespace Cart

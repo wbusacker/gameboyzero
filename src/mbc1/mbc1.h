@@ -3,20 +3,18 @@
 
 #include <cartridge.h>
 
-namespace Cart{
+namespace Cart {
 
-class MBC1 : public Cartridge{
+class MBC1 : public Cartridge {
 
-public:
+    public:
+    void init_cart(FILE *fp);
 
-    void    init_cart(FILE *fp);
-
-    void    write_memory(uint16_t addr, uint8_t val);
+    void write_memory(uint16_t addr, uint8_t val);
 
     uint8_t read_memory(uint16_t addr);
 
-private:
-
+    private:
     bool    extended_memory_mode;
     bool    enable_ram;
     uint8_t bank1;
@@ -27,9 +25,8 @@ private:
 
     uint8_t **ram_banks;
     uint8_t **rom_banks;
-
 };
 
-}
+}    // namespace Cart
 
 #endif

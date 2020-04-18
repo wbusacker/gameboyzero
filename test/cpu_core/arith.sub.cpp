@@ -3,13 +3,15 @@
 #include <cpu_core.h>
 #include <mbc1.h>
 #include <memory_map_mock.h>
+#include <irq_controller_mock.h>
 
 using namespace testing;
 
 
 TEST(ARITH_SUB, SUB_A){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -25,8 +27,9 @@ TEST(ARITH_SUB, SUB_A){
 }
 
 TEST(ARITH_SUB, SUB_B){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -42,8 +45,9 @@ TEST(ARITH_SUB, SUB_B){
 }
 
 TEST(ARITH_SUB, SUB_C){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -59,8 +63,9 @@ TEST(ARITH_SUB, SUB_C){
 }
 
 TEST(ARITH_SUB, SUB_D){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -76,8 +81,9 @@ TEST(ARITH_SUB, SUB_D){
 }
 
 TEST(ARITH_SUB, SUB_E){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -93,8 +99,9 @@ TEST(ARITH_SUB, SUB_E){
 }
 
 TEST(ARITH_SUB, SUB_H){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -110,8 +117,9 @@ TEST(ARITH_SUB, SUB_H){
 }
 
 TEST(ARITH_SUB, SUB_L){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(1)
@@ -127,8 +135,9 @@ TEST(ARITH_SUB, SUB_L){
 }
 
 TEST(ARITH_SUB, SUB_HL){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(2)
@@ -144,8 +153,9 @@ TEST(ARITH_SUB, SUB_HL){
 }
 
 TEST(ARITH_SUB, SUB_n){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(2)

@@ -1,13 +1,14 @@
 #include <cpu_core.h>
 #include <unistd.h>
 
-namespace CPU{
+namespace CPU {
 
-uint8_t* LR35902::get_reg_ptr_from_number(uint8_t num){
+uint8_t *
+  LR35902::get_reg_ptr_from_number(uint8_t num) {
 
     num &= 0b111;
 
-    switch(num){
+    switch (num) {
         case 0b000:
             return &B;
 
@@ -34,7 +35,6 @@ uint8_t* LR35902::get_reg_ptr_from_number(uint8_t num){
     }
 
     return NULL;
-    
 }
 
-}
+}    // namespace CPU

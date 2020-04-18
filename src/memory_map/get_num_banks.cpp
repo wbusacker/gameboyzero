@@ -1,22 +1,23 @@
 #include <cartridge.h>
 
-namespace Cart{
+namespace Cart {
 
-uint8_t get_num_rom_banks(FILE *fp){
+uint8_t
+  get_num_rom_banks(FILE *fp) {
 
     /* Scan ahead to address 147 */
-    if(fseek(fp, 0x148, SEEK_SET) != 0){
+    if (fseek(fp, 0x148, SEEK_SET) != 0) {
         perror("Failed to seek forward\n");
     }
 
     uint8_t val = fgetc(fp);
     printf("Read %d from addr 148\n", val);
 
-    if(fseek(fp, 0, SEEK_SET) != 0){
+    if (fseek(fp, 0, SEEK_SET) != 0) {
         perror("Failed to seek 0\n");
     }
 
-    switch(val){
+    switch (val) {
         case 0:
             return 2;
 
@@ -50,24 +51,24 @@ uint8_t get_num_rom_banks(FILE *fp){
         default:
             return 0;
     }
-
 }
 
-uint8_t get_num_ram_banks(FILE *fp){
-    
+uint8_t
+  get_num_ram_banks(FILE *fp) {
+
     /* Scan ahead to address 149 */
-    if(fseek(fp, 0x149, SEEK_SET) != 0){
+    if (fseek(fp, 0x149, SEEK_SET) != 0) {
         perror("Failed to seek forward\n");
     }
 
     uint8_t val = fgetc(fp);
     printf("Read %d from addr 149\n", val);
 
-    if(fseek(fp, 0, SEEK_SET) != 0){
+    if (fseek(fp, 0, SEEK_SET) != 0) {
         perror("Failed to seek 0\n");
     }
 
-    switch(val){
+    switch (val) {
         case 0:
             return 0;
 
@@ -88,4 +89,4 @@ uint8_t get_num_ram_banks(FILE *fp){
     }
 }
 
-}
+}    // namespace Cart

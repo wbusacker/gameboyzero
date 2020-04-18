@@ -3,14 +3,15 @@
 #include <cpu_core.h>
 #include <mbc1.h>
 #include <memory_map_mock.h>
-
+#include <irq_controller_mock.h>
 
 using namespace testing;
 
 TEST(CPU_CORE_ARITH, ADD_HALF_CARRY){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
+    
     core.A = 0b01101011;
     core.B = 0b00111101;
 
@@ -22,9 +23,10 @@ TEST(CPU_CORE_ARITH, ADD_HALF_CARRY){
 }
 
 TEST(CPU_CORE_ARITH, ADD_CARRY){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
+    
     core.A = 0b01101011;
     core.B = 0b10111101;
 
@@ -37,9 +39,10 @@ TEST(CPU_CORE_ARITH, ADD_CARRY){
 }
 
 TEST(CPU_CORE_ARITH, ADD_WITH_CARRY){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
+    
     core.A = 0x11;
     core.B = 0x11;
 
@@ -52,9 +55,10 @@ TEST(CPU_CORE_ARITH, ADD_WITH_CARRY){
 }
 
 TEST(CPU_CORE_ARITH, SUB){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-    
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
+        
 
     core.A = 0x11;
     core.B = 0x11;
@@ -66,9 +70,10 @@ TEST(CPU_CORE_ARITH, SUB){
 }
 
 TEST(CPU_CORE_ARITH, SUB_WITH_CARRY){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-    
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
+        
 
     core.A = 0x11;
     core.B = 0x11;

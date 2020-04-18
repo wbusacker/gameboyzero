@@ -1,9 +1,8 @@
 #include <cartridge.h>
 
-namespace Cart{
+namespace Cart {
 
-Cartridge::Cartridge(){
-    
+Cartridge::Cartridge() {
 }
 
-}
+}    // namespace Cart

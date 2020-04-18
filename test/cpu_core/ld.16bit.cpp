@@ -3,6 +3,7 @@
 #include <cpu_core.h>
 #include <mbc1.h>
 #include <memory_map_mock.h>
+#include <irq_controller_mock.h>
 
 using namespace testing;
 
@@ -10,9 +11,9 @@ const uint8_t TARGET_VAL_1 = 0x01;
 const uint8_t TARGET_VAL_2 = 0x23;
 
 TEST(LD_16, LD_BC_nn){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
     
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(3)
@@ -31,9 +32,9 @@ TEST(LD_16, LD_BC_nn){
 }
 
 TEST(LD_16, LD_DE_nn){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
     
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(3)
@@ -52,9 +53,9 @@ TEST(LD_16, LD_DE_nn){
 }
 
 TEST(LD_16, LD_HL_nn){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
     
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(3)
@@ -73,9 +74,9 @@ TEST(LD_16, LD_HL_nn){
 }
 
 TEST(LD_16, LD_SP_nn){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(3)
         .WillOnce(Return(0x31))
@@ -91,9 +92,9 @@ TEST(LD_16, LD_SP_nn){
 }
 
 TEST(LD_16, LD_nn_SP){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
     
     EXPECT_CALL(bus, fetch_addr(_))
         .Times(3)
@@ -113,9 +114,9 @@ TEST(LD_16, LD_nn_SP){
 }
 
 TEST(LD_16, POP_BC){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
     core.stack_pointer = 0;
     core.B = 0;
     core.A = 0;
@@ -140,9 +141,9 @@ TEST(LD_16, POP_BC){
 }
 
 TEST(LD_16, POP_DE){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
     core.stack_pointer = 0;
     core.D = 0;
     core.E = 0;
@@ -167,9 +168,9 @@ TEST(LD_16, POP_DE){
 }
 
 TEST(LD_16, POP_HL){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
     core.stack_pointer = 0;
     core.H = 0;
     core.L = 0;
@@ -194,9 +195,9 @@ TEST(LD_16, POP_HL){
 }
 
 TEST(LD_16, POP_AF){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
     core.stack_pointer      = 0;
     core.A                  = 0;
     core.flags.sub          = 0;
@@ -228,9 +229,9 @@ TEST(LD_16, POP_AF){
 }
 
 TEST(LD_16, PUSH_BC){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
     uint16_t target_addr = (static_cast<uint16_t>(TARGET_VAL_2 << 8)) | TARGET_VAL_1;
 
     core.stack_pointer = target_addr;
@@ -251,9 +252,9 @@ TEST(LD_16, PUSH_BC){
 }
 
 TEST(LD_16, PUSH_DE){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
     uint16_t target_addr = (static_cast<uint16_t>(TARGET_VAL_2 << 8)) | TARGET_VAL_1;
 
     core.stack_pointer = target_addr;
@@ -274,9 +275,9 @@ TEST(LD_16, PUSH_DE){
 }
 
 TEST(LD_16, PUSH_HL){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
     uint16_t target_addr = (static_cast<uint16_t>(TARGET_VAL_2 << 8)) | TARGET_VAL_1;
 
     core.stack_pointer = target_addr;
@@ -297,9 +298,9 @@ TEST(LD_16, PUSH_HL){
 }
 
 TEST(LD_16, PUSH_AF){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
     uint16_t target_addr = (static_cast<uint16_t>(TARGET_VAL_2 << 8)) | TARGET_VAL_1;
 
     core.stack_pointer      = target_addr;
@@ -323,9 +324,9 @@ TEST(LD_16, PUSH_AF){
 }
 
 TEST(LD_16, LD_HL_SP_n){
-    Mock_Memory_Map bus(NULL);
-    CPU::LR35902 core(bus);
-
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902 core(bus, irq);
     uint8_t offset = 0x5;
     uint16_t target_addr = (static_cast<uint16_t>(TARGET_VAL_2 << 8)) | TARGET_VAL_1;
     core.stack_pointer = target_addr;

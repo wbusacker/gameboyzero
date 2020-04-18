@@ -1,38 +1,39 @@
-#ifndef ROM_BANK_H
-#define ROM_BANK_H
+#ifndef IRQ_BANK_H
+#define IRQ_BANK_H
 
-#include <bus_interface.h>
+#include <stdint.h>
 
-namespace ROM{
+namespace IRQ {
 
-class ROM_Bank: public Bus::Bus_Interface{
+typedef uint8_t Interrupt_Request;
 
-public:
+const Interrupt_Request INTERRUPT_BIT_V_BLANK = 0; /* Display has finished drawing the frame   */
+const Interrupt_Request INTERRUPT_BIT_LCDC    = 1; /* LCDC Has Fired, check stat               */
+const Interrupt_Request INTERRUPT_BIT_TIMER   = 2; /* Timer Overflow                           */
+const Interrupt_Request INTERRUPT_BIT_SIO     = 3; /* Serial IO Transfer Complete              */
+const Interrupt_Request INTERRUPT_BIT_HL_CHG  = 4; /* Input Pin transitioned from High to Low  */
 
-    ROM_Bank( uint16_t start_addr, uint16_t stop_addr) : 
-        Bus::Bus_Interface(start_addr, stop_addr){
-        start_address = start_addr;
-        stop_address = stop_addr;
-        memory_buffer = new uint8_t[(stop_addr - start_addr)];
-    }
+/* Interrupt Address Jump Points    */
+const uint16_t INTERRUPT_TABLE_V_BLANK = 0x0040;
+const uint16_t INTERRUPT_TABLE_LCDC    = 0x0048;
+const uint16_t INTERRUPT_TABLE_TIMER   = 0x0050;
+const uint16_t INTERRUPT_TABLE_SIO     = 0x0058;
+const uint16_t INTERRUPT_TABLE_HL_CHG  = 0x0060;
 
+class Controller {
 
-    void load_memory(uint8_t* buf, uint16_t len){return;}
+    public:
+    Controller();
 
-    uint8_t fetch_memory(uint16_t addr){
-        return irq_mask;
-    }
+    virtual uint16_t get_interrupt(void);
 
-    virtual void store_memory(uint16_t addr, uint8_t val){
-        irq_mask = val;
-    }
+    virtual void raise_interrupt(Interrupt_Request request);
+    virtual void set_enable_mask(uint8_t mask);
 
-private:
-
-    uint8_t irq_mask;
-
+    Interrupt_Request interrupt_enable_mask;
+    Interrupt_Request interrupt_pending_mask;
 };
 
-}
+}    // namespace IRQ
 
 #endif
