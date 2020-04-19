@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include <debugger.h>
 
 CPU::LR35902 *global_cpu;
 
@@ -94,6 +95,9 @@ main(void) {
     CPU::LR35902 cpu(main_memory, irqc);
     global_cpu = &cpu;
 
+    /* Hookup the Debugger      */
+    Debug::GB_Debugger  gbdb(&cpu);
+
     /* Begin cycling the CPU at the appropriate rate    */
 
     timespec timer_get;
@@ -104,8 +108,17 @@ main(void) {
     last_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
 
     while (1) {
+        // printf("Running CPU\n");
+        // fflush(stdout);
         cpu.cycle_cpu();
+
+        // printf("Drawing Dispaly\n");
+        // fflush(stdout);
         disp.cycle_display();
+
+        // printf("Drawing Debugger\n");
+        // fflush(stdout);
+        gbdb.draw();
         // usleep(10);
         // clock_gettime(CLOCK_MONOTONIC, &timer_get);
         // cur_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);

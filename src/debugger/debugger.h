@@ -9,16 +9,17 @@
 namespace Debug {
 
 const uint16_t DEBUG_WINDOWS_HEIGHT = 800;
-const uint16_t DEBUG_WINDOWS_WIDTH  = 800;
+const uint16_t DEBUG_WINDOWS_WIDTH  = 1600;
 const uint16_t MEMORY_TABLE_HEIGHT  = 16;
-const uint16_t MEMORY_TABLE_WIDTH   = 64;
+const uint16_t MEMORY_TABLE_WIDTH   = 16;
 
 class GB_Debugger {
 
     public:
     GB_Debugger(CPU::LR35902 *cc);
 
-    static void *render_thread(void *arg);
+    // static void *render_thread(void *arg);
+    void draw(void);
 
     private:
     sf::RenderWindow display_window;
