@@ -15,6 +15,7 @@ TEST(LD_IND, LD_A_n) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0x3E)).WillOnce(Return(TARGET_VAL));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0x00;
 
@@ -29,6 +30,7 @@ TEST(LD_IND, LD_B_n) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0x06)).WillOnce(Return(TARGET_VAL));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.B = 0x00;
 
@@ -43,6 +45,7 @@ TEST(LD_IND, LD_C_n) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0x0E)).WillOnce(Return(TARGET_VAL));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.C = 0x00;
 
@@ -57,6 +60,7 @@ TEST(LD_IND, LD_D_n) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0x16)).WillOnce(Return(TARGET_VAL));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.D = 0x00;
 
@@ -71,6 +75,7 @@ TEST(LD_IND, LD_E_n) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0x1E)).WillOnce(Return(TARGET_VAL));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.E = 0x00;
 
@@ -85,6 +90,7 @@ TEST(LD_IND, LD_H_n) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0x26)).WillOnce(Return(TARGET_VAL));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.H = 0x00;
 
@@ -99,6 +105,7 @@ TEST(LD_IND, LD_L_n) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0x2E)).WillOnce(Return(TARGET_VAL));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.L = 0x00;
 
@@ -113,6 +120,7 @@ TEST(LD_IND, LD_HL_n) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0x36)).WillOnce(Return(TARGET_VAL));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     EXPECT_CALL(bus, store_addr(_, TARGET_VAL)).Times(1);
 

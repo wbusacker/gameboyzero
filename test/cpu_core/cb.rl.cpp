@@ -13,6 +13,7 @@ TEST(CPU_CB_ROTATE, RLA) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x17));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0x20;
 
@@ -30,6 +31,7 @@ TEST(CPU_CB_ROTATE, RL_A) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0xCB)).WillOnce(Return(0x17));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0x20;
 
@@ -47,6 +49,7 @@ TEST(CPU_CB_ROTATE, RL_B) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0xCB)).WillOnce(Return(0x10));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.B = 0x20;
 
@@ -64,6 +67,7 @@ TEST(CPU_CB_ROTATE, RL_C) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0xCB)).WillOnce(Return(0x11));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.C = 0x20;
 
@@ -81,6 +85,7 @@ TEST(CPU_CB_ROTATE, RL_D) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0xCB)).WillOnce(Return(0x12));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.D = 0x20;
 
@@ -98,6 +103,7 @@ TEST(CPU_CB_ROTATE, RL_E) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0xCB)).WillOnce(Return(0x13));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.E = 0x20;
 
@@ -115,6 +121,7 @@ TEST(CPU_CB_ROTATE, RL_H) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0xCB)).WillOnce(Return(0x14));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.H = 0x20;
 
@@ -132,6 +139,7 @@ TEST(CPU_CB_ROTATE, RL_L) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0xCB)).WillOnce(Return(0x15));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.L = 0x20;
 
@@ -149,6 +157,7 @@ TEST(CPU_CB_ROTATE, RL_HL) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(3).WillOnce(Return(0xCB)).WillOnce(Return(0x16)).WillOnce(Return(0x20));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     EXPECT_CALL(bus, store_addr(_, 0x41)).Times(1);
 

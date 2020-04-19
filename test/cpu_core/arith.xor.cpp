@@ -13,6 +13,7 @@ TEST(ARITH_XOR, XOR_A) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xAF));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0xA5;
     core.A = 0x55;
@@ -28,6 +29,7 @@ TEST(ARITH_XOR, XOR_B) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xA8));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0xA5;
     core.B = 0x55;
@@ -43,6 +45,7 @@ TEST(ARITH_XOR, XOR_C) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xA9));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0xA5;
     core.C = 0x55;
@@ -58,6 +61,7 @@ TEST(ARITH_XOR, XOR_D) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xAA));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0xA5;
     core.D = 0x55;
@@ -73,6 +77,7 @@ TEST(ARITH_XOR, XOR_E) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xAB));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0xA5;
     core.E = 0x55;
@@ -88,6 +93,7 @@ TEST(ARITH_XOR, XOR_H) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xAC));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0xA5;
     core.H = 0x55;
@@ -103,6 +109,7 @@ TEST(ARITH_XOR, XOR_L) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xAD));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0xA5;
     core.L = 0x55;
@@ -118,6 +125,7 @@ TEST(ARITH_XOR, XOR_HL) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0xAE)).WillOnce(Return(0xA5));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0x55;
 
@@ -132,6 +140,7 @@ TEST(ARITH_XOR, XOR_n) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0xEE)).WillOnce(Return(0xA5));
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0x55;
 
