@@ -3,8 +3,12 @@
 SFML_Text_Window::SFML_Text_Window() {
 }
 
-SFML_Text_Window::SFML_Text_Window(sf::RenderWindow *scr, sf::Font *lf, int16_t x, int16_t y, int16_t len,
-                                   int16_t hgt) {
+SFML_Text_Window::SFML_Text_Window(sf::RenderWindow *scr,
+                                   sf::Font *        lf,
+                                   int16_t           x,
+                                   int16_t           y,
+                                   int16_t           len,
+                                   int16_t           hgt) {
     configure(scr, lf, x, y, len, hgt);
 }
 

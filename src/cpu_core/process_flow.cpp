@@ -2,22 +2,32 @@
 
 namespace CPU {
 
+int16_t sign_extend_8(uint8_t val){
+    int16_t ret_val = 0;
+    ret_val |= val;
+    if((val & 0x80) == 0x80){
+        ret_val |= 0xFF00;
+    }
+
+    return ret_val;
+}
+
 void
 LR35902::process_flow(uint8_t instr) {
 
     uint16_t nn_lsb;
     uint16_t nn_msb;
-    uint16_t offset;
+    int16_t offset;
 
     switch (instr) {
         case 0x18: /* Unconditional Relative Jump                           */
-            offset = memory_bus.fetch_addr(program_counter++);
+            offset = sign_extend_8(memory_bus.fetch_addr(program_counter++));
             program_counter += offset;
             instr_cycles = 3;
             break;
 
         case 0x20: /* Branch Relative on Conditional Code NZ                */
-            offset = memory_bus.fetch_addr(program_counter++);
+            offset = sign_extend_8(memory_bus.fetch_addr(program_counter++));
             if (flags.zero == false) {
                 program_counter += offset;
                 instr_cycles = 4;
@@ -27,7 +37,7 @@ LR35902::process_flow(uint8_t instr) {
             break;
 
         case 0x28: /* Branch Relative on Conditional Code Z                 */
-            offset = memory_bus.fetch_addr(program_counter++);
+            offset = sign_extend_8(memory_bus.fetch_addr(program_counter++));
             if (flags.zero == true) {
                 program_counter += offset;
                 instr_cycles = 4;
@@ -37,7 +47,7 @@ LR35902::process_flow(uint8_t instr) {
             break;
 
         case 0x30: /* Branch Relative on Conditional Code NC                */
-            offset = memory_bus.fetch_addr(program_counter++);
+            offset = sign_extend_8(memory_bus.fetch_addr(program_counter++));
             if (flags.carry == false) {
                 program_counter += offset;
                 instr_cycles = 4;
@@ -47,7 +57,7 @@ LR35902::process_flow(uint8_t instr) {
             break;
 
         case 0x38: /* Branch Relative on Conditional Code C                 */
-            offset = memory_bus.fetch_addr(program_counter++);
+            offset = sign_extend_8(memory_bus.fetch_addr(program_counter++));
             if (flags.carry == true) {
                 program_counter += offset;
                 instr_cycles = 4;

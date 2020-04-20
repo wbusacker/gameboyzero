@@ -15,8 +15,12 @@ SFML_Table::set_table_size(uint8_t rows, uint8_t columns) {
 
             SFML_Text entry;
 
-            entry.configure(screen, loaded_font, x_pos + (col * TABLE_ENTRY_WIDTH), y_pos + (row * TABLE_ENTRY_HEIGHT),
-                            TABLE_ENTRY_WIDTH, TABLE_ENTRY_HEIGHT);
+            entry.configure(screen,
+                            loaded_font,
+                            x_pos + (col * TABLE_ENTRY_WIDTH),
+                            y_pos + (row * TABLE_ENTRY_HEIGHT),
+                            TABLE_ENTRY_WIDTH,
+                            TABLE_ENTRY_HEIGHT);
 
             entry.set_text_size(TABLE_ENTRY_TEXT_SIZE);
 
@@ -32,8 +36,12 @@ SFML_Table::set_table_size(uint8_t rows, uint8_t columns) {
     row = 0;
     for (col = 0; col < columns; col++) {
         SFML_Text entry;
-        entry.configure(screen, loaded_font, x_pos + (col * TABLE_ENTRY_WIDTH), y_pos + (row * TABLE_ENTRY_HEIGHT),
-                        TABLE_ENTRY_WIDTH, TABLE_ENTRY_HEIGHT);
+        entry.configure(screen,
+                        loaded_font,
+                        x_pos + (col * TABLE_ENTRY_WIDTH),
+                        y_pos + (row * TABLE_ENTRY_HEIGHT),
+                        TABLE_ENTRY_WIDTH,
+                        TABLE_ENTRY_HEIGHT);
         entry.set_text_size(TABLE_ENTRY_TEXT_SIZE);
 
         entry.disable_border();

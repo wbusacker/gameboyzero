@@ -7,6 +7,8 @@ Memory_Map::fetch_addr(uint16_t addr) {
 
     /* Overlay 0xE000 - 0xFE00 and 0xC000 - 0xDE00  */
 
+    // printf("[READ] %04X\n", addr);
+
     if ((addr < 0xE000) && (addr >= 0xFE00)) {
         addr -= 0x2000;
     }
@@ -40,6 +42,7 @@ Memory_Map::fetch_addr(uint16_t addr) {
 
     } else if ((addr = 0xFFFF)) {
         // printf("[READ ] Interrupt Enable Register\n");
+        return irq_controller->get_enable_mask();
     }
     fflush(stdout);
 

@@ -1,5 +1,6 @@
 #include <cartridge.h>
 #include <cpu_core.h>
+#include <debugger.h>
 #include <display.h>
 #include <mbc1.h>
 #include <signal.h>
@@ -7,7 +8,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-#include <debugger.h>
 
 CPU::LR35902 *global_cpu;
 
@@ -96,7 +96,7 @@ main(void) {
     global_cpu = &cpu;
 
     /* Hookup the Debugger      */
-    Debug::GB_Debugger  gbdb(&cpu);
+    Debug::GB_Debugger gbdb(&cpu);
 
     /* Begin cycling the CPU at the appropriate rate    */
 
@@ -118,13 +118,14 @@ main(void) {
 
         // printf("Drawing Debugger\n");
         // fflush(stdout);
-        gbdb.draw();
+
+        // getc(stdin);
         // usleep(10);
         // clock_gettime(CLOCK_MONOTONIC, &timer_get);
         // cur_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
         // if(cur_cycle_time > (last_cycle_time + CPU::CORE_PERIOD)){
-        //     printf("Cycle Time Blew by %10.9f ns\n", cur_cycle_time - last_cycle_time - CPU::CORE_PERIOD);
-        //     return 0;
+        //     printf("Cycle Time Blew by %10.9f ns\n", cur_cycle_time - last_cycle_time -
+        //     CPU::CORE_PERIOD); return 0;
         // }
         // last_cycle_time = cur_cycle_time;
     }

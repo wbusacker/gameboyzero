@@ -3,7 +3,7 @@
 namespace IRQ {
 
 Controller::Controller() {
-    interrupt_enable_mask  = 0xff;
+    interrupt_enable_mask  = 0x0;
     interrupt_pending_mask = 0x0;
 }
 
@@ -47,6 +47,10 @@ void
 Controller::set_enable_mask(uint8_t mask) {
     interrupt_enable_mask = static_cast<Interrupt_Request>(mask);
     return;
+}
+
+uint8_t Controller::get_enable_mask(void){
+    return interrupt_enable_mask;
 }
 
 }    // namespace IRQ

@@ -5,7 +5,7 @@
 #include <sfml_text.h>
 #include <string>
 
-#define TABLE_ENTRY_WIDTH     70
+#define TABLE_ENTRY_WIDTH     40
 #define TABLE_ENTRY_HEIGHT    20
 #define TABLE_ENTRY_TEXT_SIZE 10
 

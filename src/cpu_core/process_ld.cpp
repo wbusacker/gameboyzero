@@ -194,7 +194,7 @@ LR35902::process_ld(uint8_t instr) {
 
             case 0xF0: /* High Immediate Indirect to A          */
                 nn_lsb       = memory_bus.fetch_addr(program_counter++);
-                A            = memory_bus.fetch_addr(0xFF | nn_lsb);
+                A            = memory_bus.fetch_addr(0xFF00 | nn_lsb);
                 instr_cycles = 3;
                 break;
 

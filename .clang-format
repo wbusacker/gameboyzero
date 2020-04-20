@@ -18,7 +18,8 @@ AllowShortLoopsOnASingleLine: true
 AlwaysBreakAfterReturnType: AllDefinitions
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: Yes
-BinPackArguments: true
+BinPackArguments: false
+BinPackParameters: false
 BraceWrapping: 
   AfterCaseLabel: true
   AfterClass: true
@@ -51,6 +52,7 @@ KeepEmptyLinesAtTheStartOfBlocks: true
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
 PointerAlignment: Right
+PenaltyBreakBeforeFirstCallParameter: 198
 SortIncludes: true
 SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: true

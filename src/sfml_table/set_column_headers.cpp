@@ -8,5 +8,4 @@ SFML_Table::set_column_headers(uint8_t column_num, std::string header) {
     }
 
     column_headers[column_num].set_string(header);
-
 }

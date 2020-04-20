@@ -40,6 +40,8 @@ LR35902::cycle_cpu(void) {
 
     /* Fetch the next instruction */
     uint8_t instr = memory_bus.fetch_addr(program_counter);
+    // printf("%04X ",program_counter);
+    // print_instr_mnemonic(instr);
 
     /* Fill in the trace buffer     */
     trace_buffer_bottom = (trace_buffer_bottom + 1) % CPU::TRACE_BUFFER_LEN;

@@ -19,7 +19,7 @@ LR35902::LR35902(Memory::Memory_Map &bus, IRQ::Controller &irq) : memory_bus(bus
     H = 0;
     L = 0;
 
-    stack_pointer   = 0;
+    stack_pointer   = 0xFFFC;
     program_counter = 0x0100;
 
     stall_processor    = false;
