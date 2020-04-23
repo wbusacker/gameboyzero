@@ -34,7 +34,7 @@ enum CPU_Debugger_Index_enm {
 class GB_Debugger {
 
     public:
-    GB_Debugger(CPU::LR35902 *cc);
+    GB_Debugger(CPU::LR35902 *cc, pthread_mutex_t *global_window_lock);
 
     static void *render_thread(void *arg);
     // void draw(void);
@@ -51,6 +51,9 @@ class GB_Debugger {
 
     SFML_Text core_registers[CPU_DEBUGGER_INDEX_ENM_SIZE];
     SFML_Text core_register_names[CPU_DEBUGGER_INDEX_ENM_SIZE];
+
+    /* Global Window Lock   */
+    pthread_mutex_t *gwl;
 };
 
 }    // namespace Debug

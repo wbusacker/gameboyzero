@@ -65,6 +65,7 @@ Display::cycle_display() {
         if (display_counter == Graphics::H_LINE_CYCLE_COUNT) {
             display_counter = 0;
             h_line++;
+            main_memory.store_addr(Graphics::LCDC_Y_ADDR, h_line);
         }
 
     } else {
@@ -74,6 +75,12 @@ Display::cycle_display() {
         }
         // printf("\n");
         sem_post(&frame_sync);
+
+        /* Keep updating the h_line to make certain game logic work */
+        if ((display_counter % Graphics::H_LINE_CYCLE_COUNT) == 0) {
+            h_line++;
+            main_memory.store_addr(Graphics::LCDC_Y_ADDR, h_line);
+        }
 
         if (display_counter == Graphics::V_LINE_CYCLE_COUNT) {
             display_counter = 0;

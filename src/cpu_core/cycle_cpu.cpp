@@ -59,7 +59,7 @@ LR35902::cycle_cpu(void) {
 
     trace_buffer[trace_buffer_bottom].count    = num_clock_cycles;
     trace_buffer[trace_buffer_bottom].addr     = program_counter;
-    trace_buffer[trace_buffer_bottom].mnemonic = get_instr_mnemonic(instr);
+    trace_buffer[trace_buffer_bottom].mnemonic = Disassembler::get_instr_mnemonic(instr);
     uint64_t cur_time_ns                       = timer_get.tv_nsec;
     cur_time_ns += static_cast<uint64_t>(timer_get.tv_sec) * 1E9;
     trace_buffer[trace_buffer_bottom].wall_time     = static_cast<double>((cur_time_ns - cpu_start_time_ns) / 1E9);

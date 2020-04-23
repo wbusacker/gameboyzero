@@ -82,6 +82,10 @@ main(void) {
 
     fclose(fp);
 
+    /* Setup the global window lock */
+    pthread_mutex_t gwl;
+    pthread_mutex_init(&gwl, NULL);
+
     /* Setup the IRQ Controller */
     IRQ::Controller irqc;
 
@@ -89,14 +93,15 @@ main(void) {
     Memory::Memory_Map main_memory(cart, &irqc);
 
     /* Setup Display controller */
-    Graphics::Display disp(irqc, main_memory);
+    Graphics::Display disp(irqc, main_memory, &gwl);
 
     /* Create the CPU           */
     CPU::LR35902 cpu(main_memory, irqc);
     global_cpu = &cpu;
+    cpu.enable_function_trace = true;
 
     /* Hookup the Debugger      */
-    Debug::GB_Debugger gbdb(&cpu);
+    Debug::GB_Debugger gbdb(&cpu, &gwl);
 
     /* Begin cycling the CPU at the appropriate rate    */
 
@@ -120,7 +125,7 @@ main(void) {
         // fflush(stdout);
 
         // getc(stdin);
-        // usleep(10);
+        // usleep(1000);
         // clock_gettime(CLOCK_MONOTONIC, &timer_get);
         // cur_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
         // if(cur_cycle_time > (last_cycle_time + CPU::CORE_PERIOD)){

@@ -27,8 +27,8 @@ class Controller {
 
     virtual uint16_t get_interrupt(void);
 
-    virtual void raise_interrupt(Interrupt_Request request);
-    virtual void set_enable_mask(uint8_t mask);
+    virtual void    raise_interrupt(Interrupt_Request request);
+    virtual void    set_enable_mask(uint8_t mask);
     virtual uint8_t get_enable_mask(void);
 
     Interrupt_Request interrupt_enable_mask;

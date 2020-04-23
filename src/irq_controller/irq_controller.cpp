@@ -1,4 +1,5 @@
 #include <irq_controller.h>
+#include <stdio.h>
 
 namespace IRQ {
 
@@ -9,6 +10,7 @@ Controller::Controller() {
 
 void
 Controller::raise_interrupt(Interrupt_Request request) {
+    printf("Raising Interrupt %d", request);
     interrupt_pending_mask |= 1 << request;
 }
 
@@ -49,7 +51,8 @@ Controller::set_enable_mask(uint8_t mask) {
     return;
 }
 
-uint8_t Controller::get_enable_mask(void){
+uint8_t
+Controller::get_enable_mask(void) {
     return interrupt_enable_mask;
 }
 

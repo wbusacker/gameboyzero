@@ -2,6 +2,7 @@
 #define CPU_CORE_H
 
 #include <SFML/Graphics.hpp>
+#include <function_decomposer.h>
 #include <memory_map.h>
 #include <pthread.h>
 #include <stdint.h>
@@ -33,8 +34,8 @@ struct TB_entry {
     uint16_t stack_pointer;
 };
 
-void  print_instr_mnemonic(uint8_t instr);
-char *get_instr_mnemonic(uint8_t instr);
+// void  print_instr_mnemonic(uint8_t instr);
+// char *get_instr_mnemonic(uint8_t instr);
 
 extern bool print_diagnostics;
 
@@ -125,7 +126,6 @@ class LR35902 {
     IRQ::Controller &   irq_controller;
 
     bool stall_processor;
-    bool interrupts_enabled;
     bool enable_interrupt;
 
     uint8_t instr_cycles;
@@ -139,6 +139,10 @@ class LR35902 {
     uint64_t cpu_start_time_ns;
 
     pthread_mutex_t cpu_control_lock;
+
+    Disassembler::Function_Decomposer func_decomp;
+
+    bool enable_function_trace;
 };
 
 }    // namespace CPU

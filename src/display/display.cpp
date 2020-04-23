@@ -2,7 +2,9 @@
 
 namespace Graphics {
 
-Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm) : irq_controller(irq), main_memory(mm) {
+Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *global_window_lock) :
+    irq_controller(irq), main_memory(mm) {
+    gwl             = global_window_lock;
     display_counter = 0;
     h_line          = 0;
 

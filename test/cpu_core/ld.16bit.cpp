@@ -315,3 +315,23 @@ TEST(LD_16, LD_HL_SP_n) {
     ASSERT_EQ(core.H, TARGET_VAL_2);
     ASSERT_EQ(core.L, TARGET_VAL_1);
 }
+
+TEST(LD_16, LD_SP_HL) {
+    Mock_Memory_Map bus(NULL, NULL);
+    Mock_Controller irq;
+    CPU::LR35902    core(bus, irq);
+    uint16_t        target_addr = (static_cast<uint16_t>(TARGET_VAL_2 << 8)) | TARGET_VAL_1;
+    core.stack_pointer          = 0x0000;
+
+    core.H = TARGET_VAL_2;
+    core.L = TARGET_VAL_1;
+
+    EXPECT_CALL(bus, fetch_addr(_))
+        .WillOnce(Return(0xF9));
+
+    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
+
+    core.cycle_cpu();
+
+    ASSERT_EQ(core.stack_pointer,target_addr);
+}

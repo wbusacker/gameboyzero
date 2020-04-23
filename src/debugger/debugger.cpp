@@ -4,8 +4,9 @@
 
 namespace Debug {
 
-GB_Debugger::GB_Debugger(CPU::LR35902 *cc) {
+GB_Debugger::GB_Debugger(CPU::LR35902 *cc, pthread_mutex_t *global_window_lock) {
     cpu_core = cc;
+    gwl      = global_window_lock;
 
     display_window.create(sf::VideoMode(Debug::DEBUG_WINDOWS_WIDTH, DEBUG_WINDOWS_HEIGHT), "Gameboy Zero Memory Map");
 

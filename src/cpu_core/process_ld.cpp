@@ -174,7 +174,7 @@ LR35902::process_ld(uint8_t instr) {
                 break;
 
             case 0xE2: /* A to High C Indirect                  */
-                memory_bus.store_addr(0xFF | C, A);
+                memory_bus.store_addr(0xFF00 | C, A);
                 instr_cycles = 2;
                 break;
 
@@ -188,7 +188,7 @@ LR35902::process_ld(uint8_t instr) {
             case 0xEA: /* A to Immediate Indirect               */
                 nn_lsb = memory_bus.fetch_addr(program_counter++);
                 nn_msb = memory_bus.fetch_addr(program_counter++);
-                memory_bus.store_addr((static_cast<uint16_t>(nn_msb) << nn_lsb) | C, A);
+                memory_bus.store_addr((static_cast<uint16_t>(nn_msb) << 8 | nn_lsb), A);
                 instr_cycles = 4;
                 break;
 
@@ -221,8 +221,8 @@ LR35902::process_ld(uint8_t instr) {
             case 0xF8: /* Stack Pointer Offset into HL          */
                 nn_lsb     = memory_bus.fetch_addr(program_counter++);
                 nn         = stack_pointer + nn_lsb;
-                H          = (nn >> 8);
-                L          = (nn & 0xFF);
+                L          = memory_bus.fetch_addr(nn++);
+                H          = memory_bus.fetch_addr(nn);
                 flags.zero = false;
                 flags.sub  = false;
                 break;
@@ -235,7 +235,7 @@ LR35902::process_ld(uint8_t instr) {
             case 0xFA: /* Immediate Indirect to A               */
                 nn_lsb       = memory_bus.fetch_addr(program_counter++);
                 nn_msb       = memory_bus.fetch_addr(program_counter++);
-                A            = memory_bus.fetch_addr((static_cast<uint16_t>(nn_msb) << nn_lsb) | C);
+                A            = memory_bus.fetch_addr(((static_cast<uint16_t>(nn_msb) << 8) | nn_lsb));
                 instr_cycles = 4;
                 break;
         }

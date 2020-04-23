@@ -9,12 +9,11 @@ LR35902::process_misc(uint8_t instr) {
     switch (instr) {
         case 0x00: /* NOP          */
             return;
-        case 0x01: /* STOP         */
+        case 0x10: /* STOP         */
         case 0x76: /* HALT         */
             stall_processor = true;
             break;
         case 0xF3: /* DI           */
-            printf("Disabling Interrupts!\n");
             enable_interrupt = false;
             break;
         case 0xFB: /* EI           */

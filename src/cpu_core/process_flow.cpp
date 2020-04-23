@@ -2,10 +2,11 @@
 
 namespace CPU {
 
-int16_t sign_extend_8(uint8_t val){
+int16_t
+sign_extend_8(uint8_t val) {
     int16_t ret_val = 0;
     ret_val |= val;
-    if((val & 0x80) == 0x80){
+    if ((val & 0x80) == 0x80) {
         ret_val |= 0xFF00;
     }
 
@@ -17,7 +18,7 @@ LR35902::process_flow(uint8_t instr) {
 
     uint16_t nn_lsb;
     uint16_t nn_msb;
-    int16_t offset;
+    int16_t  offset;
 
     switch (instr) {
         case 0x18: /* Unconditional Relative Jump                           */
@@ -104,6 +105,9 @@ LR35902::process_flow(uint8_t instr) {
                 memory_bus.store_addr(--stack_pointer, (uint8_t)(program_counter));
                 program_counter = (nn_msb << 8) | nn_lsb;
                 instr_cycles    = 6;
+                if(enable_function_trace){
+                    func_decomp.register_call(program_counter);
+                }
             } else {
                 instr_cycles = 3;
             }
@@ -152,6 +156,9 @@ LR35902::process_flow(uint8_t instr) {
                 memory_bus.store_addr(--stack_pointer, (uint8_t)(program_counter));
                 program_counter = (nn_msb << 8) | nn_lsb;
                 instr_cycles    = 6;
+                if(enable_function_trace){
+                    func_decomp.register_call(program_counter);
+                }
             } else {
                 instr_cycles = 3;
             }
@@ -164,6 +171,9 @@ LR35902::process_flow(uint8_t instr) {
             memory_bus.store_addr(--stack_pointer, (uint8_t)(program_counter));
             program_counter = (nn_msb << 8) | nn_lsb;
             instr_cycles    = 6;
+            if(enable_function_trace){
+                func_decomp.register_call(program_counter);
+            }
             break;
 
         case 0xCF: /* Unconditionall call to fixed address 0x08             */
@@ -197,11 +207,14 @@ LR35902::process_flow(uint8_t instr) {
         case 0xD4: /* Call on Condtional Code NC                            */
             nn_lsb = memory_bus.fetch_addr(program_counter++);
             nn_msb = memory_bus.fetch_addr(program_counter++);
-            if (flags.zero == false) {
+            if (flags.carry == false) {
                 memory_bus.store_addr(--stack_pointer, (uint8_t)(program_counter >> 8));
                 memory_bus.store_addr(--stack_pointer, (uint8_t)(program_counter));
                 program_counter = (nn_msb << 8) | nn_lsb;
                 instr_cycles    = 6;
+                if(enable_function_trace){
+                    func_decomp.register_call(program_counter);
+                }
             } else {
                 instr_cycles = 3;
             }
@@ -229,13 +242,13 @@ LR35902::process_flow(uint8_t instr) {
             nn_msb             = memory_bus.fetch_addr(stack_pointer++);
             program_counter    = (nn_msb << 8) | nn_lsb;
             instr_cycles       = 4;
-            interrupts_enabled = true;
+            enable_interrupt = true;
             break;
 
-        case 0xDA: /* Branch absolute on Conditional Code NC                */
+        case 0xDA: /* Branch absolute on Conditional Code C                */
             nn_lsb = memory_bus.fetch_addr(program_counter++);
             nn_msb = memory_bus.fetch_addr(program_counter++);
-            if (flags.carry == false) {
+            if (flags.carry == true) {
                 program_counter = (nn_msb << 8) | nn_lsb;
                 instr_cycles    = 4;
             } else {
@@ -243,12 +256,17 @@ LR35902::process_flow(uint8_t instr) {
             }
             break;
 
-        case 0xDC: /* Branch absolute on Conditional Code C                 */
+        case 0xDC: /* Call on Condtional Code C                             */
             nn_lsb = memory_bus.fetch_addr(program_counter++);
             nn_msb = memory_bus.fetch_addr(program_counter++);
             if (flags.carry == true) {
+                memory_bus.store_addr(--stack_pointer, (uint8_t)(program_counter >> 8));
+                memory_bus.store_addr(--stack_pointer, (uint8_t)(program_counter));
                 program_counter = (nn_msb << 8) | nn_lsb;
-                instr_cycles    = 4;
+                instr_cycles    = 6;
+                if(enable_function_trace){
+                    func_decomp.register_call(program_counter);
+                }
             } else {
                 instr_cycles = 3;
             }
@@ -283,8 +301,8 @@ LR35902::process_flow(uint8_t instr) {
             break;
 
         case 0xFF: /* Unconditionall call to fixed address 0x38             */
-            // memory_bus.store_addr(--stack_pointer, (uint8_t)(program_counter >> 8));
-            // memory_bus.store_addr(--stack_pointer, (uint8_t)(program_counter));
+            memory_bus.store_addr(--stack_pointer, (uint8_t)(program_counter >> 8));
+            memory_bus.store_addr(--stack_pointer, (uint8_t)(program_counter));
             program_counter = 0x38;
             break;
 

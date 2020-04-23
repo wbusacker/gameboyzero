@@ -26,10 +26,12 @@ const uint16_t TILE_PATTERN_SIZE     = 16;
 const uint8_t  TILE_SIZE             = 8;
 const uint8_t  TILES_PER_ROW         = (Graphics::DISPLAY_WIDTH / Graphics::TILE_SIZE);
 
+const uint16_t LCDC_Y_ADDR = 0xFF44;
+
 class Display {
 
     public:
-    Display(IRQ::Controller &irq, Memory::Memory_Map &mm);
+    Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *global_window_lock);
 
     ~Display();
 
@@ -52,6 +54,9 @@ class Display {
     sem_t     frame_sync;
 
     uint16_t h_line;
+
+    /* Global Window Lock   */
+    pthread_mutex_t *gwl;
 };
 
 }    // namespace Graphics

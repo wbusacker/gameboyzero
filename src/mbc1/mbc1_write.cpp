@@ -19,13 +19,15 @@ MBC1::write_memory(uint16_t addr, uint8_t val) {
 
         /* Bank 1 Control           */
     } else if ((addr < 0x3FFF) && (addr >= 0x2000)) {
-        printf("[CART] Changed Bank Target\n");
         bank1 = val & 0b11111;
+        printf("[CART] Changed Bank1 Target to %d\n", bank1);
+        fflush(stdout);
 
         /* Bank 2 Control           */
     } else if ((addr < 0x5FFF) && (addr >= 0x4000)) {
-        printf("[CART] Changed Bank Target\n");
         bank2 = val & 0b11;
+        printf("[CART] Changed Bank2 Target to %d\n", bank2);
+        fflush(stdout);
 
         /* Bank 2 Control           */
     } else if ((addr < 0x7FFF) && (addr >= 0x6000)) {

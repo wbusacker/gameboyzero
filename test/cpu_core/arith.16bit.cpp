@@ -206,7 +206,7 @@ TEST(CPU_16_BIT, ADD_SP_n) {
     Mock_Controller irq;
     CPU::LR35902    core(bus, irq);
 
-    EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xE8)).WillOnce(Return(0x01));
+    EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xE8)).WillOnce(Return(0x01));
     EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.stack_pointer = 0x0123;
