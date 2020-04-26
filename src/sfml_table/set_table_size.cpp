@@ -1,7 +1,6 @@
 #include <sfml_table.h>
 
-void
-SFML_Table::set_table_size(uint8_t rows, uint8_t columns) {
+void SFML_Table::set_table_size(uint8_t rows, uint8_t columns) {
 
     /* Configure each entry in the table */
     uint8_t row;

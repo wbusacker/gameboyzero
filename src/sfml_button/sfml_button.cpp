@@ -13,8 +13,7 @@ SFML_Button::SFML_Button(sf::RenderWindow *scr, sf::Font *lf, int16_t x, int16_t
     text_string.assign("");
 }
 
-void
-SFML_Button::configure(sf::RenderWindow *scr, sf::Font *lf, int16_t x, int16_t y, int16_t len, int16_t hgt) {
+void SFML_Button::configure(sf::RenderWindow *scr, sf::Font *lf, int16_t x, int16_t y, int16_t len, int16_t hgt) {
     x_pos      = x;
     y_pos      = y;
     length     = len;

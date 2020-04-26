@@ -3,8 +3,7 @@
 
 namespace CPU {
 
-void
-LR35902::process_misc(uint8_t instr) {
+void LR35902::process_misc(uint8_t instr) {
 
     switch (instr) {
         case 0x00: /* NOP          */

@@ -55,7 +55,7 @@ TEST(FLOW_CONTROL, CALL_NZ_nn_taken) {
 
     core.program_counter = START_ADDR - 3;
     core.stack_pointer   = STACK_POINTER_START;
-    core.flags.zero = false;
+    core.flags.zero      = false;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, TARGET_ADDR);
@@ -79,7 +79,7 @@ TEST(FLOW_CONTROL, CALL_NC_nn_taken) {
 
     core.program_counter = START_ADDR - 3;
     core.stack_pointer   = STACK_POINTER_START;
-    core.flags.carry = false;
+    core.flags.carry     = false;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, TARGET_ADDR);
@@ -103,7 +103,7 @@ TEST(FLOW_CONTROL, CALL_Z_nn_taken) {
 
     core.program_counter = START_ADDR - 3;
     core.stack_pointer   = STACK_POINTER_START;
-    core.flags.zero = true;
+    core.flags.zero      = true;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, TARGET_ADDR);
@@ -127,7 +127,7 @@ TEST(FLOW_CONTROL, CALL_C_nn_taken) {
 
     core.program_counter = START_ADDR - 3;
     core.stack_pointer   = STACK_POINTER_START;
-    core.flags.carry = true;
+    core.flags.carry     = true;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, TARGET_ADDR);
@@ -148,7 +148,7 @@ TEST(FLOW_CONTROL, CALL_NZ_nn_not_taken) {
 
     core.program_counter = START_ADDR - 3;
     core.stack_pointer   = STACK_POINTER_START;
-    core.flags.zero = true;
+    core.flags.zero      = true;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, START_ADDR);
@@ -169,7 +169,7 @@ TEST(FLOW_CONTROL, CALL_NC_nn_not_taken) {
 
     core.program_counter = START_ADDR - 3;
     core.stack_pointer   = STACK_POINTER_START;
-    core.flags.carry = true;
+    core.flags.carry     = true;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, START_ADDR);
@@ -190,7 +190,7 @@ TEST(FLOW_CONTROL, CALL_Z_nn_not_taken) {
 
     core.program_counter = START_ADDR - 3;
     core.stack_pointer   = STACK_POINTER_START;
-    core.flags.zero = false;
+    core.flags.zero      = false;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, START_ADDR);
@@ -211,7 +211,7 @@ TEST(FLOW_CONTROL, CALL_C_nn_not_taken) {
 
     core.program_counter = START_ADDR - 3;
     core.stack_pointer   = STACK_POINTER_START;
-    core.flags.carry = false;
+    core.flags.carry     = false;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, START_ADDR);
@@ -249,8 +249,8 @@ TEST(FLOW_CONTROL, RETI) {
       .WillOnce(Return(TARGET_ADDR_H));
 
     core.enable_interrupt = false;
-    core.program_counter = START_ADDR;
-    core.stack_pointer   = STACK_POINTER_START - 2;
+    core.program_counter  = START_ADDR;
+    core.stack_pointer    = STACK_POINTER_START - 2;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, TARGET_ADDR);
@@ -272,7 +272,7 @@ TEST(FLOW_CONTROL, RET_NZ_taken) {
 
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
-    core.flags.zero = false;
+    core.flags.zero      = false;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, TARGET_ADDR);
@@ -288,12 +288,12 @@ TEST(FLOW_CONTROL, RET_NC_taken) {
       .WillOnce(Return(0xD0))
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
-      
+
     EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
-    core.flags.carry = false;
+    core.flags.carry     = false;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, TARGET_ADDR);
@@ -309,12 +309,12 @@ TEST(FLOW_CONTROL, RET_Z_taken) {
       .WillOnce(Return(0xC8))
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
-      
+
     EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
-    core.flags.zero = true;
+    core.flags.zero      = true;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, TARGET_ADDR);
@@ -330,12 +330,12 @@ TEST(FLOW_CONTROL, RET_C_taken) {
       .WillOnce(Return(0xD8))
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
-      
+
     EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
-    core.flags.carry = true;
+    core.flags.carry     = true;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, TARGET_ADDR);
@@ -347,14 +347,13 @@ TEST(FLOW_CONTROL, RET_NZ_not_taken) {
     Mock_Controller irq;
     CPU::LR35902    core(bus, irq);
 
-    EXPECT_CALL(bus, fetch_addr(_))
-      .WillOnce(Return(0xC0));
+    EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xC0));
 
     EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
-    core.flags.zero = true;
+    core.flags.zero      = true;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, START_ADDR + 1);
@@ -366,14 +365,13 @@ TEST(FLOW_CONTROL, RET_NC_not_taken) {
     Mock_Controller irq;
     CPU::LR35902    core(bus, irq);
 
-    EXPECT_CALL(bus, fetch_addr(_))
-      .WillOnce(Return(0xD0));
-      
+    EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xD0));
+
     EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
-    core.flags.carry = true;
+    core.flags.carry     = true;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, START_ADDR + 1);
@@ -385,14 +383,13 @@ TEST(FLOW_CONTROL, RET_Z_not_taken) {
     Mock_Controller irq;
     CPU::LR35902    core(bus, irq);
 
-    EXPECT_CALL(bus, fetch_addr(_))
-      .WillOnce(Return(0xC8));
-      
+    EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xC8));
+
     EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
-    core.flags.zero = false;
+    core.flags.zero      = false;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, START_ADDR + 1);
@@ -404,14 +401,13 @@ TEST(FLOW_CONTROL, RET_C_not_taken) {
     Mock_Controller irq;
     CPU::LR35902    core(bus, irq);
 
-    EXPECT_CALL(bus, fetch_addr(_))
-      .WillOnce(Return(0xD8));
-      
+    EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xD8));
+
     EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
-    core.flags.carry = false;
+    core.flags.carry     = false;
     core.cycle_cpu();
 
     ASSERT_EQ(core.program_counter, START_ADDR + 1);

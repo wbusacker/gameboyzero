@@ -4,8 +4,7 @@
 
 namespace Graphics {
 
-void *
-Display::frame_renderer(void *arg) {
+void *Display::frame_renderer(void *arg) {
 
     Graphics::Display *disp = reinterpret_cast<Graphics::Display *>(arg);
 

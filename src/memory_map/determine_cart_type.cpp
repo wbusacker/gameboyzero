@@ -2,8 +2,7 @@
 
 namespace Cart {
 
-enum Cartridge_Type
-determine_cart_type(FILE *fp) {
+enum Cartridge_Type determine_cart_type(FILE *fp) {
 
     /* Scan ahead to address 147 */
     fseek(fp, 0x147, SEEK_SET);

@@ -16,6 +16,8 @@ const uint16_t TRACE_BUFFER_LEN = 2048;
 const double CORE_FREQUENCY = 1.0485E6;
 const double CORE_PERIOD    = 1.0 / CORE_FREQUENCY;
 
+const char *const TRACE_LOG_NAME = "trace_output.txt";
+
 struct CPU_flags {
     bool    sub : 1;
     bool    zero : 1;
@@ -46,14 +48,12 @@ class LR35902 {
 
     void cycle_cpu(void);
 
-    inline void
-    lock_cpu(void) {
+    inline void lock_cpu(void) {
         pthread_mutex_lock(&cpu_control_lock);
         return;
     }
 
-    inline void
-    unlock_cpu(void) {
+    inline void unlock_cpu(void) {
         pthread_mutex_unlock(&cpu_control_lock);
         return;
     }
@@ -70,36 +70,24 @@ class LR35902 {
 
     void crash_cpu(enum CPU_Failure_Modes);
 
-    inline uint16_t
-    get_BC_indirect() {
-        return (static_cast<uint16_t>(B) << 8) | C;
-    }
-    inline uint16_t
-    get_DE_indirect() {
-        return (static_cast<uint16_t>(D) << 8) | E;
-    }
-    inline uint16_t
-    get_HL_indirect() {
-        return (static_cast<uint16_t>(H) << 8) | L;
-    }
+    inline uint16_t get_BC_indirect() { return (static_cast<uint16_t>(B) << 8) | C; }
+    inline uint16_t get_DE_indirect() { return (static_cast<uint16_t>(D) << 8) | E; }
+    inline uint16_t get_HL_indirect() { return (static_cast<uint16_t>(H) << 8) | L; }
 
-    inline void
-    HL_inc(void) {
+    inline void HL_inc(void) {
         L++;
         if (L == 0) {
             H++;
         }
     }
-    inline void
-    HL_dec(void) {
+    inline void HL_dec(void) {
         L--;
         if (L == 0xFF) {
             H--;
         }
     }
 
-    inline bool
-    check_bits(uint8_t instr, uint8_t term_mask, uint8_t term) {
+    inline bool check_bits(uint8_t instr, uint8_t term_mask, uint8_t term) {
         instr &= term_mask;
         if ((instr ^ term) == 0) {
             return true;
@@ -109,6 +97,8 @@ class LR35902 {
     }
 
     uint8_t *get_reg_ptr_from_number(uint8_t num);
+
+    void log_instruction(uint8_t instr);
 
     struct CPU_flags flags;
     uint8_t          A;

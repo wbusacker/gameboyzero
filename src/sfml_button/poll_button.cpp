@@ -1,7 +1,6 @@
 #include <sfml_button.h>
 
-void
-SFML_Button::poll(sf::Event event) {
+void SFML_Button::poll(sf::Event event) {
     /* If the mouse is released when over the button, run callback */
     if (event.type == sf::Event::MouseButtonReleased) {
         /* Check if the cursor is within the box */

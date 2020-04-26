@@ -3,8 +3,7 @@
 
 namespace Cart {
 
-void
-MBC1::init_cart(FILE *fp) {
+void MBC1::init_cart(FILE *fp) {
 
     /* Make sure to scroll back to the start    */
     num_ram_banks = get_num_ram_banks(fp);

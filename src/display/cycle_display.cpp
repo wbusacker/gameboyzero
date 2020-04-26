@@ -3,8 +3,7 @@
 
 namespace Graphics {
 
-void
-Display::cycle_display() {
+void Display::cycle_display() {
     display_counter++;
     // printf("DC = %d HL = %d\n", display_counter, h_line);
 

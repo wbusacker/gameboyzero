@@ -5,8 +5,7 @@
 
 namespace CPU {
 
-void
-LR35902::cycle_cpu(void) {
+void LR35902::cycle_cpu(void) {
 
     pthread_mutex_lock(&cpu_control_lock);
 
@@ -42,6 +41,8 @@ LR35902::cycle_cpu(void) {
     uint8_t instr = memory_bus.fetch_addr(program_counter);
     // printf("%04X ",program_counter);
     // print_instr_mnemonic(instr);
+
+    // log_instruction(instr);
 
     /* Fill in the trace buffer     */
     trace_buffer_bottom = (trace_buffer_bottom + 1) % CPU::TRACE_BUFFER_LEN;

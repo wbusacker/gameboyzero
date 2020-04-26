@@ -23,8 +23,8 @@ LR35902::LR35902(Memory::Memory_Map &bus, IRQ::Controller &irq) :
     stack_pointer   = 0xFFFC;
     program_counter = 0x0100;
 
-    stall_processor    = false;
-    instr_cycles       = 0;
+    stall_processor  = false;
+    instr_cycles     = 0;
     enable_interrupt = true;
 
     trace_buffer_overflow = false;

@@ -1,7 +1,6 @@
 #include <sfml_table.h>
 
-void
-SFML_Table::draw() {
+void SFML_Table::draw() {
 
     /* Draw the title */
     table_title.draw();

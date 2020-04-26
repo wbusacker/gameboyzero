@@ -11,8 +11,7 @@
 
 CPU::LR35902 *global_cpu;
 
-void
-error_catch(int sig_num) {
+void error_catch(int sig_num) {
 
     if (sig_num == SIGSEGV) {
         printf("Segmentation Fault\n");
@@ -23,8 +22,7 @@ error_catch(int sig_num) {
     exit(-1);
 }
 
-int
-main(void) {
+int main(void) {
 
     signal(SIGSEGV, error_catch);
     signal(SIGINT, error_catch);
@@ -97,7 +95,7 @@ main(void) {
 
     /* Create the CPU           */
     CPU::LR35902 cpu(main_memory, irqc);
-    global_cpu = &cpu;
+    global_cpu                = &cpu;
     cpu.enable_function_trace = true;
 
     /* Hookup the Debugger      */

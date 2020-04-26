@@ -94,25 +94,21 @@ static char cb_mnemonics[256][128] = {
   "SET 7,H      \0", "SET 7,L      \0", "SET 7,(HL)   \0", "SET 7,A      \0",
 };
 
-void
-print_instr_mnemonic(uint8_t instr) {
+void print_instr_mnemonic(uint8_t instr) {
     printf("[ISTR] %s\n", mnemonics[instr]);
     fflush(stdout);
 }
 
-char *
-get_instr_mnemonic(uint8_t instr) {
+char *get_instr_mnemonic(uint8_t instr) {
     return mnemonics[instr];
 }
 
-void
-print_cb_mnemonic(uint8_t instr) {
+void print_cb_mnemonic(uint8_t instr) {
     printf("[CBOP] %s\n", cb_mnemonics[instr]);
     fflush(stdout);
 }
 
-char *
-get_cb_mnemonic(uint8_t instr) {
+char *get_cb_mnemonic(uint8_t instr) {
     return cb_mnemonics[instr];
 }
 

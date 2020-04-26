@@ -15,15 +15,9 @@ class SFML_Text_Window {
     uint16_t get_value();
     void     draw();
 
-    inline void
-    set_string(std::string s) {
-        text_string = s;
-    }
+    inline void set_string(std::string s) { text_string = s; }
 
-    inline void
-    clear_string() {
-        text_string = "";
-    }
+    inline void clear_string() { text_string = ""; }
 
     private:
     sf::RenderWindow *screen;

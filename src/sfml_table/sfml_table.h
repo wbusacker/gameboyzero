@@ -16,10 +16,7 @@ class SFML_Table {
 
     void configure(sf::RenderWindow *scr, sf::Font *lf, int16_t x, int16_t y, int16_t len, int16_t hgt);
 
-    inline void
-    set_table_title(std::string title) {
-        table_title.set_string(title);
-    }
+    inline void set_table_title(std::string title) { table_title.set_string(title); }
 
     void set_table_size(uint8_t rows, uint8_t columns);
 

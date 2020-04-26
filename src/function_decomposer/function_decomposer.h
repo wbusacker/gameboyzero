@@ -10,7 +10,7 @@ namespace Disassembler {
 
 const uint32_t CALL_MAP_SIZE = 65536;
 
-const char* const OUTPUT_NAME = "function_decomposition.txt";
+const char *const OUTPUT_NAME = "function_decomposition.txt";
 
 class Function_Decomposer {
 

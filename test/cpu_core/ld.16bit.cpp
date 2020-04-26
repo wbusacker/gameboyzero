@@ -326,12 +326,11 @@ TEST(LD_16, LD_SP_HL) {
     core.H = TARGET_VAL_2;
     core.L = TARGET_VAL_1;
 
-    EXPECT_CALL(bus, fetch_addr(_))
-        .WillOnce(Return(0xF9));
+    EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xF9));
 
     EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.cycle_cpu();
 
-    ASSERT_EQ(core.stack_pointer,target_addr);
+    ASSERT_EQ(core.stack_pointer, target_addr);
 }

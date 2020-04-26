@@ -13,30 +13,15 @@ class SFML_Text {
 
     void draw();
 
-    inline void
-    set_text_size(uint8_t s) {
-        text_size = s;
-    }
+    inline void set_text_size(uint8_t s) { text_size = s; }
 
-    inline void
-    set_string(std::string s) {
-        text_string = s;
-    }
+    inline void set_string(std::string s) { text_string = s; }
 
-    inline void
-    clear_string() {
-        text_string = "";
-    }
+    inline void clear_string() { text_string = ""; }
 
-    inline void
-    disable_border() {
-        draw_border = false;
-    }
+    inline void disable_border() { draw_border = false; }
 
-    inline void
-    enable_border() {
-        draw_border = true;
-    }
+    inline void enable_border() { draw_border = true; }
 
     private:
     sf::RenderWindow *screen;

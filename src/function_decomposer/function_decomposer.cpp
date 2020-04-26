@@ -17,15 +17,13 @@ Function_Decomposer::Function_Decomposer(Memory::Memory_Map &mem) : memory_bus(m
     fclose(out_handle);
 }
 
-void
-Function_Decomposer::register_call(uint16_t addr) {
+void Function_Decomposer::register_call(uint16_t addr) {
 
     /* Check if we know already know about this function    */
     if (known_calls[addr]) {
         return;
     }
 
-    
     out_handle = fopen(OUTPUT_NAME, "a");
 
     known_calls[addr] = true;

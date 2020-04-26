@@ -69,8 +69,7 @@ const uint8_t instr_lengths[256] = {
   0, /* FC   */ 0, /* FD   */ 2, /* FE   */ 1  /* FF   */
 };
 
-uint8_t
-get_instr_bytes(uint8_t instr) {
+uint8_t get_instr_bytes(uint8_t instr) {
     return instr_lengths[instr];
 }
 

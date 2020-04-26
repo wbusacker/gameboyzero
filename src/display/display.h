@@ -26,7 +26,20 @@ const uint16_t TILE_PATTERN_SIZE     = 16;
 const uint8_t  TILE_SIZE             = 8;
 const uint8_t  TILES_PER_ROW         = (Graphics::DISPLAY_WIDTH / Graphics::TILE_SIZE);
 
+const uint16_t LCDC_ADDR = 0xFF40;
+
 const uint16_t LCDC_Y_ADDR = 0xFF44;
+
+struct LCDC_Register {
+    bool     operation;
+    uint16_t windows_tile_map;
+    bool     window_display;
+    uint16_t bg_window_tile_data;
+    uint16_t bg_tile_map;
+    bool     tall_sprites;
+    bool     display_sprites;
+    bool     bg_window_display;
+};
 
 class Display {
 
@@ -36,6 +49,8 @@ class Display {
     ~Display();
 
     void cycle_display();
+
+    void update_control_registers(void);
 
     static void *frame_renderer(void *arg);
 
@@ -54,6 +69,8 @@ class Display {
     sem_t     frame_sync;
 
     uint16_t h_line;
+
+    struct LCDC_Register lcdc;
 
     /* Global Window Lock   */
     pthread_mutex_t *gwl;

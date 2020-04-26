@@ -2,8 +2,7 @@
 
 namespace Memory {
 
-void
-Memory_Map::store_addr(uint16_t addr, uint8_t val) {
+void Memory_Map::store_addr(uint16_t addr, uint8_t val) {
 
     /* Overlay 0xE000 - 0xFE00 and 0xC000 - 0xDE00  */
 

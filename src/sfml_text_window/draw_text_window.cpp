@@ -1,8 +1,7 @@
 #include <sfml_text_window.h>
 #include <string.h>
 
-void
-SFML_Text_Window::draw() {
+void SFML_Text_Window::draw() {
     sf::RectangleShape outline;
     sf::Text           ts;
 

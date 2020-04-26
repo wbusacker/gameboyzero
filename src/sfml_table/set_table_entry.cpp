@@ -1,7 +1,6 @@
 #include <sfml_table.h>
 
-void
-SFML_Table::set_table_entry(uint8_t col, uint8_t row, std::string s) {
+void SFML_Table::set_table_entry(uint8_t col, uint8_t row, std::string s) {
 
     /* Make sure the selected index is sane */
     if (row >= table_entries.size()) {

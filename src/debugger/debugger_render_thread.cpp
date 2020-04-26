@@ -4,8 +4,7 @@
 #include <unistd.h>
 
 namespace Debug {
-void *
-GB_Debugger::render_thread(void *arg) {
+void *GB_Debugger::render_thread(void *arg) {
     // void
     // GB_Debugger::draw(void) {
 
