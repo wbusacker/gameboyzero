@@ -21,7 +21,7 @@ void *GB_Debugger::render_thread(void *arg) {
         uint16_t row;
         uint16_t col;
 
-        address = 0x8800;
+        address = 0x8000;
 
         char hex[32];
         for (row = 0; row < Debug::MEMORY_TABLE_HEIGHT; row++) {
@@ -101,6 +101,10 @@ void *GB_Debugger::render_thread(void *arg) {
 
                 case CPU_CYCLES:
                     sprintf(hex, "%-20ld", gbdb->cpu_core->num_clock_cycles);
+                    break;
+
+                case CPU_FREQUENCY:
+                    sprintf(hex, "%15.3f", gbdb->cpu_core->cpu_frequency);
                     break;
             }
 

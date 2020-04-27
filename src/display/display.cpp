@@ -26,6 +26,9 @@ Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *
         }
     }
 
+    stat.mode = MODE_0;
+    mode_counter = 0;
+
     sem_init(&frame_sync, 0, 0);
 
     pthread_create(&frame_render_thread_handle, NULL, &Display::frame_renderer, this);

@@ -125,6 +125,9 @@ class LR35902 {
     bool     trace_buffer_overflow;
     uint16_t trace_buffer_bottom;
     uint64_t num_clock_cycles;
+    double   cpu_frequency;
+
+    double  last_cycle_time;
 
     uint64_t cpu_start_time_ns;
 

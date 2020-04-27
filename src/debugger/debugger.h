@@ -29,6 +29,7 @@ enum CPU_Debugger_Index_enm {
     PROGRAM_COUNTER,
     CPU_CYCLES,
     INTERRUPT_ENABLED,
+    CPU_FREQUENCY,
     CPU_DEBUGGER_INDEX_ENM_SIZE
 };
 

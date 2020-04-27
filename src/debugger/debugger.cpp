@@ -65,6 +65,7 @@ GB_Debugger::GB_Debugger(CPU::LR35902 *cc, pthread_mutex_t *global_window_lock) 
     core_register_names[PROGRAM_COUNTER].set_string(std::string("PROGRAM_COUNTER"));
     core_register_names[INTERRUPT_ENABLED].set_string(std::string("INTERRUPT_ENABLED"));
     core_register_names[CPU_CYCLES].set_string(std::string("CPU_CYCLES"));
+    core_register_names[CPU_FREQUENCY].set_string(std::string("CPU_FREQUENCY"));
 
     pthread_create(&frame_render_thread_handle, NULL, &GB_Debugger::render_thread, this);
 }

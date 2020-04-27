@@ -55,6 +55,9 @@ LR35902::LR35902(Memory::Memory_Map &bus, IRQ::Controller &irq) :
     FILE *fp;
     fp = fopen(CPU::TRACE_LOG_NAME, "w");
     fclose(fp);
+
+    last_cycle_time = 0;
+    cpu_frequency = 0;
 }
 
 }    // namespace CPU

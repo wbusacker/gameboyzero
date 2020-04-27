@@ -14,8 +14,6 @@ const uint16_t DISPLAY_CLOCK_DIVIDER = 17475;
 const uint8_t  DISPLAY_PIXEL_SIZE    = 2;
 const uint16_t DISPLAY_WIDTH         = 256;
 const uint16_t DISPLAY_HEIGHT        = 256;
-const uint16_t H_LINE_CYCLE_COUNT    = 114;
-const uint16_t V_LINE_CYCLE_COUNT    = H_LINE_CYCLE_COUNT * 10;
 const uint16_t DISPLAY_ROW_COUNT     = 144;
 const uint16_t DISPLAY_COL_COUNT     = 160;
 const uint16_t TILE_MAP_0_ADDR       = 0x9800;
@@ -25,10 +23,28 @@ const uint16_t TILE_PATTERN_BUFFER_1 = 0x8800;
 const uint16_t TILE_PATTERN_SIZE     = 16;
 const uint8_t  TILE_SIZE             = 8;
 const uint8_t  TILES_PER_ROW         = (Graphics::DISPLAY_WIDTH / Graphics::TILE_SIZE);
+const uint8_t  TILES_PER_COL         = (Graphics::DISPLAY_HEIGHT / Graphics::TILE_SIZE);
+
+const uint16_t   MODE_0_CYCLE_COUNT = 51;
+const uint16_t   MODE_1_CYCLE_COUNT = 20;
+const uint16_t   MODE_2_CYCLE_COUNT = 43;
+const uint16_t   MODE_3_CYCLE_COUNT = 1140;
+const uint16_t   H_LINE_CYCLE_COUNT = MODE_0_CYCLE_COUNT + 
+                                      MODE_1_CYCLE_COUNT + 
+                                      MODE_2_CYCLE_COUNT;
 
 const uint16_t LCDC_ADDR = 0xFF40;
+const uint16_t STAT_ADDR = 0xFF41;
 
-const uint16_t LCDC_Y_ADDR = 0xFF44;
+const uint16_t LY_ADDR = 0xFF44;
+const uint16_t LYC_ADDR = 0xFF45;
+
+enum LCDC_Modes{
+    MODE_0,
+    MODE_1,
+    MODE_2,
+    MODE_3
+};
 
 struct LCDC_Register {
     bool     operation;
@@ -39,6 +55,15 @@ struct LCDC_Register {
     bool     tall_sprites;
     bool     display_sprites;
     bool     bg_window_display;
+};
+
+struct STAT_Register {
+    bool    lyc_selectable;
+    bool    mode_10;
+    bool    mode_01;
+    bool    mode_00;
+    bool    lyc_coincidence;
+    LCDC_Modes mode;
 };
 
 class Display {
@@ -54,10 +79,16 @@ class Display {
 
     static void *frame_renderer(void *arg);
 
+    void perform_mode_0(void);
+    void perform_mode_1(void);
+    void perform_mode_2(void);
+    void perform_mode_3(void);
+
     IRQ::Controller &   irq_controller;
     Memory::Memory_Map &main_memory;
 
-    uint16_t display_counter;
+    uint32_t display_counter;
+    uint32_t mode_counter;
 
     uint8_t **grayscale_buffer;
 
@@ -71,6 +102,7 @@ class Display {
     uint16_t h_line;
 
     struct LCDC_Register lcdc;
+    struct STAT_Register stat;
 
     /* Global Window Lock   */
     pthread_mutex_t *gwl;

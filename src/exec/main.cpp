@@ -103,12 +103,12 @@ int main(void) {
 
     /* Begin cycling the CPU at the appropriate rate    */
 
-    timespec timer_get;
-    double   last_cycle_time;
-    double   cur_cycle_time;
+    // timespec timer_get;
+    // double   last_cycle_time;
+    // double   cur_cycle_time;
 
-    clock_gettime(CLOCK_MONOTONIC, &timer_get);
-    last_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
+    // clock_gettime(CLOCK_MONOTONIC, &timer_get);
+    // last_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
 
     while (1) {
         // printf("Running CPU\n");

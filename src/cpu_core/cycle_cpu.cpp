@@ -9,6 +9,16 @@ void LR35902::cycle_cpu(void) {
 
     pthread_mutex_lock(&cpu_control_lock);
 
+    /* Get this Cycle Time & calculate the frequency    */
+    timespec timer_get;
+    double cur_cycle_time;
+
+    clock_gettime(CLOCK_MONOTONIC, &timer_get);
+    cur_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
+
+    cpu_frequency = 1.0 / (cur_cycle_time - last_cycle_time);
+    last_cycle_time = cur_cycle_time;
+
     /* Up the cycle count                           */
     num_clock_cycles++;
 
@@ -51,10 +61,6 @@ void LR35902::cycle_cpu(void) {
         trace_buffer_overflow = true;
         // print_trace_buffer();
     }
-
-    timespec timer_get;
-    double   last_cycle_time;
-    double   cur_cycle_time;
 
     clock_gettime(CLOCK_MONOTONIC, &timer_get);
 
