@@ -21,7 +21,7 @@ void *GB_Debugger::render_thread(void *arg) {
         uint16_t row;
         uint16_t col;
 
-        address = 0x8000;
+        address = 0x8800;
 
         char hex[32];
         for (row = 0; row < Debug::MEMORY_TABLE_HEIGHT; row++) {
@@ -93,6 +93,10 @@ void *GB_Debugger::render_thread(void *arg) {
 
                 case PROGRAM_COUNTER:
                     sprintf(hex, "%04X", gbdb->cpu_core->program_counter);
+                    break;
+
+                case INTERRUPT_ENABLED:
+                    sprintf(hex, "%s", gbdb->cpu_core->enable_interrupt ? "true" : "false");
                     break;
 
                 case CPU_CYCLES:

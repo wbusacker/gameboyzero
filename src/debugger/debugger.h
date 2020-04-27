@@ -10,7 +10,7 @@ namespace Debug {
 
 const uint16_t DEBUG_WINDOWS_HEIGHT = 1080;
 const uint16_t DEBUG_WINDOWS_WIDTH  = 1920;
-const uint16_t MEMORY_TABLE_HEIGHT  = 80;
+const uint16_t MEMORY_TABLE_HEIGHT  = 48;
 const uint16_t MEMORY_TABLE_WIDTH   = 32;
 
 enum CPU_Debugger_Index_enm {
@@ -28,6 +28,7 @@ enum CPU_Debugger_Index_enm {
     STACK_POINTER,
     PROGRAM_COUNTER,
     CPU_CYCLES,
+    INTERRUPT_ENABLED,
     CPU_DEBUGGER_INDEX_ENM_SIZE
 };
 

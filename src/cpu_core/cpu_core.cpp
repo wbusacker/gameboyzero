@@ -51,6 +51,10 @@ LR35902::LR35902(Memory::Memory_Map &bus, IRQ::Controller &irq) :
     pthread_mutex_init(&cpu_control_lock, NULL);
 
     enable_function_trace = false;
+
+    FILE *fp;
+    fp = fopen(CPU::TRACE_LOG_NAME, "w");
+    fclose(fp);
 }
 
 }    // namespace CPU

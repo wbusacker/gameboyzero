@@ -4,12 +4,12 @@
 namespace IRQ {
 
 Controller::Controller() {
-    interrupt_enable_mask  = 0x0;
+    interrupt_enable_mask  = 0xFF;
     interrupt_pending_mask = 0x0;
 }
 
 void Controller::raise_interrupt(Interrupt_Request request) {
-    printf("Raising Interrupt %d", request);
+    printf("Raising Interrupt %d\n", request);
     interrupt_pending_mask |= 1 << request;
 }
 

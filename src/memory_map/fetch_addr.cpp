@@ -35,6 +35,9 @@ uint8_t Memory_Map::fetch_addr(uint16_t addr) {
 
     } else if ((addr >= 0xFF4C) && (addr < 0xFF80)) {
         // printf("[READ ] Empty Unusable IO 2\n");
+        // if( addr == 0xFF41){
+        //     printf("Stat Read\n");
+        // }
 
     } else if ((addr >= 0xFF80) && (addr < 0xFFFF)) {
         // printf("[READ ] Internal RAM\n");
