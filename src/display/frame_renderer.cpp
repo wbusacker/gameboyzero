@@ -1,12 +1,19 @@
 #include <display.h>
 #include <stdio.h>
 #include <time.h>
+#include <unistd.h>
 
 namespace Graphics {
 
 void *Display::frame_renderer(void *arg) {
 
     Graphics::Display *disp = reinterpret_cast<Graphics::Display *>(arg);
+
+    /* Good chance this starts up before the rest of the system is ready to go
+        so sleep for a bit
+    */
+
+    usleep(1000000);
 
     // timespec timer_get;
     // double   last_cycle_time;

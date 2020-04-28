@@ -96,6 +96,8 @@ class Display {
 
     sf::RectangleShape **pixels;
 
+    sf::Image frame_image;
+
     pthread_t frame_render_thread_handle;
     sem_t     frame_sync;
 

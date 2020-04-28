@@ -26,6 +26,10 @@ Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *
         }
     }
 
+    frame_image.create(Graphics::DISPLAY_WIDTH * Graphics::DISPLAY_PIXEL_SIZE,
+                        Graphics::DISPLAY_HEIGHT* Graphics::DISPLAY_PIXEL_SIZE,
+                        sf::Color::Green);
+
     stat.mode = MODE_0;
     mode_counter = 0;
 

@@ -43,22 +43,24 @@ void Display::perform_mode_2(void) {
 
                     uint8_t *pixel = &(grayscale_buffer[(x_tile * Graphics::TILE_SIZE) + bit][(y_tile * Graphics::TILE_SIZE) + tile_row]);
 
-                    switch (val) {
-                        case 0:
-                            *pixel = 0xFF;
-                            break;
-                        case 1:
-                            *pixel = 0xAA;
-                            break;
-                        case 2:
-                            *pixel = 0x55;
-                            break;
-                        case 3:
-                            *pixel = 0x00;
-                            break;
-                        default:
-                            *pixel = 0x88;
-                    }
+                    *pixel = val;
+
+                    // switch (val) {
+                    //     case 0:
+                    //         *pixel = 0xFF;
+                    //         break;
+                    //     case 1:
+                    //         *pixel = 0xAA;
+                    //         break;
+                    //     case 2:
+                    //         *pixel = 0x55;
+                    //         break;
+                    //     case 3:
+                    //         *pixel = 0x00;
+                    //         break;
+                    //     default:
+                    //         *pixel = 0x88;
+                    // }
                 }
             }
         }
