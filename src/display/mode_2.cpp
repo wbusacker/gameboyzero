@@ -17,7 +17,7 @@ void Display::perform_mode_2(void) {
             // uint16_t tile_pattern_num = lcdc.bg_tile_map + (y_tile * Graphics::TILES_PER_ROW) + x_tile;
             uint16_t tile_pattern_num = (y_tile * Graphics::TILES_PER_ROW) + x_tile;
 
-            tile_pattern_num %= (256 + 128);
+            tile_pattern_num %= (256+128);
 
             /* Find the Address of the tile to use  */
             uint16_t pattern_addr = lcdc.bg_window_tile_data + (tile_pattern_num * Graphics::TILE_PATTERN_SIZE);

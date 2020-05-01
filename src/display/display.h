@@ -11,7 +11,7 @@
 namespace Graphics {
 
 const uint16_t DISPLAY_CLOCK_DIVIDER = 17475;
-const uint8_t  DISPLAY_PIXEL_SIZE    = 2;
+const uint8_t  DISPLAY_PIXEL_SIZE    = 3;
 const uint16_t DISPLAY_WIDTH         = 256;
 const uint16_t DISPLAY_HEIGHT        = 256;
 const uint16_t DISPLAY_ROW_COUNT     = 144;
@@ -24,6 +24,10 @@ const uint16_t TILE_PATTERN_SIZE     = 16;
 const uint8_t  TILE_SIZE             = 8;
 const uint8_t  TILES_PER_ROW         = (Graphics::DISPLAY_WIDTH / Graphics::TILE_SIZE);
 const uint8_t  TILES_PER_COL         = (Graphics::DISPLAY_HEIGHT / Graphics::TILE_SIZE);
+
+const uint16_t  SYSTEM_TILE_COUNT   = 256 + 128;
+const uint8_t   TILE_DP_TILE_ROW    = 16;
+const uint8_t   TILE_DP_TILE_COL    = SYSTEM_TILE_COUNT / TILE_DP_TILE_ROW;
 
 const uint16_t   MODE_0_CYCLE_COUNT = 51;
 const uint16_t   MODE_1_CYCLE_COUNT = 20;
@@ -79,6 +83,8 @@ class Display {
 
     static void *frame_renderer(void *arg);
 
+    static void *tile_pattern_buffer_renderer(void *arg);
+
     void perform_mode_0(void);
     void perform_mode_1(void);
     void perform_mode_2(void);
@@ -93,13 +99,18 @@ class Display {
     uint8_t **grayscale_buffer;
 
     sf::RenderWindow display_window;
+    sf::RenderWindow tile_pattern_buffer_display;
 
     sf::RectangleShape **pixels;
 
     sf::Image frame_image;
 
+    sf::Image tile_pattern_buffer_image;
+
     pthread_t frame_render_thread_handle;
     sem_t     frame_sync;
+
+    pthread_t tile_pattern_buffer_thread_handle;
 
     uint16_t h_line;
 

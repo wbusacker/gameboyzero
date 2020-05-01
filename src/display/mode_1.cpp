@@ -44,20 +44,24 @@ void Display::perform_mode_1(void) {
                     pixel_color = 0x25;
             }
 
-            uint16_t x_offset = px * Graphics::DISPLAY_PIXEL_SIZE;
-            uint16_t y_offset = py * Graphics::DISPLAY_PIXEL_SIZE;
+            // uint16_t x_offset = px * Graphics::DISPLAY_PIXEL_SIZE;
+            // uint16_t y_offset = py * Graphics::DISPLAY_PIXEL_SIZE;
 
-            uint16_t sx;
-            uint16_t sy;
-            for(sx = 0; sx < Graphics::DISPLAY_PIXEL_SIZE; sx++){
-                for(sy = 0; sy < Graphics::DISPLAY_PIXEL_SIZE; sy++){
-                    frame_image.setPixel(sx + x_offset,
-                                         sy + y_offset,
-                                         sf::Color(pixel_color, pixel_color, pixel_color)
-                                         );
-                }
-            }
+            // uint16_t sx;
+            // uint16_t sy;
+            // for(sx = 0; sx < Graphics::DISPLAY_PIXEL_SIZE; sx++){
+            //     for(sy = 0; sy < Graphics::DISPLAY_PIXEL_SIZE; sy++){
+                    // frame_image.setPixel(sx + x_offset,
+                    //                      sy + y_offset,
+                    //                      sf::Color(pixel_color, pixel_color, pixel_color)
+                    //                      );
+            //     }
+            // }
 
+            frame_image.setPixel(px,
+                                 py,
+                                 sf::Color(pixel_color,pixel_color,pixel_color)
+                                );
 
             // pixels[px][py].setFillColor(
             //     sf::Color(grayscale_buffer[px][py], grayscale_buffer[px][py], grayscale_buffer[px][py]));
@@ -69,6 +73,8 @@ void Display::perform_mode_1(void) {
     texture.loadFromImage(frame_image);
 
     sf::Sprite sprite(texture);
+
+    sprite.scale(DISPLAY_PIXEL_SIZE, DISPLAY_PIXEL_SIZE);
 
     pthread_mutex_lock(gwl);
 
@@ -86,7 +92,7 @@ void Display::perform_mode_1(void) {
     clock_gettime(CLOCK_MONOTONIC, &timer_get);
     cur_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
 
-    printf("\rFR %f", 1.0 / (cur_cycle_time - last_cycle_time));
+    printf("\rFR %f", (cur_cycle_time - last_cycle_time));
 
     last_cycle_time = cur_cycle_time;
 

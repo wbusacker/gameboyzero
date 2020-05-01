@@ -8,8 +8,12 @@ Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *
     display_counter = 0;
     h_line          = 0;
 
-    display_window.create(sf::VideoMode(DISPLAY_WIDTH * DISPLAY_PIXEL_SIZE, DISPLAY_WIDTH * DISPLAY_PIXEL_SIZE),
+    display_window.create(sf::VideoMode(DISPLAY_COL_COUNT * DISPLAY_PIXEL_SIZE, DISPLAY_ROW_COUNT * DISPLAY_PIXEL_SIZE),
                           "Gameboy Zero Display");
+
+    tile_pattern_buffer_display.create(sf::VideoMode(TILE_DP_TILE_ROW * DISPLAY_PIXEL_SIZE * TILE_SIZE,
+                                                     TILE_DP_TILE_COL * DISPLAY_PIXEL_SIZE * TILE_SIZE),
+                                      "Tile Pattern Buffer Display");
 
     uint16_t x, y;
     grayscale_buffer = new uint8_t *[Graphics::DISPLAY_WIDTH];
@@ -26,8 +30,8 @@ Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *
         }
     }
 
-    frame_image.create(Graphics::DISPLAY_WIDTH * Graphics::DISPLAY_PIXEL_SIZE,
-                        Graphics::DISPLAY_HEIGHT* Graphics::DISPLAY_PIXEL_SIZE,
+    frame_image.create(Graphics::DISPLAY_WIDTH,
+                        Graphics::DISPLAY_HEIGHT,
                         sf::Color::Green);
 
     stat.mode = MODE_0;
@@ -36,6 +40,7 @@ Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *
     sem_init(&frame_sync, 0, 0);
 
     pthread_create(&frame_render_thread_handle, NULL, &Display::frame_renderer, this);
+    pthread_create(&tile_pattern_buffer_thread_handle, NULL, &Display::tile_pattern_buffer_renderer, this);
 }
 
 Display::~Display() {

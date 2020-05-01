@@ -44,8 +44,8 @@ void *Display::frame_renderer(void *arg) {
         //         break;
         // }
 
-        disp->perform_mode_2();
-        disp->perform_mode_1();
+        // disp->perform_mode_2();
+        // disp->perform_mode_1();
 
         // clock_gettime(CLOCK_MONOTONIC, &timer_get);
         // cur_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
