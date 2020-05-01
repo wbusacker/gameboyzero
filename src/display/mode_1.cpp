@@ -63,9 +63,7 @@ void Display::perform_mode_1(void) {
                                  sf::Color(pixel_color,pixel_color,pixel_color)
                                 );
 
-            // pixels[px][py].setFillColor(
-            //     sf::Color(grayscale_buffer[px][py], grayscale_buffer[px][py], grayscale_buffer[px][py]));
-            // display_window.draw(pixels[px][py]);
+
         }
     }
 

@@ -15,6 +15,10 @@ void *Display::frame_renderer(void *arg) {
 
     usleep(1000000);
 
+    disp->frame_image.create(Graphics::DISPLAY_WIDTH,
+                        Graphics::DISPLAY_HEIGHT,
+                        sf::Color::Green);
+
     // timespec timer_get;
     // double   last_cycle_time;
     // double   cur_cycle_time;
@@ -27,22 +31,51 @@ void *Display::frame_renderer(void *arg) {
 
     while (1) {
 
-        // sem_wait(&(disp->frame_sync));
+        Graphics::LCDC_Modes mode;
 
-        // switch(disp->stat.mode){
-        //     case MODE_0:
-        //         disp->perform_mode_0();
-        //         break;
-        //     case MODE_1:
-        //         disp->perform_mode_1();
-        //         break;
-        //     case MODE_2:
-        //         disp->perform_mode_2();
-        //         break;
-        //     case MODE_3:
-        //         disp->perform_mode_3();
-        //         break;
-        // }
+        sem_wait(&(disp->frame_sync));
+
+        pthread_mutex_lock(&(disp->list_lock));
+
+        /* Nothing for us to do, more of a safety measure   */
+        if(disp->mode_list == NULL){
+            printf("Warning! Nothing in mode list!\n");
+            fflush(stdout);
+            pthread_mutex_unlock(&(disp->list_lock));
+            continue;
+        }
+
+        /* Get the mode to act on   */
+        mode = disp->mode_list->mode;
+
+        /* Delete the acted on mode and then move the pointer to the next   */
+        struct Mode_List* ptr;
+        ptr = disp->mode_list;
+
+        disp->mode_list = disp->mode_list->next;
+
+        delete ptr;
+
+        pthread_mutex_unlock(&(disp->list_lock));
+
+        switch(mode){
+            case MODE_0:
+                disp->perform_mode_0();
+                // printf("Recv Mode 0\n");
+                break;
+            case MODE_1:
+                disp->perform_mode_1();
+                // printf("Recv Mode 1\n");
+                break;
+            case MODE_2:
+                disp->perform_mode_2();
+                // printf("Recv Mode 2\n");
+                break;
+            case MODE_3:
+                disp->perform_mode_3();
+                // printf("Recv Mode 3\n");
+                break;
+        }
 
         // disp->perform_mode_2();
         // disp->perform_mode_1();

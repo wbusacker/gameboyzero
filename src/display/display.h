@@ -7,6 +7,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <stdint.h>
+#include <errno.h>
 
 namespace Graphics {
 
@@ -43,6 +44,8 @@ const uint16_t STAT_ADDR = 0xFF41;
 const uint16_t LY_ADDR = 0xFF44;
 const uint16_t LYC_ADDR = 0xFF45;
 
+const char* const MESSAGE_QUEUE_NAME = "/gameboy_zero/display";
+
 enum LCDC_Modes{
     MODE_0,
     MODE_1,
@@ -68,6 +71,11 @@ struct STAT_Register {
     bool    mode_00;
     bool    lyc_coincidence;
     LCDC_Modes mode;
+};
+
+struct Mode_List{
+    enum LCDC_Modes mode;
+    struct Mode_List *next;
 };
 
 class Display {
@@ -101,24 +109,25 @@ class Display {
     sf::RenderWindow display_window;
     sf::RenderWindow tile_pattern_buffer_display;
 
-    sf::RectangleShape **pixels;
-
     sf::Image frame_image;
-
     sf::Image tile_pattern_buffer_image;
 
     pthread_t frame_render_thread_handle;
-    sem_t     frame_sync;
-
     pthread_t tile_pattern_buffer_thread_handle;
 
+    sem_t     frame_sync;
+
     uint16_t h_line;
+
+    pthread_mutex_t list_lock;
+    struct Mode_List* mode_list;
 
     struct LCDC_Register lcdc;
     struct STAT_Register stat;
 
     /* Global Window Lock   */
     pthread_mutex_t *gwl;
+
 };
 
 }    // namespace Graphics

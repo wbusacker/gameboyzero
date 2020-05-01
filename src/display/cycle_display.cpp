@@ -91,9 +91,36 @@ void Display::cycle_display() {
 
     }
 
-    // if(updated_mode){
-    //     sem_post(&frame_sync);
-    // }
+    if(updated_mode){
+
+        pthread_mutex_lock(&list_lock);
+
+        struct Mode_List* entry = new struct Mode_List;
+
+        entry->mode = stat.mode;
+        entry->next = NULL;
+
+        /* If the list is empty, set the new head at entry  */
+        if(mode_list == NULL){
+            mode_list = entry;
+        } else {
+
+            /* Find the end of the list */
+            struct Mode_List* next = mode_list;
+            next = mode_list;
+            while(next->next != NULL){
+                next = next->next;
+            }
+
+            next->next = entry;
+
+        }
+
+        pthread_mutex_unlock(&list_lock);
+       
+        sem_post(&frame_sync);
+
+    }
 
 }
 
