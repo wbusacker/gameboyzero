@@ -1,5 +1,9 @@
 *.exe
 *.o
 *.d
+*.txt
+*.gb
+*.xlsx
 
 bld/
+.vscode/
