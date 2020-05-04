@@ -13,11 +13,9 @@ void *Display::frame_renderer(void *arg) {
         so sleep for a bit
     */
 
-    usleep(1000000);
+    // usleep(1000000);
 
-    disp->frame_image.create(Graphics::DISPLAY_WIDTH,
-                        Graphics::DISPLAY_HEIGHT,
-                        sf::Color::Green);
+    disp->frame_image.create(Graphics::DISPLAY_WIDTH, Graphics::DISPLAY_HEIGHT, sf::Color::Green);
 
     // timespec timer_get;
     // double   last_cycle_time;
@@ -32,24 +30,34 @@ void *Display::frame_renderer(void *arg) {
     while (1) {
 
         Graphics::LCDC_Modes mode;
+        uint8_t              working_line;
+
+        printf("Waiting on semaphore\n");
+        fflush(stdout);
 
         sem_wait(&(disp->frame_sync));
+
+        printf("Waiting on mutex\n");
+        fflush(stdout);
 
         pthread_mutex_lock(&(disp->list_lock));
 
         /* Nothing for us to do, more of a safety measure   */
-        if(disp->mode_list == NULL){
+        if (disp->mode_list == NULL) {
             printf("Warning! Nothing in mode list!\n");
             fflush(stdout);
             pthread_mutex_unlock(&(disp->list_lock));
             continue;
         }
 
+        printf("Received mode %d\n", disp->mode_list->mode);
+
         /* Get the mode to act on   */
-        mode = disp->mode_list->mode;
+        mode         = disp->mode_list->mode;
+        working_line = disp->mode_list->line;
 
         /* Delete the acted on mode and then move the pointer to the next   */
-        struct Mode_List* ptr;
+        struct Mode_List *ptr;
         ptr = disp->mode_list;
 
         disp->mode_list = disp->mode_list->next;
@@ -58,35 +66,23 @@ void *Display::frame_renderer(void *arg) {
 
         pthread_mutex_unlock(&(disp->list_lock));
 
-        switch(mode){
-            case MODE_0:
-                disp->perform_mode_0();
-                // printf("Recv Mode 0\n");
+        switch (mode) {
+            case MODE_0: /* Do nothing, HBLANK                   */
+                disp->perform_mode_0(working_line);
                 break;
-            case MODE_1:
-                disp->perform_mode_1();
-                // printf("Recv Mode 1\n");
+
+            case MODE_1: /* Render Image                         */
+                disp->perform_mode_1(working_line);
                 break;
-            case MODE_2:
-                disp->perform_mode_2();
-                // printf("Recv Mode 2\n");
+
+            case MODE_2: /* Write line grayscale buffer to image */
+                disp->perform_mode_2(working_line);
                 break;
-            case MODE_3:
-                disp->perform_mode_3();
-                // printf("Recv Mode 3\n");
+
+            case MODE_3: /* Write line to grayscale buffer       */
+                disp->perform_mode_3(working_line);
                 break;
         }
-
-        // disp->perform_mode_2();
-        // disp->perform_mode_1();
-
-        // clock_gettime(CLOCK_MONOTONIC, &timer_get);
-        // cur_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
-        // double fr      = 1.0 / (cur_cycle_time - last_cycle_time);
-        // printf("\rFR : %6.2f", fr);
-        // fflush(stdout);
-
-        // last_cycle_time = cur_cycle_time;
     }
 }
 

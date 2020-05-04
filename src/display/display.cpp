@@ -13,7 +13,10 @@ Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *
 
     tile_pattern_buffer_display.create(sf::VideoMode(TILE_DP_TILE_ROW * DISPLAY_PIXEL_SIZE * TILE_SIZE,
                                                      TILE_DP_TILE_COL * DISPLAY_PIXEL_SIZE * TILE_SIZE),
-                                      "Tile Pattern Buffer Display");
+                                       "Tile Pattern Buffer Display");
+
+    frame_image.create(Graphics::DISPLAY_WIDTH, Graphics::DISPLAY_HEIGHT, sf::Color::Green);
+
 
     uint16_t x, y;
     grayscale_buffer = new uint8_t *[Graphics::DISPLAY_WIDTH];
@@ -26,7 +29,7 @@ Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *
         }
     }
 
-    stat.mode = MODE_0;
+    stat.mode    = MODE_0;
     mode_counter = 0;
 
     sem_init(&frame_sync, 0, 0);
@@ -34,7 +37,7 @@ Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *
     pthread_mutex_init(&list_lock, NULL);
     mode_list = NULL;
 
-    pthread_create(&frame_render_thread_handle, NULL, &Display::frame_renderer, this);
+    // pthread_create(&frame_render_thread_handle, NULL, &Display::frame_renderer, this);
     pthread_create(&tile_pattern_buffer_thread_handle, NULL, &Display::tile_pattern_buffer_renderer, this);
 }
 
@@ -45,12 +48,12 @@ Display::~Display() {
     }
     delete[] grayscale_buffer;
 
-    struct Mode_List* next;
+    struct Mode_List *next;
     next = mode_list;
-    while(next != NULL){
-        struct Mode_List* working;
+    while (next != NULL) {
+        struct Mode_List *working;
         working = next;
-        next = next->next;
+        next    = next->next;
         delete working;
     }
 }

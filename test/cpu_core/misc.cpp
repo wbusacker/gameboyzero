@@ -13,7 +13,6 @@ TEST(MISC, NOP) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x00));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0x12;
     core.B = 0x12;
@@ -56,7 +55,6 @@ TEST(MISC, STOP) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x10));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     /* Two calls to cycle the CPU should fail   */
     core.cycle_cpu();
@@ -69,7 +67,6 @@ TEST(MISC, HALT) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x76));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     /* Two calls to cycle the CPU should fail   */
     core.cycle_cpu();

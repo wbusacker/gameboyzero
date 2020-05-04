@@ -24,8 +24,8 @@ void LR35902::process_arith(uint8_t instr) {
     uint16_t new_wr_val;
     uint16_t n;
 
-    /* ADD to A                 */
-    if (check_bits(instr, 0b11111000, 0b10000000) || (instr == 0xC6)) {
+    
+    if (check_bits(instr, 0b11111000, 0b10000000) || (instr == 0xC6)) {         /* ADD to A                     */
 
         if (instr == 0xC6) {
             /* We're grabbing an immediate */
@@ -76,8 +76,8 @@ void LR35902::process_arith(uint8_t instr) {
 
         A = static_cast<uint8_t>(new_A);
 
-        /* ADD to A with Carry      */
-    } else if (check_bits(instr, 0b11111000, 0b10001000) || (instr == 0xCE)) {
+
+    } else if (check_bits(instr, 0b11111000, 0b10001000) || (instr == 0xCE)) {  /* ADD to A with Carry          */
 
         if (instr == 0xCE) {
             /* We're grabbing an immediate */
@@ -134,8 +134,8 @@ void LR35902::process_arith(uint8_t instr) {
 
         A = static_cast<uint8_t>(new_A);
 
-        /* Sub From A               */
-    } else if (check_bits(instr, 0b11111000, 0b10010000) || (instr == 0xD6)) {
+        
+    } else if (check_bits(instr, 0b11111000, 0b10010000) || (instr == 0xD6)) {  /* Sub From A                   */
 
         if (instr == 0xD6) {
             /* We're grabbing an immediate */
@@ -191,8 +191,8 @@ void LR35902::process_arith(uint8_t instr) {
 
         A = static_cast<uint8_t>(new_A);
 
-        /* Sub From A with Carry    */
-    } else if (check_bits(instr, 0b11111000, 0b10011000) || (instr == 0xDE)) {
+        
+    } else if (check_bits(instr, 0b11111000, 0b10011000) || (instr == 0xDE)) {  /* Sub From A with Carry        */
 
         if (instr == 0xDE) {
             /* We're grabbing an immediate */
@@ -261,8 +261,8 @@ void LR35902::process_arith(uint8_t instr) {
 
         A = static_cast<uint8_t>(new_A);
 
-        /* Logical AND A            */
-    } else if (check_bits(instr, 0b11111000, 0b10100000) || (instr == 0xE6)) {
+        
+    } else if (check_bits(instr, 0b11111000, 0b10100000) || (instr == 0xE6)) {  /* Logical AND A                */
 
         if (instr == 0xE6) {
             /* We're grabbing an immediate */
@@ -306,8 +306,8 @@ void LR35902::process_arith(uint8_t instr) {
 
         A = static_cast<uint8_t>(new_A);
 
-        /* Logical XOR A            */
-    } else if (check_bits(instr, 0b11111000, 0b10101000) || (instr == 0xEE)) {
+        
+    } else if (check_bits(instr, 0b11111000, 0b10101000) || (instr == 0xEE)) {  /* Logical XOR A                */
 
         if (instr == 0xEE) {
             /* We're grabbing an immediate */
@@ -351,8 +351,8 @@ void LR35902::process_arith(uint8_t instr) {
 
         A = static_cast<uint8_t>(new_A);
 
-        /* Logical OR A             */
-    } else if (check_bits(instr, 0b11111000, 0b10110000) || (instr == 0xF6)) {
+        
+    } else if (check_bits(instr, 0b11111000, 0b10110000) || (instr == 0xF6)) {  /* Logical OR A                 */
 
         if (instr == 0xF6) {
             /* We're grabbing an immediate */
@@ -396,8 +396,8 @@ void LR35902::process_arith(uint8_t instr) {
 
         A = static_cast<uint8_t>(new_A);
 
-        /* Logical CP A             */
-    } else if (check_bits(instr, 0b11111000, 0b10111000) || (instr == 0xFE)) {
+        
+    } else if (check_bits(instr, 0b11111000, 0b10111000) || (instr == 0xFE)) {  /* Logical CP A                 */
 
         if (instr == 0xFE) {
             /* We're grabbing an immediate */
@@ -418,28 +418,17 @@ void LR35902::process_arith(uint8_t instr) {
             }
         }
 
-        /* Perform the operation */
-        new_A = A - wr_val;
-
-        /* Check for half carry */
-        if (check_bit_for_carry(A, wr_val, 4)) {
+        /* If A < wr_val, then set carry */
+        if (A < wr_val) {
+            flags.carry = true;
             flags.half_carry = true;
         } else {
+            flags.carry = false;
             flags.half_carry = false;
         }
 
-        /* Check for full carry */
-        if (check_bit_for_carry(A, wr_val, 8)) {
-            flags.carry = true;
-        } else {
-            flags.carry = false;
-        }
-
-        /* Reduce new_A to just 8 bits */
-        new_A &= 0xFF;
-
         /* Check for Zero */
-        if (new_A == 0) {
+        if (A == wr_val) {
             flags.zero = true;
         } else {
             flags.zero = false;
@@ -449,8 +438,8 @@ void LR35902::process_arith(uint8_t instr) {
 
         /* Don't actually change the state of A */
 
-        /* INC Register             */
-    } else if (check_bits(instr, 0b11000111, 0b00000100)) {
+        
+    } else if (check_bits(instr, 0b11000111, 0b00000100)) {                     /* INC Register                 */
 
         wr = get_reg_ptr_from_number(instr >> 3);
 
@@ -499,8 +488,8 @@ void LR35902::process_arith(uint8_t instr) {
             *wr = static_cast<uint8_t>(new_wr_val);
         }
 
-        /* DEC Register             */
-    } else if (check_bits(instr, 0b11000111, 0b00000101)) {
+        
+    } else if (check_bits(instr, 0b11000111, 0b00000101)) {                     /* DEC Register                 */
 
         wr = get_reg_ptr_from_number(instr >> 3);
 
@@ -549,8 +538,8 @@ void LR35902::process_arith(uint8_t instr) {
             *wr = static_cast<uint8_t>(new_wr_val);
         }
 
-        /* 16 bit INC               */
-    } else if (check_bits(instr, 0b11001111, 0b00000011)) {
+        
+    } else if (check_bits(instr, 0b11001111, 0b00000011)) {                     /* 16 bit INC                   */
         instr_cycles = 2;
         switch (instr & 0xF0) {
             case 0x00:
@@ -572,8 +561,8 @@ void LR35902::process_arith(uint8_t instr) {
                 stack_pointer++;
                 break;
         }
-        /* 16 bit DEC               */
-    } else if (check_bits(instr, 0b11001111, 0b00001011)) {
+        
+    } else if (check_bits(instr, 0b11001111, 0b00001011)) {                     /* 16 bit DEC                   */
         instr_cycles = 2;
         switch (instr & 0xF0) {
             case 0x00:
@@ -590,47 +579,49 @@ void LR35902::process_arith(uint8_t instr) {
                 break;
             case 0x20:
                 HL_dec();
+                break;
             case 0x30:
                 stack_pointer--;
                 break;
         }
 
-        /* 16 Bit ADD */
-    } else if (check_bits(instr, 0b11001111, 0b00001001)) {
+        
+    } else if (check_bits(instr, 0b11001111, 0b00001001)) {                     /* 16 Bit ADD                   */
         instr_cycles = 2;
+        uint8_t old_L = L;
         switch (instr & 0xF0) {
             case 0x00:
                 L += C;
                 H += B;
-                if (L == 0x00) {
+                if (L < old_L) {
                     H++;
                 }
                 break;
             case 0x10:
                 L += E;
                 H += D;
-                if (L == 0x00) {
+                if (L < old_L) {
                     H++;
                 }
                 break;
             case 0x20:
                 L += L;
                 H += H;
-                if (L == 0x00) {
+                if (L < old_L) {
                     H++;
                 }
                 break;
             case 0x30:
                 L += (stack_pointer & 0x00FF);
                 H += ((stack_pointer & 0xFF00) >> 8);
-                if (L == 0x00) {
+                if (L < old_L) {
                     H++;
                 }
                 break;
         }
 
-        /* Switch to handle one offs    */
-    } else {
+        
+    } else {                                                                    /* Switch to handle one offs    */
         switch (instr) {
             case 0x27: /* Decimal Adjust A */
                 new_A = A;

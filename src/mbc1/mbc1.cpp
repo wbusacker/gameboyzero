@@ -37,8 +37,8 @@ void MBC1::init_cart(FILE *fp) {
         }
     }
 
-    extended_memory_mode = false;
-    enable_ram           = false;
+    extended_ram_mode    = false;
+    enable_ram           = true;
     bank1                = 1;
     bank2                = 0;
 

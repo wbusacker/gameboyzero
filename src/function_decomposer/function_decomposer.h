@@ -17,7 +17,7 @@ class Function_Decomposer {
     public:
     Function_Decomposer(Memory::Memory_Map &mem);
 
-    void register_call(uint16_t addr);
+    void register_call(uint16_t addr, uint16_t blind_grab = 0);
 
     private:
     Memory::Memory_Map &memory_bus;

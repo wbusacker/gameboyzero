@@ -21,13 +21,13 @@ uint8_t Memory_Map::fetch_addr(uint16_t addr) {
     } else if ((addr >= 0xC000) && (addr < 0xE000)) {
         // printf("[READ ] Internal Ram\n");
 
-    } else if ((addr >= 0xE000) && (addr < 0xFe00)) {
+    } else if ((addr >= 0xE000) && (addr < 0xFE00)) {
         // printf("[READ ] Echo Internal Ram\n");
 
     } else if ((addr >= 0xFE00) && (addr < 0xFEA0)) {
         // printf("[READ ] Sprite Memory\n");
 
-    } else if ((addr >= 0xFEA0) && (addr < 0xFF010)) {
+    } else if ((addr >= 0xFEA0) && (addr < 0xFF00)) {
         // printf("[READ ] Empty Unusable IO 1\n");
 
     } else if ((addr >= 0xFF00) && (addr < 0xFF4C)) {
@@ -42,9 +42,13 @@ uint8_t Memory_Map::fetch_addr(uint16_t addr) {
     } else if ((addr >= 0xFF80) && (addr < 0xFFFF)) {
         // printf("[READ ] Internal RAM\n");
 
-    } else if ((addr = 0xFFFF)) {
-        // printf("[READ ] Interrupt Enable Register\n");
-        return irq_controller->get_enable_mask();
+    } else if ((addr >= 0xFFFF) && (addr < 0xFFFF)) {
+
+        switch(addr){
+            case 0xFFFF:
+                return irq_controller->get_enable_mask();
+
+        }
     }
     fflush(stdout);
 

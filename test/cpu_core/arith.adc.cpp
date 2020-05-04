@@ -13,7 +13,6 @@ TEST(ARITH_ADC, ADC_A) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x8F));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A           = 0x11;
     core.flags.carry = true;
@@ -30,7 +29,6 @@ TEST(ARITH_ADC, ADC_B) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x88));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A           = 0x11;
     core.flags.carry = true;
@@ -47,7 +45,6 @@ TEST(ARITH_ADC, ADC_C) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x89));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A           = 0x11;
     core.flags.carry = true;
@@ -64,7 +61,6 @@ TEST(ARITH_ADC, ADC_D) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x8A));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A           = 0x11;
     core.flags.carry = true;
@@ -81,7 +77,6 @@ TEST(ARITH_ADC, ADC_E) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x8B));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A           = 0x11;
     core.flags.carry = true;
@@ -98,7 +93,6 @@ TEST(ARITH_ADC, ADC_H) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x8C));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A           = 0x11;
     core.flags.carry = true;
@@ -115,7 +109,6 @@ TEST(ARITH_ADC, ADC_L) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x8D));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A           = 0x11;
     core.flags.carry = true;
@@ -132,7 +125,6 @@ TEST(ARITH_ADC, ADC_HL) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0x8E)).WillOnce(Return(0x11));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.flags.carry = true;
     core.A           = 0x11;
@@ -148,7 +140,6 @@ TEST(ARITH_ADC, ADC_n) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(2).WillOnce(Return(0xCE)).WillOnce(Return(0x11));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.flags.carry = true;
     core.A           = 0x11;

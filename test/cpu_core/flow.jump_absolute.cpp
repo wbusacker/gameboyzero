@@ -27,8 +27,6 @@ TEST(FLOW_CONTROL, JP_nn) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.cycle_cpu();
 
@@ -44,8 +42,6 @@ TEST(FLOW_CONTROL, JP_NZ_nn_taken) {
       .WillOnce(Return(0xC2))
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.flags.zero      = false;
@@ -64,8 +60,6 @@ TEST(FLOW_CONTROL, JP_NC_nn_taken) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.flags.carry     = false;
     core.cycle_cpu();
@@ -82,8 +76,6 @@ TEST(FLOW_CONTROL, JP_Z_nn_taken) {
       .WillOnce(Return(0xCA))
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.flags.zero      = true;
@@ -102,8 +94,6 @@ TEST(FLOW_CONTROL, JP_C_nn_taken) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.flags.carry     = true;
     core.cycle_cpu();
@@ -120,8 +110,6 @@ TEST(FLOW_CONTROL, JP_NZ_nn_not_taken) {
       .WillOnce(Return(0xC2))
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.flags.zero      = true;
@@ -140,8 +128,6 @@ TEST(FLOW_CONTROL, JP_NC_nn_not_taken) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.flags.carry     = true;
     core.cycle_cpu();
@@ -158,8 +144,6 @@ TEST(FLOW_CONTROL, JP_Z_nn_not_taken) {
       .WillOnce(Return(0xCA))
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.flags.zero      = false;
@@ -178,8 +162,6 @@ TEST(FLOW_CONTROL, JP_C_nn_not_taken) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.flags.carry     = false;
     core.cycle_cpu();
@@ -193,8 +175,6 @@ TEST(FLOW_CONTROL, JP_HL) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xE9));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.H               = TARGET_ADDR_H;

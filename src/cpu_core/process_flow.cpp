@@ -29,9 +29,9 @@ void LR35902::process_flow(uint8_t instr) {
             offset = sign_extend_8(memory_bus.fetch_addr(program_counter++));
             if (flags.zero == false) {
                 program_counter += offset;
-                instr_cycles = 4;
-            } else {
                 instr_cycles = 3;
+            } else {
+                instr_cycles = 2;
             }
             break;
 
@@ -39,9 +39,9 @@ void LR35902::process_flow(uint8_t instr) {
             offset = sign_extend_8(memory_bus.fetch_addr(program_counter++));
             if (flags.zero == true) {
                 program_counter += offset;
-                instr_cycles = 4;
-            } else {
                 instr_cycles = 3;
+            } else {
+                instr_cycles = 2;
             }
             break;
 
@@ -49,9 +49,9 @@ void LR35902::process_flow(uint8_t instr) {
             offset = sign_extend_8(memory_bus.fetch_addr(program_counter++));
             if (flags.carry == false) {
                 program_counter += offset;
-                instr_cycles = 4;
-            } else {
                 instr_cycles = 3;
+            } else {
+                instr_cycles = 2;
             }
             break;
 
@@ -59,9 +59,9 @@ void LR35902::process_flow(uint8_t instr) {
             offset = sign_extend_8(memory_bus.fetch_addr(program_counter++));
             if (flags.carry == true) {
                 program_counter += offset;
-                instr_cycles = 4;
-            } else {
                 instr_cycles = 3;
+            } else {
+                instr_cycles = 2;
             }
             break;
 
@@ -84,7 +84,7 @@ void LR35902::process_flow(uint8_t instr) {
                 program_counter = (nn_msb << 8) | nn_lsb;
                 instr_cycles    = 4;
             } else {
-                instr_cycles = 3;
+                instr_cycles = 4;
             }
             break;
 
@@ -92,7 +92,7 @@ void LR35902::process_flow(uint8_t instr) {
             nn_lsb          = memory_bus.fetch_addr(program_counter++);
             nn_msb          = memory_bus.fetch_addr(program_counter++);
             program_counter = (nn_msb << 8) | nn_lsb;
-            instr_cycles    = 3;
+            instr_cycles    = 4;
             break;
 
         case 0xC4: /* Call on Condtional Code NZ                            */
@@ -107,7 +107,7 @@ void LR35902::process_flow(uint8_t instr) {
                     func_decomp.register_call(program_counter);
                 }
             } else {
-                instr_cycles = 3;
+                instr_cycles = 4;
             }
             break;
 
@@ -144,7 +144,7 @@ void LR35902::process_flow(uint8_t instr) {
                 program_counter = (nn_msb << 8) | nn_lsb;
                 instr_cycles    = 4;
             } else {
-                instr_cycles = 3;
+                instr_cycles = 4;
             }
             break;
 
@@ -160,7 +160,7 @@ void LR35902::process_flow(uint8_t instr) {
                     func_decomp.register_call(program_counter);
                 }
             } else {
-                instr_cycles = 3;
+                instr_cycles = 4;
             }
             break;
 
@@ -200,7 +200,7 @@ void LR35902::process_flow(uint8_t instr) {
                 program_counter = (nn_msb << 8) | nn_lsb;
                 instr_cycles    = 4;
             } else {
-                instr_cycles = 3;
+                instr_cycles = 4;
             }
             break;
 
@@ -216,7 +216,7 @@ void LR35902::process_flow(uint8_t instr) {
                     func_decomp.register_call(program_counter);
                 }
             } else {
-                instr_cycles = 3;
+                instr_cycles = 4;
             }
             break;
 
@@ -252,7 +252,7 @@ void LR35902::process_flow(uint8_t instr) {
                 program_counter = (nn_msb << 8) | nn_lsb;
                 instr_cycles    = 4;
             } else {
-                instr_cycles = 3;
+                instr_cycles = 4;
             }
             break;
 
@@ -268,7 +268,7 @@ void LR35902::process_flow(uint8_t instr) {
                     func_decomp.register_call(program_counter);
                 }
             } else {
-                instr_cycles = 3;
+                instr_cycles = 4;
             }
             break;
 

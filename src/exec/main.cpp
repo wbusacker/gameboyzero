@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include <X11/Xlib.h>
 
 CPU::LR35902 *global_cpu;
 
@@ -23,6 +24,9 @@ void error_catch(int sig_num) {
 }
 
 int main(void) {
+
+    /* We're multi-threaded and X Really doesn't like that  */
+    XInitThreads();
 
     signal(SIGSEGV, error_catch);
     signal(SIGINT, error_catch);
@@ -95,8 +99,9 @@ int main(void) {
 
     /* Create the CPU           */
     CPU::LR35902 cpu(main_memory, irqc);
-    global_cpu                = &cpu;
-    cpu.enable_function_trace = true;
+    global_cpu                   = &cpu;
+    // cpu.enable_function_trace    = true;
+    // cpu.enable_instruction_trace = true;
 
     /* Hookup the Debugger      */
     Debug::GB_Debugger gbdb(&cpu, &gwl);
@@ -123,7 +128,7 @@ int main(void) {
         // fflush(stdout);
 
         // getc(stdin);
-        // usleep(1000);
+        // usleep(500);
         // clock_gettime(CLOCK_MONOTONIC, &timer_get);
         // cur_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
         // if(cur_cycle_time > (last_cycle_time + CPU::CORE_PERIOD)){

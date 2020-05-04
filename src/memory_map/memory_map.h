@@ -14,6 +14,7 @@ class Memory_Map {
 
     virtual uint8_t fetch_addr(uint16_t addr);
     virtual void    store_addr(uint16_t addr, uint8_t val);
+    virtual uint8_t get_rom_bank(void){return loaded_cartridge->get_rom_bank();}
 
     private:
     Cart::Cartridge *loaded_cartridge;

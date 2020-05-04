@@ -2,12 +2,12 @@
 #define GB_DISPLAY_H
 
 #include <SFML/Graphics.hpp>
+#include <errno.h>
 #include <irq_controller.h>
 #include <memory_map.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include <stdint.h>
-#include <errno.h>
 
 namespace Graphics {
 
@@ -26,55 +26,54 @@ const uint8_t  TILE_SIZE             = 8;
 const uint8_t  TILES_PER_ROW         = (Graphics::DISPLAY_WIDTH / Graphics::TILE_SIZE);
 const uint8_t  TILES_PER_COL         = (Graphics::DISPLAY_HEIGHT / Graphics::TILE_SIZE);
 
-const uint16_t  SYSTEM_TILE_COUNT   = 256 + 128;
-const uint8_t   TILE_DP_TILE_ROW    = 16;
-const uint8_t   TILE_DP_TILE_COL    = SYSTEM_TILE_COUNT / TILE_DP_TILE_ROW;
+const uint16_t SYSTEM_TILE_COUNT = 256 + 128;
+const uint8_t  TILE_DP_TILE_ROW  = 16;
+const uint8_t  TILE_DP_TILE_COL  = SYSTEM_TILE_COUNT / TILE_DP_TILE_ROW;
 
-const uint16_t   MODE_0_CYCLE_COUNT = 51;
-const uint16_t   MODE_1_CYCLE_COUNT = 20;
-const uint16_t   MODE_2_CYCLE_COUNT = 43;
-const uint16_t   MODE_3_CYCLE_COUNT = 1140;
-const uint16_t   H_LINE_CYCLE_COUNT = MODE_0_CYCLE_COUNT + 
-                                      MODE_1_CYCLE_COUNT + 
-                                      MODE_2_CYCLE_COUNT;
+const uint16_t MODE_0_CYCLE_COUNT = 51;
+const uint16_t MODE_1_CYCLE_COUNT = 1140;
+const uint16_t MODE_2_CYCLE_COUNT = 20;
+const uint16_t MODE_3_CYCLE_COUNT = 43;
+const uint16_t H_LINE_CYCLE_COUNT = MODE_0_CYCLE_COUNT + MODE_3_CYCLE_COUNT + MODE_2_CYCLE_COUNT;
 
 const uint16_t LCDC_ADDR = 0xFF40;
 const uint16_t STAT_ADDR = 0xFF41;
 
-const uint16_t LY_ADDR = 0xFF44;
+const uint16_t LY_ADDR  = 0xFF44;
 const uint16_t LYC_ADDR = 0xFF45;
 
-const char* const MESSAGE_QUEUE_NAME = "/gameboy_zero/display";
+const char *const MESSAGE_QUEUE_NAME = "/gameboy_zero/display";
 
-enum LCDC_Modes{
-    MODE_0,
-    MODE_1,
-    MODE_2,
-    MODE_3
+enum LCDC_Modes {
+    MODE_0 = 0,
+    MODE_1 = 1,
+    MODE_2 = 2,
+    MODE_3 = 3
 };
 
 struct LCDC_Register {
-    bool     operation;
-    uint16_t windows_tile_map;
-    bool     window_display;
-    uint16_t bg_window_tile_data;
-    uint16_t bg_tile_map;
-    bool     tall_sprites;
-    bool     display_sprites;
-    bool     bg_window_display;
+    bool     operation;           /* LCD On/Off                   */
+    uint16_t windows_tile_map;    /* Tile Map Address             */
+    bool     window_display;      /* Use the Window Layer         */
+    uint16_t bg_window_tile_data; /* Tile Pattern Address         */
+    uint16_t bg_tile_map;         /* Tile Map Address             */
+    bool     tall_sprites;        /* Sprite Size 8x8 or 8x16      */
+    bool     display_sprites;     /* Use the Sprite Layer         */
+    bool     bg_window_display;   /* Use the BG & Window Layer    */
 };
 
 struct STAT_Register {
-    bool    lyc_selectable;
-    bool    mode_10;
-    bool    mode_01;
-    bool    mode_00;
-    bool    lyc_coincidence;
+    bool       lyc_selectable;
+    bool       mode_10;
+    bool       mode_01;
+    bool       mode_00;
+    bool       lyc_coincidence;
     LCDC_Modes mode;
 };
 
-struct Mode_List{
-    enum LCDC_Modes mode;
+struct Mode_List {
+    enum LCDC_Modes   mode;
+    uint8_t           line;
     struct Mode_List *next;
 };
 
@@ -93,10 +92,10 @@ class Display {
 
     static void *tile_pattern_buffer_renderer(void *arg);
 
-    void perform_mode_0(void);
-    void perform_mode_1(void);
-    void perform_mode_2(void);
-    void perform_mode_3(void);
+    void perform_mode_0(uint8_t working_line);
+    void perform_mode_1(uint8_t working_line);
+    void perform_mode_2(uint8_t working_line);
+    void perform_mode_3(uint8_t working_line);
 
     IRQ::Controller &   irq_controller;
     Memory::Memory_Map &main_memory;
@@ -115,19 +114,18 @@ class Display {
     pthread_t frame_render_thread_handle;
     pthread_t tile_pattern_buffer_thread_handle;
 
-    sem_t     frame_sync;
+    sem_t frame_sync;
 
     uint16_t h_line;
 
-    pthread_mutex_t list_lock;
-    struct Mode_List* mode_list;
+    pthread_mutex_t   list_lock;
+    struct Mode_List *mode_list;
 
     struct LCDC_Register lcdc;
     struct STAT_Register stat;
 
     /* Global Window Lock   */
     pthread_mutex_t *gwl;
-
 };
 
 }    // namespace Graphics

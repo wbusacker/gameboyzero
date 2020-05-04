@@ -17,16 +17,24 @@ Function_Decomposer::Function_Decomposer(Memory::Memory_Map &mem) : memory_bus(m
     fclose(out_handle);
 }
 
-void Function_Decomposer::register_call(uint16_t addr) {
+void Function_Decomposer::register_call(uint16_t addr, uint16_t blind_grab) {
 
     /* Check if we know already know about this function    */
     if (known_calls[addr]) {
         return;
     }
 
+    uint16_t starting_addr = addr;
+
     out_handle = fopen(OUTPUT_NAME, "a");
 
     known_calls[addr] = true;
+
+    if (blind_grab != 0) {
+        fprintf(out_handle, "\nBLIND GRAB OF 0x%04X Bytes\n", blind_grab);
+        printf("\nBLIND GRAB OF 0x%04X Bytes\n", blind_grab);
+        fflush(stdout);
+    }
 
     fprintf(out_handle, "\n####################\n");
     fprintf(out_handle, "# Function %d\n", known_functions++);
@@ -74,6 +82,14 @@ void Function_Decomposer::register_call(uint16_t addr) {
         if ((instr == 0xC9) || (instr == 0xD9)) {
             fclose(out_handle);
             return;
+        }
+
+        /* If we were a blind grab, check how many bits are left    */
+        if (blind_grab != 0) {
+            if ((addr - starting_addr) > blind_grab) {
+                fclose(out_handle);
+                return;
+            }
         }
     }
 }

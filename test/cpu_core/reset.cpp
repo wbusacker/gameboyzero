@@ -13,7 +13,6 @@ TEST(MISC, RES_00) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xC7));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = 0x0123 - 1;
     core.stack_pointer   = 0xFFFF;
@@ -34,7 +33,6 @@ TEST(MISC, RES_08) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xCF));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = 0x0123 - 1;
     core.stack_pointer   = 0xFFFF;
@@ -55,7 +53,6 @@ TEST(MISC, RES_10) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xD7));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = 0x0123 - 1;
     core.stack_pointer   = 0xFFFF;
@@ -76,7 +73,6 @@ TEST(MISC, RES_18) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xDF));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = 0x0123 - 1;
     core.stack_pointer   = 0xFFFF;
@@ -97,7 +93,6 @@ TEST(MISC, RES_20) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xE7));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = 0x0123 - 1;
     core.stack_pointer   = 0xFFFF;
@@ -118,7 +113,6 @@ TEST(MISC, RES_28) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xEF));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = 0x0123 - 1;
     core.stack_pointer   = 0xFFFF;
@@ -139,7 +133,6 @@ TEST(MISC, RES_30) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xF7));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = 0x0123 - 1;
     core.stack_pointer   = 0xFFFF;
@@ -160,7 +153,6 @@ TEST(MISC, RES_38) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xFF));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = 0x0123 - 1;
     core.stack_pointer   = 0xFFFF;

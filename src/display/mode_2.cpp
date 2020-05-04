@@ -3,70 +3,54 @@
 
 namespace Graphics {
 
-void Display::perform_mode_2(void) {
-    // printf("Perform Mode 2\n");
+void Display::perform_mode_2(uint8_t working_line) {
 
-    /* Update the tile frame buffer */
+    /* Calculate which line and tile to read    */
 
-    uint8_t x_tile;
-    uint8_t y_tile;
-    for(y_tile = 0; y_tile < Graphics::TILES_PER_COL; y_tile++){
-        for(x_tile = 0; x_tile < Graphics::TILES_PER_ROW; x_tile++){
+    uint8_t tile_map_row     = working_line / Graphics::TILE_SIZE;
+    uint8_t tile_pattern_row = working_line % Graphics::TILE_SIZE;
 
-            /* Find which Tile to use   */
-            // uint16_t tile_pattern_num = lcdc.bg_tile_map + (y_tile * Graphics::TILES_PER_ROW) + x_tile;
-            uint16_t tile_pattern_num = (y_tile * Graphics::TILES_PER_ROW) + x_tile;
+    uint8_t pixel = 0;
 
-            tile_pattern_num %= (256+128);
+    while (pixel < Graphics::DISPLAY_COL_COUNT) {
 
-            /* Find the Address of the tile to use  */
-            uint16_t pattern_addr = lcdc.bg_window_tile_data + (tile_pattern_num * Graphics::TILE_PATTERN_SIZE);
+        /* Figure out which tile to grab    */
+        uint8_t  tile_map_no   = tile_map_row + (pixel / Graphics::TILE_SIZE);
+        uint16_t tile_map_addr = lcdc.bg_tile_map + tile_map_no;
 
-            // pattern_addr = 0x8000;
+        /* Get the pattern address          */
+        uint16_t tile_pattern_no = main_memory.fetch_addr(tile_map_addr);
 
-            uint8_t tile_row;
-            for(tile_row = 0; tile_row < Graphics::TILE_SIZE; tile_row++){
-                /* Get the two bytes that make up the tile  */
-                uint8_t lsb;
-                uint8_t msb;
+        // tile_pattern_no = tile_map_no;
 
-                lsb = main_memory.fetch_addr(pattern_addr + (tile_row * 2));
-                msb = main_memory.fetch_addr(pattern_addr + (tile_row * 2) + 1);
+        uint16_t tile_pattern_addr = lcdc.bg_window_tile_data + (tile_pattern_no * Graphics::TILE_PATTERN_SIZE);
 
-                uint8_t bit;
-                for(bit = 0; bit < Graphics::TILE_SIZE; bit++){
+        /* Get the tile pattern data        */
 
-                    uint8_t val;
+        uint8_t lsb;
+        uint8_t msb;
 
-                    val = (lsb >> (7 - bit)) & 0b1;
-                    val |= ((msb >> (7 - bit)) & 0b1) << 1;
+        lsb = main_memory.fetch_addr(tile_pattern_addr + (tile_pattern_row * 2));
+        msb = main_memory.fetch_addr(tile_pattern_addr + (tile_pattern_row * 2) + 1);
 
-                    uint8_t *pixel = &(grayscale_buffer[(x_tile * Graphics::TILE_SIZE) + bit][(y_tile * Graphics::TILE_SIZE) + tile_row]);
+        /* Run through all of the bits in the tile  */
+        uint8_t bit;
+        for (bit = pixel % Graphics::TILE_SIZE; bit < Graphics::TILE_SIZE; bit++) {
 
-                    *pixel = val;
+            uint8_t val;
 
-                    // switch (val) {
-                    //     case 0:
-                    //         *pixel = 0xFF;
-                    //         break;
-                    //     case 1:
-                    //         *pixel = 0xAA;
-                    //         break;
-                    //     case 2:
-                    //         *pixel = 0x55;
-                    //         break;
-                    //     case 3:
-                    //         *pixel = 0x00;
-                    //         break;
-                    //     default:
-                    //         *pixel = 0x88;
-                    // }
-                }
-            }
+            val = (lsb >> (7 - bit)) & 0b1;
+            val |= ((msb >> (7 - bit)) & 0b1) << 1;
+
+            grayscale_buffer[pixel][working_line] = val;
+
+            pixel++;
         }
+
+        // grayscale_buffer[pixel++][working_line] = working_line % 4;
     }
 
     return;
 }
 
-}
+}    // namespace Graphics

@@ -20,8 +20,6 @@ TEST(FLOW_CONTROL, JR_e) {
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0x18)).WillOnce(Return(JUMP_OFFSET));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.cycle_cpu();
 
@@ -34,8 +32,6 @@ TEST(FLOW_CONTROL, JR_NZ_e_taken) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0x20)).WillOnce(Return(JUMP_OFFSET));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.flags.zero      = false;
@@ -51,8 +47,6 @@ TEST(FLOW_CONTROL, JR_NC_e_taken) {
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0x30)).WillOnce(Return(JUMP_OFFSET));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.flags.carry     = false;
     core.cycle_cpu();
@@ -66,8 +60,6 @@ TEST(FLOW_CONTROL, JR_Z_e_taken) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0x28)).WillOnce(Return(JUMP_OFFSET));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.flags.zero      = true;
@@ -83,8 +75,6 @@ TEST(FLOW_CONTROL, JR_C_e_taken) {
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0x38)).WillOnce(Return(JUMP_OFFSET));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.flags.carry     = true;
     core.cycle_cpu();
@@ -98,8 +88,6 @@ TEST(FLOW_CONTROL, JR_NZ_e_not_taken) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0x20)).WillOnce(Return(JUMP_OFFSET));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.flags.zero      = true;
@@ -115,8 +103,6 @@ TEST(FLOW_CONTROL, JR_NC_e_not_taken) {
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0x30)).WillOnce(Return(JUMP_OFFSET));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.flags.carry     = true;
     core.cycle_cpu();
@@ -131,8 +117,6 @@ TEST(FLOW_CONTROL, JR_Z_e_not_taken) {
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0x28)).WillOnce(Return(JUMP_OFFSET));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.flags.zero      = false;
     core.cycle_cpu();
@@ -146,8 +130,6 @@ TEST(FLOW_CONTROL, JR_C_e_not_taken) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0x38)).WillOnce(Return(JUMP_OFFSET));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.flags.carry     = false;

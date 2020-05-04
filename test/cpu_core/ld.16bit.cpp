@@ -20,7 +20,6 @@ TEST(LD_16, LD_BC_nn) {
       .WillOnce(Return(0x01))
       .WillOnce(Return(TARGET_VAL_1))
       .WillOnce(Return(TARGET_VAL_2));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.B = 0x00;
     core.C = 0x00;
@@ -41,7 +40,6 @@ TEST(LD_16, LD_DE_nn) {
       .WillOnce(Return(0x11))
       .WillOnce(Return(TARGET_VAL_1))
       .WillOnce(Return(TARGET_VAL_2));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.D = 0x00;
     core.E = 0x00;
@@ -62,7 +60,6 @@ TEST(LD_16, LD_HL_nn) {
       .WillOnce(Return(0x21))
       .WillOnce(Return(TARGET_VAL_1))
       .WillOnce(Return(TARGET_VAL_2));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.H = 0x00;
     core.L = 0x00;
@@ -82,7 +79,6 @@ TEST(LD_16, LD_SP_nn) {
       .WillOnce(Return(0x31))
       .WillOnce(Return(TARGET_VAL_1))
       .WillOnce(Return(TARGET_VAL_2));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.stack_pointer = 0x0000;
 
@@ -101,7 +97,6 @@ TEST(LD_16, LD_nn_SP) {
       .WillOnce(Return(0x08))
       .WillOnce(Return(TARGET_VAL_1))
       .WillOnce(Return(TARGET_VAL_2));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     uint16_t target_addr = (static_cast<uint16_t>(TARGET_VAL_2 << 8)) | TARGET_VAL_1;
 
@@ -127,7 +122,6 @@ TEST(LD_16, POP_BC) {
 
     EXPECT_CALL(bus, fetch_addr(0x1)).WillOnce(Return(TARGET_VAL_2));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.cycle_cpu();
 
@@ -149,7 +143,6 @@ TEST(LD_16, POP_DE) {
     EXPECT_CALL(bus, fetch_addr(0x0)).WillOnce(Return(TARGET_VAL_1));
 
     EXPECT_CALL(bus, fetch_addr(0x1)).WillOnce(Return(TARGET_VAL_2));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.cycle_cpu();
 
@@ -171,7 +164,6 @@ TEST(LD_16, POP_HL) {
     EXPECT_CALL(bus, fetch_addr(0x0)).WillOnce(Return(TARGET_VAL_1));
 
     EXPECT_CALL(bus, fetch_addr(0x1)).WillOnce(Return(TARGET_VAL_2));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.cycle_cpu();
 
@@ -196,7 +188,6 @@ TEST(LD_16, POP_AF) {
     EXPECT_CALL(bus, fetch_addr(0x0)).WillOnce(Return(TARGET_VAL_1));
 
     EXPECT_CALL(bus, fetch_addr(0x1)).WillOnce(Return(TARGET_VAL_2));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.cycle_cpu();
 
@@ -220,7 +211,6 @@ TEST(LD_16, PUSH_BC) {
     core.C             = TARGET_VAL_1;
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xC5));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     EXPECT_CALL(bus, store_addr(target_addr - 1, TARGET_VAL_2));
     EXPECT_CALL(bus, store_addr(target_addr - 2, TARGET_VAL_1));
@@ -241,7 +231,6 @@ TEST(LD_16, PUSH_DE) {
     core.E             = TARGET_VAL_1;
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0xD5));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     EXPECT_CALL(bus, store_addr(target_addr - 1, TARGET_VAL_2));
     EXPECT_CALL(bus, store_addr(target_addr - 2, TARGET_VAL_1));
@@ -265,7 +254,6 @@ TEST(LD_16, PUSH_HL) {
 
     EXPECT_CALL(bus, store_addr(target_addr - 1, TARGET_VAL_2));
     EXPECT_CALL(bus, store_addr(target_addr - 2, TARGET_VAL_1));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.cycle_cpu();
 
@@ -289,7 +277,6 @@ TEST(LD_16, PUSH_AF) {
 
     EXPECT_CALL(bus, store_addr(target_addr - 1, TARGET_VAL_2));
     EXPECT_CALL(bus, store_addr(target_addr - 2, TARGET_VAL_1 & 0x0F));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.cycle_cpu();
 
@@ -308,7 +295,6 @@ TEST(LD_16, LD_HL_SP_n) {
     EXPECT_CALL(bus, fetch_addr(target_addr + offset)).WillOnce(Return(TARGET_VAL_1));
     EXPECT_CALL(bus, fetch_addr(target_addr + offset + 1)).WillOnce(Return(TARGET_VAL_2));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.cycle_cpu();
 
@@ -328,7 +314,6 @@ TEST(LD_16, LD_SP_HL) {
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xF9));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.cycle_cpu();
 

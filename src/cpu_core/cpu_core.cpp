@@ -7,25 +7,25 @@ bool print_diagnostics = true;
 LR35902::LR35902(Memory::Memory_Map &bus, IRQ::Controller &irq) :
     memory_bus(bus), irq_controller(irq), func_decomp(bus) {
     flags.sub        = false;
-    flags.zero       = false;
-    flags.carry      = false;
-    flags.half_carry = false;
+    flags.zero       = true;
+    flags.carry      = true;
+    flags.half_carry = true;
     flags.padding    = 0x0;
 
-    A = 0;
-    B = 0;
-    C = 0;
-    D = 0;
-    E = 0;
-    H = 0;
-    L = 0;
+    A = 0x01;
+    B = 0x00;
+    C = 0x13;
+    D = 0x00;
+    E = 0xD8;
+    H = 0x01;
+    L = 0x4D;
 
-    stack_pointer   = 0xFFFC;
+    stack_pointer   = 0xFFFE;
     program_counter = 0x0100;
 
     stall_processor  = false;
     instr_cycles     = 0;
-    enable_interrupt = true;
+    enable_interrupt = false;
 
     trace_buffer_overflow = false;
     trace_buffer_bottom   = 0;
@@ -40,7 +40,7 @@ LR35902::LR35902(Memory::Memory_Map &bus, IRQ::Controller &irq) :
         trace_buffer[i].mnemonic = default_instr;
     }
 
-    num_clock_cycles = 0;
+    num_clock_cycles = 0xFFFFFFFFFFFFFFFF;
 
     timespec timer_get;
     clock_gettime(CLOCK_MONOTONIC, &timer_get);
@@ -50,14 +50,20 @@ LR35902::LR35902(Memory::Memory_Map &bus, IRQ::Controller &irq) :
 
     pthread_mutex_init(&cpu_control_lock, NULL);
 
-    enable_function_trace = false;
+    enable_instruction_trace = false;
+    enable_function_trace    = false;
 
-    FILE *fp;
-    fp = fopen(CPU::TRACE_LOG_NAME, "w");
-    fclose(fp);
+    trace_log_handle = fopen(CPU::TRACE_LOG_NAME, "w");
+    // fclose(fp);
+
+    // func_decomp.register_call(0x0150, 0x0700);
 
     last_cycle_time = 0;
-    cpu_frequency = 0;
+    cpu_frequency   = 0;
+}
+
+LR35902::~LR35902(void){
+    fclose(trace_log_handle);
 }
 
 }    // namespace CPU

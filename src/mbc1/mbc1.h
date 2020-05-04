@@ -14,8 +14,24 @@ class MBC1 : public Cartridge {
 
     uint8_t read_memory(uint16_t addr);
 
+    inline uint8_t get_ram_bank(void){
+        if (extended_ram_mode == true) {
+            return bank2;
+        } else {
+            return 0;
+        }
+    }
+
+    inline uint8_t get_rom_bank(void){
+        if (extended_ram_mode == false){
+            return (bank2 << 5) | bank1;
+        } else {
+            return bank1;
+        }
+    }
+
     private:
-    bool    extended_memory_mode;
+    bool    extended_ram_mode;
     bool    enable_ram;
     uint8_t bank1;
     uint8_t bank2;

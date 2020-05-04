@@ -25,7 +25,6 @@ TEST(FLOW_CONTROL, CALL_nn) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     EXPECT_CALL(bus, store_addr(STACK_POINTER_START - 1, START_ADDR_H));
     EXPECT_CALL(bus, store_addr(STACK_POINTER_START - 2, START_ADDR_L));
@@ -48,7 +47,6 @@ TEST(FLOW_CONTROL, CALL_NZ_nn_taken) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     EXPECT_CALL(bus, store_addr(STACK_POINTER_START - 1, START_ADDR_H));
     EXPECT_CALL(bus, store_addr(STACK_POINTER_START - 2, START_ADDR_L));
@@ -72,7 +70,6 @@ TEST(FLOW_CONTROL, CALL_NC_nn_taken) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     EXPECT_CALL(bus, store_addr(STACK_POINTER_START - 1, START_ADDR_H));
     EXPECT_CALL(bus, store_addr(STACK_POINTER_START - 2, START_ADDR_L));
@@ -96,7 +93,6 @@ TEST(FLOW_CONTROL, CALL_Z_nn_taken) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     EXPECT_CALL(bus, store_addr(STACK_POINTER_START - 1, START_ADDR_H));
     EXPECT_CALL(bus, store_addr(STACK_POINTER_START - 2, START_ADDR_L));
@@ -120,7 +116,6 @@ TEST(FLOW_CONTROL, CALL_C_nn_taken) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     EXPECT_CALL(bus, store_addr(STACK_POINTER_START - 1, START_ADDR_H));
     EXPECT_CALL(bus, store_addr(STACK_POINTER_START - 2, START_ADDR_L));
@@ -144,7 +139,6 @@ TEST(FLOW_CONTROL, CALL_NZ_nn_not_taken) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR - 3;
     core.stack_pointer   = STACK_POINTER_START;
@@ -165,8 +159,6 @@ TEST(FLOW_CONTROL, CALL_NC_nn_not_taken) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR - 3;
     core.stack_pointer   = STACK_POINTER_START;
     core.flags.carry     = true;
@@ -185,8 +177,6 @@ TEST(FLOW_CONTROL, CALL_Z_nn_not_taken) {
       .WillOnce(Return(0xCC))
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR - 3;
     core.stack_pointer   = STACK_POINTER_START;
@@ -207,8 +197,6 @@ TEST(FLOW_CONTROL, CALL_C_nn_not_taken) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR - 3;
     core.stack_pointer   = STACK_POINTER_START;
     core.flags.carry     = false;
@@ -227,8 +215,6 @@ TEST(FLOW_CONTROL, RET) {
       .WillOnce(Return(0xC9))
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
@@ -268,8 +254,6 @@ TEST(FLOW_CONTROL, RET_NZ_taken) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
     core.flags.zero      = false;
@@ -288,8 +272,6 @@ TEST(FLOW_CONTROL, RET_NC_taken) {
       .WillOnce(Return(0xD0))
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
@@ -310,8 +292,6 @@ TEST(FLOW_CONTROL, RET_Z_taken) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
     core.flags.zero      = true;
@@ -331,8 +311,6 @@ TEST(FLOW_CONTROL, RET_C_taken) {
       .WillOnce(Return(TARGET_ADDR_L))
       .WillOnce(Return(TARGET_ADDR_H));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
     core.flags.carry     = true;
@@ -348,8 +326,6 @@ TEST(FLOW_CONTROL, RET_NZ_not_taken) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xC0));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
@@ -367,8 +343,6 @@ TEST(FLOW_CONTROL, RET_NC_not_taken) {
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xD0));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
     core.flags.carry     = true;
@@ -385,8 +359,6 @@ TEST(FLOW_CONTROL, RET_Z_not_taken) {
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xC8));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;
     core.flags.zero      = false;
@@ -402,8 +374,6 @@ TEST(FLOW_CONTROL, RET_C_not_taken) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xD8));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.program_counter = START_ADDR;
     core.stack_pointer   = STACK_POINTER_START - 2;

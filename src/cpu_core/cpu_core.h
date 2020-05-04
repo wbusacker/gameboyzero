@@ -46,6 +46,8 @@ class LR35902 {
     public:
     LR35902(Memory::Memory_Map &bus, IRQ::Controller &irq);
 
+    ~LR35902();
+
     void cycle_cpu(void);
 
     inline void lock_cpu(void) {
@@ -127,7 +129,7 @@ class LR35902 {
     uint64_t num_clock_cycles;
     double   cpu_frequency;
 
-    double  last_cycle_time;
+    double last_cycle_time;
 
     uint64_t cpu_start_time_ns;
 
@@ -136,6 +138,9 @@ class LR35902 {
     Disassembler::Function_Decomposer func_decomp;
 
     bool enable_function_trace;
+    bool enable_instruction_trace;
+
+    FILE *trace_log_handle;
 };
 
 }    // namespace CPU

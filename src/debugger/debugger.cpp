@@ -64,6 +64,7 @@ GB_Debugger::GB_Debugger(CPU::LR35902 *cc, pthread_mutex_t *global_window_lock) 
     core_register_names[STACK_POINTER].set_string(std::string("STACK_POINTER"));
     core_register_names[PROGRAM_COUNTER].set_string(std::string("PROGRAM_COUNTER"));
     core_register_names[INTERRUPT_ENABLED].set_string(std::string("INTERRUPT_ENABLED"));
+    core_register_names[STALL_PROCESSOR].set_string(std::string("STALL_PROCESSOR"));
     core_register_names[CPU_CYCLES].set_string(std::string("CPU_CYCLES"));
     core_register_names[CPU_FREQUENCY].set_string(std::string("CPU_FREQUENCY"));
 

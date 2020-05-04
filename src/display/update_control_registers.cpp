@@ -27,7 +27,6 @@ void Display::update_control_registers(void) {
     // stat.mode_00 = ((stat_register & 0x08) != 0) ? true : false;
     stat.lyc_coincidence = ((stat_register & 0x04) != 0) ? true : false;
     // stat.mode = stat_register & 0x3;
-
 }
 
 }    // namespace Graphics

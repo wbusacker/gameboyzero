@@ -13,7 +13,6 @@ TEST(CPU_16_BIT, INC_BC) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x03));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.B = 0x1;
     core.C = 0xff;
@@ -29,7 +28,6 @@ TEST(CPU_16_BIT, INC_DE) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x13));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.D = 0x1;
     core.E = 0xff;
@@ -45,7 +43,6 @@ TEST(CPU_16_BIT, INC_HL) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x23));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.H = 0x1;
     core.L = 0xff;
@@ -61,7 +58,6 @@ TEST(CPU_16_BIT, INC_SP) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x33));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.stack_pointer = 0x1;
     core.cycle_cpu();
@@ -75,7 +71,6 @@ TEST(CPU_16_BIT, DEC_BC) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x0B));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.B = 0x01;
     core.C = 0x00;
@@ -91,7 +86,6 @@ TEST(CPU_16_BIT, DEC_DE) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x1B));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.D = 0x01;
     core.E = 0x00;
@@ -107,7 +101,6 @@ TEST(CPU_16_BIT, DEC_HL) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x2B));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.H = 0x1;
     core.L = 0x00;
@@ -123,7 +116,6 @@ TEST(CPU_16_BIT, DEC_SP) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x3B));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.stack_pointer = 0x01;
     core.cycle_cpu();
@@ -137,7 +129,6 @@ TEST(CPU_16_BIT, ADD_HL_BC) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x09));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.H = 0x01;
     core.L = 0x23;
@@ -155,7 +146,6 @@ TEST(CPU_16_BIT, ADD_HL_DE) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x19));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.H = 0x01;
     core.L = 0x23;
@@ -172,7 +162,6 @@ TEST(CPU_16_BIT, ADD_HL_HL) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x29));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.H = 0x01;
     core.L = 0x23;
@@ -190,7 +179,6 @@ TEST(CPU_16_BIT, ADD_HL_SP) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).Times(1).WillOnce(Return(0x39));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.H             = 0x01;
     core.L             = 0x23;
@@ -207,7 +195,6 @@ TEST(CPU_16_BIT, ADD_SP_n) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xE8)).WillOnce(Return(0x01));
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.stack_pointer = 0x0123;
     core.cycle_cpu();

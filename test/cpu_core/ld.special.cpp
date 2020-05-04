@@ -18,8 +18,6 @@ TEST(LD_SPECIAL, LDH_n_A) {
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xE0)).WillOnce(Return(TARGET_ADDR));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     EXPECT_CALL(bus, store_addr(0xFF00 + TARGET_ADDR, TARGET_VAL));
 
     core.A = TARGET_VAL;
@@ -36,8 +34,6 @@ TEST(LD_SPECIAL, LDH_A_n) {
 
     EXPECT_CALL(bus, fetch_addr(0xFF00 + TARGET_ADDR)).WillOnce(Return(TARGET_VAL));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.A = 0x0;
 
     core.cycle_cpu();
@@ -51,8 +47,6 @@ TEST(LD_SPECIAL, LDH_C_A) {
     CPU::LR35902    core(bus, irq);
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xE2));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     EXPECT_CALL(bus, store_addr(0xFF00 + TARGET_ADDR, TARGET_VAL));
 
@@ -70,8 +64,6 @@ TEST(LD_SPECIAL, LDH_A_C) {
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xF2));
 
     EXPECT_CALL(bus, fetch_addr(0xFF00 + TARGET_ADDR)).WillOnce(Return(TARGET_VAL));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0x0;
     core.C = TARGET_ADDR;
@@ -93,8 +85,6 @@ TEST(LD_SPECIAL, LDH_nn_A) {
 
     EXPECT_CALL(bus, store_addr((TARGET_ADDR_H << 8) + TARGET_ADDR, TARGET_VAL));
 
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
-
     core.A = TARGET_VAL;
 
     core.cycle_cpu();
@@ -111,8 +101,6 @@ TEST(LD_SPECIAL, LDH_A_nn) {
       .WillOnce(Return(TARGET_ADDR_H));
 
     EXPECT_CALL(bus, fetch_addr((TARGET_ADDR_H << 8) + TARGET_ADDR)).WillOnce(Return(TARGET_VAL));
-
-    EXPECT_CALL(irq, get_interrupt()).Times(1).WillOnce(Return(0));
 
     core.A = 0x0;
 
