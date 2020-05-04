@@ -32,6 +32,9 @@ Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *
     stat.mode    = MODE_0;
     mode_counter = 0;
 
+    scroll_x = 64;
+    scroll_y = 0;
+
     sem_init(&frame_sync, 0, 0);
 
     pthread_mutex_init(&list_lock, NULL);

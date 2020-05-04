@@ -20,7 +20,7 @@ const uint16_t DISPLAY_COL_COUNT     = 160;
 const uint16_t TILE_MAP_0_ADDR       = 0x9800;
 const uint16_t TILE_MAP_1_ADDR       = 0x9C00;
 const uint16_t TILE_PATTERN_BUFFER_0 = 0x8000;
-const uint16_t TILE_PATTERN_BUFFER_1 = 0x8800;
+const uint16_t TILE_PATTERN_BUFFER_1 = 0x9000;
 const uint16_t TILE_PATTERN_SIZE     = 16;
 const uint8_t  TILE_SIZE             = 8;
 const uint8_t  TILES_PER_ROW         = (Graphics::DISPLAY_WIDTH / Graphics::TILE_SIZE);
@@ -38,9 +38,11 @@ const uint16_t H_LINE_CYCLE_COUNT = MODE_0_CYCLE_COUNT + MODE_3_CYCLE_COUNT + MO
 
 const uint16_t LCDC_ADDR = 0xFF40;
 const uint16_t STAT_ADDR = 0xFF41;
-
+const uint16_t SCY_ADDR  = 0xFF42;
+const uint16_t SCX_ADDR  = 0xFF43;
 const uint16_t LY_ADDR  = 0xFF44;
 const uint16_t LYC_ADDR = 0xFF45;
+
 
 const char *const MESSAGE_QUEUE_NAME = "/gameboy_zero/display";
 
@@ -123,6 +125,9 @@ class Display {
 
     struct LCDC_Register lcdc;
     struct STAT_Register stat;
+
+    uint8_t scroll_x;
+    uint8_t scroll_y;
 
     /* Global Window Lock   */
     pthread_mutex_t *gwl;
