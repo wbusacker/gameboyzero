@@ -8,10 +8,10 @@
 
 namespace Debug {
 
-const uint16_t DEBUG_WINDOWS_HEIGHT = 1080;
-const uint16_t DEBUG_WINDOWS_WIDTH  = 1920;
-const uint16_t MEMORY_TABLE_HEIGHT  = 48;
-const uint16_t MEMORY_TABLE_WIDTH   = 32;
+const uint16_t DEBUG_WINDOWS_HEIGHT = 700;
+const uint16_t DEBUG_WINDOWS_WIDTH  = 1000;
+const uint16_t MEMORY_TABLE_HEIGHT  = 32;
+const uint16_t MEMORY_TABLE_WIDTH   = 16;
 
 enum CPU_Debugger_Index_enm {
     FLAGS_SUB = 0,

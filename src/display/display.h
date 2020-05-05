@@ -25,6 +25,7 @@ const uint16_t TILE_PATTERN_SIZE     = 16;
 const uint8_t  TILE_SIZE             = 8;
 const uint8_t  TILES_PER_ROW         = (Graphics::DISPLAY_WIDTH / Graphics::TILE_SIZE);
 const uint8_t  TILES_PER_COL         = (Graphics::DISPLAY_HEIGHT / Graphics::TILE_SIZE);
+const uint8_t  PIXEL_COLOR_DEPTH     = 4;
 
 const uint16_t SYSTEM_TILE_COUNT = 256 + 128;
 const uint8_t  TILE_DP_TILE_ROW  = 16;
@@ -42,6 +43,8 @@ const uint16_t SCY_ADDR  = 0xFF42;
 const uint16_t SCX_ADDR  = 0xFF43;
 const uint16_t LY_ADDR  = 0xFF44;
 const uint16_t LYC_ADDR = 0xFF45;
+
+const uint16_t BGP_ADDR = 0xFF47;
 
 
 const char *const MESSAGE_QUEUE_NAME = "/gameboy_zero/display";
@@ -131,6 +134,10 @@ class Display {
 
     /* Global Window Lock   */
     pthread_mutex_t *gwl;
+
+    sf::Color* background_pallete[Graphics::PIXEL_COLOR_DEPTH];
+    
+
 };
 
 }    // namespace Graphics

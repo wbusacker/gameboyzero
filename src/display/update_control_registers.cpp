@@ -5,6 +5,11 @@ namespace Graphics {
 
 void Display::update_control_registers(void) {
 
+    static sf::Color pixel_white(255, 255, 255);
+    static sf::Color pixel_66(170, 170, 170);
+    static sf::Color pixel_33(85, 85, 85);
+    static sf::Color pixel_black(0, 0, 0);
+
     /* Update the LCDC Register */
     uint8_t lcdc_register = main_memory.fetch_addr(Graphics::LCDC_ADDR);
 
@@ -30,8 +35,30 @@ void Display::update_control_registers(void) {
 
     scroll_x = main_memory.fetch_addr(Graphics::SCX_ADDR);
     scroll_y = main_memory.fetch_addr(Graphics::SCY_ADDR);
-    // scroll_x = 0;
-    // scroll_y = 0;
+
+    uint8_t pallete_map = main_memory.fetch_addr(Graphics::BGP_ADDR);
+
+    uint8_t pallete_no;
+    for(pallete_no = 0; pallete_no < Graphics::PIXEL_COLOR_DEPTH; pallete_no++){
+        uint8_t color = (pallete_map >> (pallete_no * 2)) & 0b11;
+
+        switch(color){
+            case 0:
+                background_pallete[pallete_no] = &pixel_white;
+                break;
+            case 1:
+                background_pallete[pallete_no] = &pixel_66;
+                break;
+            case 2:
+                background_pallete[pallete_no] = &pixel_33;
+                break;
+            case 3:
+                background_pallete[pallete_no] = &pixel_black;
+                break;
+        }
+    }
+
+
 }
 
 }    // namespace Graphics

@@ -5,13 +5,8 @@
 
 namespace Debug {
 void *GB_Debugger::render_thread(void *arg) {
-    // void
-    // GB_Debugger::draw(void) {
 
     Debug::GB_Debugger *gbdb = reinterpret_cast<Debug::GB_Debugger *>(arg);
-    // Debug::GB_Debugger *gbdb = reinterpret_cast<Debug::GB_Debugger *>(this);
-
-    uint64_t last_cpu_cycle_count;
 
     while (1) {
 
@@ -108,7 +103,7 @@ void *GB_Debugger::render_thread(void *arg) {
                     break;
 
                 case CPU_FREQUENCY:
-                    sprintf(hex, "%-08.6f", gbdb->cpu_core->cpu_frequency / 1E6);
+                    sprintf(hex, "%08.6f", gbdb->cpu_core->cpu_frequency / 1E6);
                     break;
             }
 
@@ -131,7 +126,7 @@ void *GB_Debugger::render_thread(void *arg) {
 
         pthread_mutex_unlock(gbdb->gwl);
 
-        usleep( ((1.0/60.0) * 1000000));
+        usleep( ((1.0/20.0) * 1000000));
     }
 }
 

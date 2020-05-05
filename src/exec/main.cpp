@@ -101,7 +101,7 @@ int main(void) {
     CPU::LR35902 cpu(main_memory, irqc);
     global_cpu                   = &cpu;
     // cpu.enable_function_trace    = true;
-    // cpu.enable_instruction_trace = true;
+    cpu.enable_instruction_trace = true;
 
     /* Hookup the Debugger      */
     Debug::GB_Debugger gbdb(&cpu, &gwl);
