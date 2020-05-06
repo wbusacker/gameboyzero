@@ -23,7 +23,7 @@ void Display::cycle_display() {
     switch (stat.mode) {
         case MODE_0:
             if (mode_counter == MODE_0_CYCLE_COUNT) {
-                stat.mode    = MODE_2;
+                stat.mode = MODE_2;
                 // printf("\n-> Mode 2");
                 // fflush(stdout);
                 updated_mode = true;
@@ -34,13 +34,13 @@ void Display::cycle_display() {
 
             /* During Mode 1 keep upping the h_line when appropriate    */
 
-            if((mode_counter % H_LINE_CYCLE_COUNT) == 0){
+            if ((mode_counter % H_LINE_CYCLE_COUNT) == 0) {
                 h_line++;
                 updated_hline = true;
             }
 
             if (mode_counter == MODE_1_CYCLE_COUNT) {
-                stat.mode    = MODE_0;
+                stat.mode = MODE_0;
                 // printf("\n-> Mode 0");
                 // fflush(stdout);
                 h_line        = 0;
@@ -51,7 +51,7 @@ void Display::cycle_display() {
 
         case MODE_2:
             if (mode_counter == MODE_2_CYCLE_COUNT) {
-                stat.mode    = MODE_3;
+                stat.mode = MODE_3;
                 // printf("\n-> Mode 3");
                 // fflush(stdout);
                 updated_mode = true;
@@ -60,7 +60,7 @@ void Display::cycle_display() {
 
         case MODE_3:
             if (mode_counter == MODE_3_CYCLE_COUNT) {
-                stat.mode    = MODE_0;
+                stat.mode = MODE_0;
                 // printf("\n-> Mode 0");
                 // fflush(stdout);
                 h_line++;
@@ -69,7 +69,6 @@ void Display::cycle_display() {
             }
             break;
     }
-
 
     if (updated_hline) {
 
@@ -114,11 +113,7 @@ void Display::cycle_display() {
                 perform_mode_3(h_line);
                 break;
         }
-
-
     }
-
-
 }
 
 }    // namespace Graphics

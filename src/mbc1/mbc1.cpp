@@ -37,10 +37,10 @@ void MBC1::init_cart(FILE *fp) {
         }
     }
 
-    extended_ram_mode    = false;
-    enable_ram           = true;
-    bank1                = 1;
-    bank2                = 0;
+    extended_ram_mode = false;
+    enable_ram        = true;
+    bank1             = 1;
+    bank2             = 0;
 
     /* Import the file into the ROM banks       */
     for (bank = 0; bank < num_rom_banks; bank++) {

@@ -44,10 +44,10 @@ CXX		:= g++
 ASM_CMD := objdump
 IMG_CMD := objcopy
 
-OPT 			:= -O0 -g
+OPT 			:= -O3 -g
 INCLUDE_DIRS 	:= $(addprefix -I, $(SOURCE_DIRS)) $(addprefix -I, $(TEST_SOURCE_DIRS))
 WARN			:= -Wall
-LINK			:= -lpthread -lncurses -lsfml-graphics -lsfml-window -lsfml-system -lrt -lX11
+LINK			:= -lpthread -lsfml-graphics -lsfml-window -lsfml-system -lrt -lX11
 CFLAGS 			:= $(INCLUDE_DIRS) $(OPT) $(WARN) $(LINK)
 DEPFLAGS		= -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 

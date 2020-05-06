@@ -126,7 +126,7 @@ void *GB_Debugger::render_thread(void *arg) {
 
         pthread_mutex_unlock(gbdb->gwl);
 
-        usleep( ((1.0/20.0) * 1000000));
+        usleep(((1.0 / 20.0) * 1000000));
     }
 }
 

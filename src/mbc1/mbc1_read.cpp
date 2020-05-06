@@ -7,7 +7,7 @@ uint8_t MBC1::read_memory(uint16_t addr) {
     uint8_t bank_number = 0;
 
     /* If we're in the lower 8KB, check against mode    */
-    if(addr < 0x4000){
+    if (addr < 0x4000) {
 
         bank_number = 0;
 
@@ -15,7 +15,7 @@ uint8_t MBC1::read_memory(uint16_t addr) {
     }
 
     /* If were in the switchable bank area, different rules apply   */
-    if((addr < 0x8000) && (addr >= 0x4000)){
+    if ((addr < 0x8000) && (addr >= 0x4000)) {
         bank_number = get_rom_bank();
 
         return rom_banks[bank_number][addr % ROM_BANK_SIZE];
@@ -25,7 +25,7 @@ uint8_t MBC1::read_memory(uint16_t addr) {
     if ((addr < 0xC000) && (addr >= 0xA000)) {
 
         if (enable_ram) {
-            
+
             bank_number = get_ram_bank();
 
             addr %= RAM_BANK_SIZE;

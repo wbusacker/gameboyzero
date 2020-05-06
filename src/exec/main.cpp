@@ -28,6 +28,8 @@ int main(void) {
     /* We're multi-threaded and X Really doesn't like that  */
     XInitThreads();
 
+    // so_slow();
+
     signal(SIGSEGV, error_catch);
     signal(SIGINT, error_catch);
 
@@ -43,7 +45,7 @@ int main(void) {
     }
 
     printf("Determining Cartridge Type\n");
-    Cart::Cartridge *cart;
+    Cart::Cartridge *cart = NULL;
     switch (Cart::determine_cart_type(fp)) {
         case Cart::CART_MBC1:
             printf("Type MBC1\n");
@@ -78,6 +80,10 @@ int main(void) {
             printf("Unimplemented cartridge type\n");
     }
 
+    if(cart == NULL){
+        exit(-10);
+    }
+
     printf("Importing ROM File\n");
 
     cart->init_cart(fp);
@@ -101,7 +107,7 @@ int main(void) {
     CPU::LR35902 cpu(main_memory, irqc);
     global_cpu                   = &cpu;
     // cpu.enable_function_trace    = true;
-    cpu.enable_instruction_trace = true;
+    // cpu.enable_instruction_trace = true;
 
     /* Hookup the Debugger      */
     Debug::GB_Debugger gbdb(&cpu, &gwl);
@@ -136,6 +142,10 @@ int main(void) {
         //     CPU::CORE_PERIOD); return 0;
         // }
         // last_cycle_time = cur_cycle_time;
+
+        if(disp.request_destroy){
+            break;
+        }
     }
 
     return 0;

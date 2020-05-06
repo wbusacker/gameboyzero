@@ -1,8 +1,8 @@
 #include <cpu_core.h>
+#include <function_decomposer.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <function_decomposer.h>
 
 namespace CPU {
 
@@ -51,16 +51,15 @@ void LR35902::log_instruction(uint8_t instr) {
 
     fprintf(trace_log_handle, " |[%02x]", memory_bus.get_rom_bank());
 
-
     fprintf(trace_log_handle, "0x%04x: ", program_counter);
 
     uint8_t i;
     uint8_t stop = Disassembler::get_instr_bytes(instr);
-    for(i = 0; i < stop; i++){
+    for (i = 0; i < stop; i++) {
         fprintf(trace_log_handle, "%02x ", memory_bus.fetch_addr(program_counter + i));
     }
 
-    for(; i < 3; i++){
+    for (; i < 3; i++) {
         fprintf(trace_log_handle, "   ");
     }
 

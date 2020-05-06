@@ -20,7 +20,7 @@ void MBC1::write_memory(uint16_t addr, uint8_t val) {
     } else if ((addr < 0x3FFF) && (addr >= 0x2000)) {
         bank1 = val & 0b11111;
 
-        if(bank1 == 0){
+        if (bank1 == 0) {
             bank1 = 1;
         }
 
@@ -40,7 +40,7 @@ void MBC1::write_memory(uint16_t addr, uint8_t val) {
 
     } else if ((addr < 0xC000) && (addr >= 0xA000)) {
 
-        if(enable_ram == true){
+        if (enable_ram == true) {
             uint8_t bank_number = 0;
             if (extended_ram_mode) {
                 bank_number = bank2;

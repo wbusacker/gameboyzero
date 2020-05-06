@@ -12,6 +12,7 @@ namespace CPU {
 
 const uint8_t  MNEMONIC_LENGTH  = 32;
 const uint16_t TRACE_BUFFER_LEN = 2048;
+const uint16_t NUM_INSTRUCTIONS = 256;
 
 const double CORE_FREQUENCY = 1.0485E6;
 const double CORE_PERIOD    = 1.0 / CORE_FREQUENCY;
@@ -141,6 +142,8 @@ class LR35902 {
     bool enable_instruction_trace;
 
     FILE *trace_log_handle;
+
+    void (LR35902::*fp[NUM_INSTRUCTIONS])(uint8_t);
 };
 
 }    // namespace CPU

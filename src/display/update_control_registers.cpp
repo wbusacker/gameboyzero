@@ -39,10 +39,10 @@ void Display::update_control_registers(void) {
     uint8_t pallete_map = main_memory.fetch_addr(Graphics::BGP_ADDR);
 
     uint8_t pallete_no;
-    for(pallete_no = 0; pallete_no < Graphics::PIXEL_COLOR_DEPTH; pallete_no++){
+    for (pallete_no = 0; pallete_no < Graphics::PIXEL_COLOR_DEPTH; pallete_no++) {
         uint8_t color = (pallete_map >> (pallete_no * 2)) & 0b11;
 
-        switch(color){
+        switch (color) {
             case 0:
                 background_pallete[pallete_no] = &pixel_white;
                 break;
@@ -57,8 +57,6 @@ void Display::update_control_registers(void) {
                 break;
         }
     }
-
-
 }
 
 }    // namespace Graphics

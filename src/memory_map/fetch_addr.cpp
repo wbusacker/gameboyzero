@@ -44,10 +44,9 @@ uint8_t Memory_Map::fetch_addr(uint16_t addr) {
 
     } else if ((addr >= 0xFFFF) && (addr < 0xFFFF)) {
 
-        switch(addr){
+        switch (addr) {
             case 0xFFFF:
                 return irq_controller->get_enable_mask();
-
         }
     }
     fflush(stdout);

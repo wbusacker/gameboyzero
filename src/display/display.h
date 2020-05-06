@@ -41,20 +41,14 @@ const uint16_t LCDC_ADDR = 0xFF40;
 const uint16_t STAT_ADDR = 0xFF41;
 const uint16_t SCY_ADDR  = 0xFF42;
 const uint16_t SCX_ADDR  = 0xFF43;
-const uint16_t LY_ADDR  = 0xFF44;
-const uint16_t LYC_ADDR = 0xFF45;
+const uint16_t LY_ADDR   = 0xFF44;
+const uint16_t LYC_ADDR  = 0xFF45;
 
 const uint16_t BGP_ADDR = 0xFF47;
 
-
 const char *const MESSAGE_QUEUE_NAME = "/gameboy_zero/display";
 
-enum LCDC_Modes {
-    MODE_0 = 0,
-    MODE_1 = 1,
-    MODE_2 = 2,
-    MODE_3 = 3
-};
+enum LCDC_Modes { MODE_0 = 0, MODE_1 = 1, MODE_2 = 2, MODE_3 = 3 };
 
 struct LCDC_Register {
     bool     operation;           /* LCD On/Off                   */
@@ -135,9 +129,9 @@ class Display {
     /* Global Window Lock   */
     pthread_mutex_t *gwl;
 
-    sf::Color* background_pallete[Graphics::PIXEL_COLOR_DEPTH];
-    
+    sf::Color *background_pallete[Graphics::PIXEL_COLOR_DEPTH];
 
+    bool request_destroy;
 };
 
 }    // namespace Graphics

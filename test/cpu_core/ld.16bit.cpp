@@ -122,7 +122,6 @@ TEST(LD_16, POP_BC) {
 
     EXPECT_CALL(bus, fetch_addr(0x1)).WillOnce(Return(TARGET_VAL_2));
 
-
     core.cycle_cpu();
 
     ASSERT_EQ(core.B, TARGET_VAL_2);
@@ -295,7 +294,6 @@ TEST(LD_16, LD_HL_SP_n) {
     EXPECT_CALL(bus, fetch_addr(target_addr + offset)).WillOnce(Return(TARGET_VAL_1));
     EXPECT_CALL(bus, fetch_addr(target_addr + offset + 1)).WillOnce(Return(TARGET_VAL_2));
 
-
     core.cycle_cpu();
 
     ASSERT_EQ(core.H, TARGET_VAL_2);
@@ -313,7 +311,6 @@ TEST(LD_16, LD_SP_HL) {
     core.L = TARGET_VAL_1;
 
     EXPECT_CALL(bus, fetch_addr(_)).WillOnce(Return(0xF9));
-
 
     core.cycle_cpu();
 

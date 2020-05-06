@@ -14,21 +14,20 @@ void Display::perform_mode_2(uint8_t working_line) {
 
     uint8_t pixel = 0;
 
-
     while (pixel < Graphics::DISPLAY_COL_COUNT) {
 
         uint16_t scrolled_pixel = (pixel + scroll_x) % Graphics::DISPLAY_WIDTH;
 
         /* Figure out which tile to grab    */
-        uint16_t  tile_map_no   = tile_map_row * Graphics::TILES_PER_ROW;
+        uint16_t tile_map_no = tile_map_row * Graphics::TILES_PER_ROW;
         tile_map_no += scrolled_pixel / Graphics::TILE_SIZE;
         uint16_t tile_map_addr = lcdc.bg_tile_map + tile_map_no;
 
         /* Get the pattern address          */
         int16_t tile_pattern_no = main_memory.fetch_addr(tile_map_addr);
 
-        if(lcdc.bg_window_tile_data == Graphics::TILE_PATTERN_BUFFER_1){
-            if((tile_pattern_no & 0x80) == 0x80){
+        if (lcdc.bg_window_tile_data == Graphics::TILE_PATTERN_BUFFER_1) {
+            if ((tile_pattern_no & 0x80) == 0x80) {
                 tile_pattern_no |= 0xFF00;
             }
         }

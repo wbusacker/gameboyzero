@@ -14,7 +14,7 @@ class MBC1 : public Cartridge {
 
     uint8_t read_memory(uint16_t addr);
 
-    inline uint8_t get_ram_bank(void){
+    inline uint8_t get_ram_bank(void) {
         if (extended_ram_mode == true) {
             return bank2;
         } else {
@@ -22,8 +22,8 @@ class MBC1 : public Cartridge {
         }
     }
 
-    inline uint8_t get_rom_bank(void){
-        if (extended_ram_mode == false){
+    inline uint8_t get_rom_bank(void) {
+        if (extended_ram_mode == false) {
             return (bank2 << 5) | bank1;
         } else {
             return bank1;
