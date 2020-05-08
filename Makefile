@@ -134,7 +134,6 @@ $(BLD):
 
 $(DEPDIR): 
 	mkdir $@
->>>>>>> 9cb9829... Unit tested main Arithmetic Functions
 
 remake:
 	make clean; make
