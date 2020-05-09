@@ -6,24 +6,8 @@ namespace Graphics {
 void Display::perform_mode_1(uint8_t working_line) {
     // printf("Perform Mode 1\n");
 
-    static double last_cycle_time = 0;
-
-    sf::Texture texture;
-    texture.loadFromImage(frame_image);
-
-    sf::Sprite sprite(texture);
-
-    sprite.scale(DISPLAY_PIXEL_SIZE, DISPLAY_PIXEL_SIZE);
-
-    pthread_mutex_lock(gwl);
-
-    display_window.clear();
-
-    display_window.draw(sprite);
-
-    display_window.display();
-
-    pthread_mutex_unlock(gwl);
+    // sem_post(&frame_sync);
+    new_frame = true;
 
     // timespec timer_get;
     // double   cur_cycle_time;

@@ -129,6 +129,8 @@ class Display {
     /* Global Window Lock   */
     pthread_mutex_t *gwl;
 
+    volatile bool new_frame;
+
     sf::Color *background_pallete[Graphics::PIXEL_COLOR_DEPTH];
 
     bool request_destroy;

@@ -27,62 +27,28 @@ void *Display::frame_renderer(void *arg) {
     printf("Preparing to render frame\n");
     fflush(stdout);
 
+    sf::Texture texture;
+    sf::Sprite sprite;
+    sprite.scale(Graphics::DISPLAY_PIXEL_SIZE, Graphics::DISPLAY_PIXEL_SIZE);
+
     while (1) {
 
-        Graphics::LCDC_Modes mode;
-        uint8_t              working_line;
+        // sem_wait(&(disp->frame_sync));
+        while(disp->new_frame == false);
+        disp->new_frame = false;
 
-        printf("Waiting on semaphore\n");
-        fflush(stdout);
+        texture.loadFromImage(disp->frame_image);
 
-        sem_wait(&(disp->frame_sync));
+        sprite.setTexture(texture);
 
-        printf("Waiting on mutex\n");
-        fflush(stdout);
+        pthread_mutex_lock(disp->gwl);
 
-        pthread_mutex_lock(&(disp->list_lock));
+        disp->display_window.clear();
+        disp->display_window.draw(sprite);
+        disp->display_window.display();
 
-        /* Nothing for us to do, more of a safety measure   */
-        if (disp->mode_list == NULL) {
-            printf("Warning! Nothing in mode list!\n");
-            fflush(stdout);
-            pthread_mutex_unlock(&(disp->list_lock));
-            continue;
-        }
+        pthread_mutex_unlock(disp->gwl);
 
-        printf("Received mode %d\n", disp->mode_list->mode);
-
-        /* Get the mode to act on   */
-        mode         = disp->mode_list->mode;
-        working_line = disp->mode_list->line;
-
-        /* Delete the acted on mode and then move the pointer to the next   */
-        struct Mode_List *ptr;
-        ptr = disp->mode_list;
-
-        disp->mode_list = disp->mode_list->next;
-
-        delete ptr;
-
-        pthread_mutex_unlock(&(disp->list_lock));
-
-        switch (mode) {
-            case MODE_0: /* Do nothing, HBLANK                   */
-                disp->perform_mode_0(working_line);
-                break;
-
-            case MODE_1: /* Render Image                         */
-                disp->perform_mode_1(working_line);
-                break;
-
-            case MODE_2: /* Write line grayscale buffer to image */
-                disp->perform_mode_2(working_line);
-                break;
-
-            case MODE_3: /* Write line to grayscale buffer       */
-                disp->perform_mode_3(working_line);
-                break;
-        }
     }
 }
 
