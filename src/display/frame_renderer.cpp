@@ -28,13 +28,16 @@ void *Display::frame_renderer(void *arg) {
     fflush(stdout);
 
     sf::Texture texture;
-    sf::Sprite sprite;
+    sf::Sprite  sprite;
     sprite.scale(Graphics::DISPLAY_PIXEL_SIZE, Graphics::DISPLAY_PIXEL_SIZE);
+
+    sf::Event event;
 
     while (1) {
 
         // sem_wait(&(disp->frame_sync));
-        while(disp->new_frame == false);
+        while (disp->new_frame == false)
+            ;
         disp->new_frame = false;
 
         texture.loadFromImage(disp->frame_image);
@@ -49,6 +52,14 @@ void *Display::frame_renderer(void *arg) {
 
         pthread_mutex_unlock(disp->gwl);
 
+        /* Process events built up  */
+        while (disp->display_window.pollEvent(event)) {
+            switch (event.type) {
+                case sf::Event::Closed:
+                    disp->request_destroy = true;
+                    return NULL;
+            }
+        }
     }
 }
 

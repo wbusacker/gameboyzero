@@ -27,7 +27,7 @@ struct CPU_flags {
     uint8_t padding : 4;
 };
 
-enum CPU_Failure_Modes { INVALID_INSTRUCTION, RESET_LOOP, UNKNOWN_INSTRUCTION, SYSTEM_FAILURE };
+enum CPU_Failure_Modes { INVALID_INSTRUCTION, RESET_LOOP, UNKNOWN_INSTRUCTION, SYSTEM_FAILURE, POWER_OFF };
 
 struct TB_entry {
     char *   mnemonic;
@@ -128,6 +128,7 @@ class LR35902 {
     bool     trace_buffer_overflow;
     uint16_t trace_buffer_bottom;
     uint64_t num_clock_cycles;
+    uint64_t num_acted_cycles;
     double   cpu_frequency;
 
     double last_cycle_time;
@@ -140,6 +141,7 @@ class LR35902 {
 
     bool enable_function_trace;
     bool enable_instruction_trace;
+    bool allow_instruction_trace;
 
     FILE *trace_log_handle;
 

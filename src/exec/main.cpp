@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+/* format really wants to put this first, but doing so causes the build to fail */
 #include <X11/Xlib.h>
 
 CPU::LR35902 *global_cpu;
@@ -80,7 +81,7 @@ int main(void) {
             printf("Unimplemented cartridge type\n");
     }
 
-    if(cart == NULL){
+    if (cart == NULL) {
         exit(-10);
     }
 
@@ -105,7 +106,7 @@ int main(void) {
 
     /* Create the CPU           */
     CPU::LR35902 cpu(main_memory, irqc);
-    global_cpu                   = &cpu;
+    global_cpu = &cpu;
     // cpu.enable_function_trace    = true;
     // cpu.enable_instruction_trace = true;
 
@@ -143,10 +144,14 @@ int main(void) {
         // }
         // last_cycle_time = cur_cycle_time;
 
-        if(disp.request_destroy){
+        if (disp.request_destroy) {
             break;
         }
     }
+
+    disp.kill_threads();
+    gbdb.kill_threads();
+    cpu.crash_cpu(CPU::POWER_OFF);
 
     return 0;
 }

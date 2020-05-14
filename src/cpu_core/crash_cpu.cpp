@@ -24,6 +24,10 @@ void LR35902::crash_cpu(enum CPU_Failure_Modes mode) {
             printf("System Failure\n");
             break;
 
+        case CPU::POWER_OFF:
+            printf("Power Off\n");
+            break;
+
         default:
             printf("Unkown Exception");
             break;
@@ -55,6 +59,7 @@ void LR35902::crash_cpu(enum CPU_Failure_Modes mode) {
     printf("Stack Pointer       %04X\n", stack_pointer);
     printf("Program Counter     %04X\n", program_counter);
     printf("System Cycles       %ld\n", num_clock_cycles);
+    printf("Instr Cycles        %ld\n", num_acted_cycles);
 
     fflush(stdout);
 }

@@ -13,16 +13,16 @@ void LR35902::cycle_cpu(void) {
     num_clock_cycles++;
 
     /* Get this Cycle Time & calculate the frequency    */
-    timespec timer_get;
-    double   cur_cycle_time;
+    // timespec timer_get;
+    // double   cur_cycle_time;
 
-    clock_gettime(CLOCK_MONOTONIC, &timer_get);
-    cur_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
+    // clock_gettime(CLOCK_MONOTONIC, &timer_get);
+    // cur_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
 
-    double total_time_passed = cur_cycle_time - (cpu_start_time_ns / 1000000000.0);
+    // double total_time_passed = cur_cycle_time - (cpu_start_time_ns / 1000000000.0);
 
-    cpu_frequency   = num_clock_cycles / total_time_passed;
-    last_cycle_time = cur_cycle_time;
+    // cpu_frequency   = num_clock_cycles / total_time_passed;
+    // last_cycle_time = cur_cycle_time;
 
     /* Check for interrupts */
     if (enable_interrupt) {
@@ -51,6 +51,8 @@ void LR35902::cycle_cpu(void) {
         // pthread_mutex_unlock(&cpu_control_lock);
         return;
     }
+
+    num_acted_cycles++;
 
     /* Fetch the next instruction */
     uint8_t instr = memory_bus.fetch_addr(program_counter);
@@ -89,7 +91,7 @@ void LR35902::cycle_cpu(void) {
     /* Increment Program Counter */
     program_counter++;
 
-    if(fp[instr] == NULL){
+    if (fp[instr] == NULL) {
         /* Invalid Instruction  */
         crash_cpu(CPU::INVALID_INSTRUCTION);
     }

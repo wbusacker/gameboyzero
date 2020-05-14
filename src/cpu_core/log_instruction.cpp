@@ -8,6 +8,10 @@ namespace CPU {
 
 void LR35902::log_instruction(uint8_t instr) {
 
+    if (allow_instruction_trace == false) {
+        return;
+    }
+
     /* Open the file for writing    */
     // FILE *fp;
 

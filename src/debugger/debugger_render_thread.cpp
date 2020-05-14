@@ -8,7 +8,7 @@ void *GB_Debugger::render_thread(void *arg) {
 
     Debug::GB_Debugger *gbdb = reinterpret_cast<Debug::GB_Debugger *>(arg);
 
-    while (1) {
+    while (! gbdb->request_destroy) {
 
         /* Populate the table with all of the memory addresses  */
         uint16_t address = (gbdb->cpu_core->program_counter) / Debug::MEMORY_TABLE_WIDTH;
@@ -33,6 +33,16 @@ void *GB_Debugger::render_thread(void *arg) {
                 gbdb->mem_table.set_table_entry(col, row, std::string(hex));
             }
         }
+
+        timespec timer_get;
+        double   cur_cycle_time;
+
+        clock_gettime(CLOCK_MONOTONIC, &timer_get);
+        cur_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
+
+        double total_time_passed = cur_cycle_time - (gbdb->cpu_core->cpu_start_time_ns / 1000000000.0);
+
+        gbdb->cpu_core->cpu_frequency   = gbdb->cpu_core->num_clock_cycles / total_time_passed;
 
         /* Grab the CPU Core Data   */
         uint8_t i;
@@ -128,6 +138,8 @@ void *GB_Debugger::render_thread(void *arg) {
 
         usleep(((1.0 / 20.0) * 1000000));
     }
+
+    return NULL;
 }
 
 }    // namespace Debug

@@ -5,6 +5,15 @@ namespace Disassembler {
 Function_Decomposer::Function_Decomposer(Memory::Memory_Map &mem) : memory_bus(mem) {
     out_handle = fopen(OUTPUT_NAME, "w");
 
+    if (out_handle == NULL) {
+        printf("Failed to create Function Log... Disabling Function Decomposer\n");
+        decomposer_enabled = false;
+
+        return;
+    } else {
+        decomposer_enabled = true;
+    }
+
     known_calls = (bool *)malloc(sizeof(bool) * CALL_MAP_SIZE);
 
     uint32_t i;
@@ -18,6 +27,10 @@ Function_Decomposer::Function_Decomposer(Memory::Memory_Map &mem) : memory_bus(m
 }
 
 void Function_Decomposer::register_call(uint16_t addr, uint16_t blind_grab) {
+
+    if (decomposer_enabled == false) {
+        return;
+    }
 
     /* Check if we know already know about this function    */
     if (known_calls[addr]) {

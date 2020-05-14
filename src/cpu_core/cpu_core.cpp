@@ -54,12 +54,20 @@ LR35902::LR35902(Memory::Memory_Map &bus, IRQ::Controller &irq) :
     enable_function_trace    = false;
 
     trace_log_handle = fopen(CPU::TRACE_LOG_NAME, "w");
+
+    if (trace_log_handle == NULL) {
+        printf("Warning: Cannot write trace log\n");
+        allow_instruction_trace = false;
+    } else {
+        allow_instruction_trace = true;
+    }
     // fclose(fp);
 
     // func_decomp.register_call(0x0150, 0x0700);
 
-    last_cycle_time = 0;
-    cpu_frequency   = 0;
+    last_cycle_time  = 0;
+    cpu_frequency    = 0;
+    num_acted_cycles = 0;
 
     /* Define all of the destination functions  */
     fp[0]   = &LR35902::process_misc;
@@ -321,7 +329,9 @@ LR35902::LR35902(Memory::Memory_Map &bus, IRQ::Controller &irq) :
 }
 
 LR35902::~LR35902(void) {
-    fclose(trace_log_handle);
+    if (allow_instruction_trace) {
+        fclose(trace_log_handle);
+    }
 }
 
 }    // namespace CPU

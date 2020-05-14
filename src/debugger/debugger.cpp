@@ -1,8 +1,80 @@
 #include <debugger.h>
+#include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 namespace Debug {
+
+static uint8_t search_depth = 0;
+
+uint8_t find_file(const char *start_dir, const char *file_name, char *full_path) {
+
+    if (search_depth == 10) {
+        printf("Warning! Search Depth Exceeded!\n");
+        return 0;
+    }
+
+    /* Search all files in the current directory    */
+
+    char search_buffer[Debug::MAX_FILE_NAME_LEN];
+
+    memset(search_buffer, 0, Debug::MAX_FILE_NAME_LEN);
+
+    DIR *          directory_handle;
+    struct dirent *dir;
+    directory_handle = opendir(start_dir);
+    if (directory_handle == NULL) {
+        printf("Search directory %s cannot be read\n", start_dir);
+        fflush(stdout);
+        return 0;
+    }
+
+    dir = readdir(directory_handle);
+
+    while (dir != NULL) {
+
+        /* Make sure the entry is a file    */
+        if (dir->d_type == DT_REG) {
+
+            /* Check if the file name matches   */
+            if (strcmp(dir->d_name, file_name) == 0) {
+                /* Place the fully qualified path into full_path    */
+                strcpy(full_path, start_dir);
+                strcat(full_path, dir->d_name);
+
+                closedir(directory_handle);
+
+                return 1;
+            }
+        }
+
+        /* If the entry is a directory, traverse    */
+        if (dir->d_type == DT_DIR) {
+
+            /* If directory is . or .., ignore  */
+            if ((strcmp(".", dir->d_name) != 0) && (strcmp("..", dir->d_name) != 0)) {
+                strcpy(search_buffer, start_dir);
+                strcat(search_buffer, dir->d_name);
+                strcat(search_buffer, "/");
+
+                uint8_t status;
+                status = find_file(search_buffer, file_name, full_path);
+                if (status != 0) {
+
+                    closedir(directory_handle);
+                    return 1;
+                }
+            }
+        }
+
+        /* Iterate to the next item */
+        dir = readdir(directory_handle);
+    }
+
+    closedir(directory_handle);
+    return 0;
+}
 
 GB_Debugger::GB_Debugger(CPU::LR35902 *cc, pthread_mutex_t *global_window_lock) {
     cpu_core = cc;
@@ -10,9 +82,25 @@ GB_Debugger::GB_Debugger(CPU::LR35902 *cc, pthread_mutex_t *global_window_lock) 
 
     display_window.create(sf::VideoMode(Debug::DEBUG_WINDOWS_WIDTH, DEBUG_WINDOWS_HEIGHT), "Gameboy Zero Memory Map");
 
+    /* Try to find the font */
+    char font_name[Debug::MAX_FILE_NAME_LEN];
+    memset(font_name, 0, Debug::MAX_FILE_NAME_LEN);
+
+    uint8_t status;
+    status = find_file("/usr/share/fonts/", "DejaVuSans.ttf", font_name);
+    if (status == 0) {
+        printf("Failed to find font\n");
+        fflush(stdout);
+    } else {
+        printf("Found Font at %s\n", font_name);
+        fflush(stdout);
+    }
+
     /* Load Dejavu Font     */
-    if (! loaded_font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")) {
-        printf("Warnings! Cannot load font\n");
+    if (! loaded_font.loadFromFile(font_name)) {
+        printf("Font loading failed, disabling debugger\n");
+        fflush(stdout);
+        display_window.close();
         return;
     }
 
@@ -24,6 +112,7 @@ GB_Debugger::GB_Debugger(CPU::LR35902 *cc, pthread_mutex_t *global_window_lock) 
     char     hex[5];
     for (i = 0; i < MEMORY_TABLE_WIDTH; i++) {
         sprintf(hex, "%02X", i);
+        fflush(stdout);
         mem_table.set_column_headers(i + 1, std::string(hex));
     }
     mem_table.set_column_headers(0, std::string("Addr"));

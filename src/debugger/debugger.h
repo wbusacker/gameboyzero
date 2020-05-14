@@ -12,6 +12,7 @@ const uint16_t DEBUG_WINDOWS_HEIGHT = 700;
 const uint16_t DEBUG_WINDOWS_WIDTH  = 1000;
 const uint16_t MEMORY_TABLE_HEIGHT  = 32;
 const uint16_t MEMORY_TABLE_WIDTH   = 16;
+const uint16_t MAX_FILE_NAME_LEN    = 1024;
 
 enum CPU_Debugger_Index_enm {
     FLAGS_SUB = 0,
@@ -40,6 +41,8 @@ class GB_Debugger {
     GB_Debugger(CPU::LR35902 *cc, pthread_mutex_t *global_window_lock);
 
     static void *render_thread(void *arg);
+
+    void kill_threads(void);
     // void draw(void);
 
     private:
@@ -54,6 +57,8 @@ class GB_Debugger {
 
     SFML_Text core_registers[CPU_DEBUGGER_INDEX_ENM_SIZE];
     SFML_Text core_register_names[CPU_DEBUGGER_INDEX_ENM_SIZE];
+
+    bool request_destroy;
 
     /* Global Window Lock   */
     pthread_mutex_t *gwl;

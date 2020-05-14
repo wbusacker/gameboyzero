@@ -26,6 +26,8 @@ class Function_Decomposer {
     FILE *out_handle;
 
     uint32_t known_functions;
+
+    bool decomposer_enabled;
 };
 
 void    print_instr_mnemonic(uint8_t instr);

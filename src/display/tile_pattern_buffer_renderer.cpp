@@ -30,7 +30,7 @@ void *Display::tile_pattern_buffer_renderer(void *arg) {
                               Graphics::TILE_DP_TILE_COL * Graphics::TILE_SIZE,
                               sf::Color::Green);
 
-    while (1) {
+    while (! disp->request_destroy) {
 
         uint16_t tile_no;
 
@@ -108,6 +108,8 @@ void *Display::tile_pattern_buffer_renderer(void *arg) {
 
         pthread_mutex_unlock(disp->gwl);
     }
+
+    return NULL;
 }
 
 }    // namespace Graphics

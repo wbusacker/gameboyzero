@@ -44,6 +44,7 @@ CXX		:= g++
 ASM_CMD := objdump
 IMG_CMD := objcopy
 
+# OPT 			:= -O0 -g -pg
 OPT 			:= -O3 -g
 INCLUDE_DIRS 	:= $(addprefix -I, $(SOURCE_DIRS)) $(addprefix -I, $(TEST_SOURCE_DIRS))
 WARN			:= -Wall

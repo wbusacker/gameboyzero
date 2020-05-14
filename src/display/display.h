@@ -91,6 +91,8 @@ class Display {
 
     static void *tile_pattern_buffer_renderer(void *arg);
 
+    void kill_threads(void);
+
     void perform_mode_0(uint8_t working_line);
     void perform_mode_1(uint8_t working_line);
     void perform_mode_2(uint8_t working_line);
