@@ -2,6 +2,7 @@
 #define GB_DISPLAY_H
 
 #include <SFML/Graphics.hpp>
+#include <cpu_core.h>
 #include <errno.h>
 #include <irq_controller.h>
 #include <memory_map.h>
@@ -36,6 +37,7 @@ const uint16_t MODE_1_CYCLE_COUNT = 1140;
 const uint16_t MODE_2_CYCLE_COUNT = 20;
 const uint16_t MODE_3_CYCLE_COUNT = 43;
 const uint16_t H_LINE_CYCLE_COUNT = MODE_0_CYCLE_COUNT + MODE_3_CYCLE_COUNT + MODE_2_CYCLE_COUNT;
+const double   FRAME_PERIOD       = ((H_LINE_CYCLE_COUNT * DISPLAY_ROW_COUNT) + MODE_1_CYCLE_COUNT) * CPU::CORE_PERIOD;
 
 const uint16_t LCDC_ADDR = 0xFF40;
 const uint16_t STAT_ADDR = 0xFF41;
@@ -74,6 +76,24 @@ struct Mode_List {
     enum LCDC_Modes   mode;
     uint8_t           line;
     struct Mode_List *next;
+};
+
+// struct Monotonic_Control_t {
+//     double last_release;
+//     double monotonic_rate;
+// };
+
+// void monotonic_period(struct Monotonic_Control_t *mc);
+
+class Monotonic {
+    public:
+
+    Monotonic(double rate);
+
+    void rate_limit(void);
+
+    double last_release;
+    double monotonic_rate;
 };
 
 class Display {
@@ -116,6 +136,8 @@ class Display {
     pthread_t tile_pattern_buffer_thread_handle;
     pthread_t tile_map_thread_handle;
 
+    // struct Monotonic_Control_t main_render_monotonic;
+
     sem_t frame_sync;
 
     uint16_t h_line;
@@ -137,6 +159,8 @@ class Display {
     sf::Color *background_pallete[Graphics::PIXEL_COLOR_DEPTH];
 
     bool request_destroy;
+
+    Monotonic rate_limit;
 };
 
 }    // namespace Graphics

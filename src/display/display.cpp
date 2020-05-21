@@ -3,14 +3,12 @@
 namespace Graphics {
 
 Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *global_window_lock) :
-    irq_controller(irq), main_memory(mm) {
+    irq_controller(irq), main_memory(mm), rate_limit(Graphics::FRAME_PERIOD) {
     gwl             = global_window_lock;
     display_counter = 0;
     h_line          = 0;
 
-    // display_window.create(sf::VideoMode(DISPLAY_COL_COUNT * DISPLAY_PIXEL_SIZE, DISPLAY_ROW_COUNT *
-    // DISPLAY_PIXEL_SIZE),
-    //                       "Gameboy Zero Display");
+    // rate_limit = new Monotonic(Graphics::FRAME_PERIOD);
 
     frame_image.create(Graphics::DISPLAY_WIDTH, Graphics::DISPLAY_HEIGHT, sf::Color::Green);
 
@@ -40,8 +38,8 @@ Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *
     new_frame       = false;
 
     pthread_create(&frame_render_thread_handle, NULL, &Display::frame_renderer, this);
-    pthread_create(&tile_pattern_buffer_thread_handle, NULL, &Display::tile_pattern_buffer_renderer, this);
-    pthread_create(&tile_map_thread_handle, NULL, &Display::tile_map_renderer, this);
+    // pthread_create(&tile_pattern_buffer_thread_handle, NULL, &Display::tile_pattern_buffer_renderer, this);
+    // pthread_create(&tile_map_thread_handle, NULL, &Display::tile_map_renderer, this);
 }
 
 Display::~Display() {
@@ -59,6 +57,16 @@ Display::~Display() {
         next    = next->next;
         delete working;
     }
+}
+
+Monotonic::Monotonic(double rate){
+    struct timespec timer_get;
+
+    clock_gettime(CLOCK_MONOTONIC, &timer_get);
+
+    last_release = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
+
+    monotonic_rate = rate;
 }
 
 }    // namespace Graphics

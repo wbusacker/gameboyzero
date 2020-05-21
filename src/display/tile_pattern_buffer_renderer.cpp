@@ -9,10 +9,12 @@ void *Display::tile_pattern_buffer_renderer(void *arg) {
 
     Graphics::Display *disp = reinterpret_cast<Graphics::Display *>(arg);
 
+    Monotonic rate_limit(0.1);
+
     /* Acquire GWL before doing anything SFML   */
 
     pthread_mutex_lock(disp->gwl);
-    
+
     printf("Preparing Tile Pattern Buffer Display\n");
     fflush(stdout);
 
@@ -35,6 +37,8 @@ void *Display::tile_pattern_buffer_renderer(void *arg) {
     pthread_mutex_unlock(disp->gwl);
 
     while (! disp->request_destroy) {
+
+        rate_limit.rate_limit();
 
         uint16_t tile_no;
 

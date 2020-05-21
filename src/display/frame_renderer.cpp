@@ -12,16 +12,16 @@ void *Display::frame_renderer(void *arg) {
     /* Acquire GWL before doing anything SFML   */
 
     pthread_mutex_lock(disp->gwl);
-    
+
     printf("Preparing main display\n");
     fflush(stdout);
 
     sf::RenderWindow window;
     // sf::Image        frame_image;
-    sf::Texture      texture;
-    sf::Sprite       sprite;
-    sf::Color        pixel_color(0, 0, 0, 255);
-    sf::Event        event;
+    sf::Texture texture;
+    sf::Sprite  sprite;
+    sf::Color   pixel_color(0, 0, 0, 255);
+    sf::Event   event;
 
     window.create(sf::VideoMode(DISPLAY_COL_COUNT * DISPLAY_PIXEL_SIZE, DISPLAY_ROW_COUNT * DISPLAY_PIXEL_SIZE),
                   "Gameboy Zero Display");
@@ -54,6 +54,7 @@ void *Display::frame_renderer(void *arg) {
             switch (event.type) {
                 case sf::Event::Closed:
                     disp->request_destroy = true;
+                    pthread_mutex_unlock(disp->gwl);
                     return NULL;
                 case sf::Event::Resized:
                     break;
@@ -105,7 +106,6 @@ void *Display::frame_renderer(void *arg) {
         }
 
         pthread_mutex_unlock(disp->gwl);
-        
     }
 
     return NULL;

@@ -11,8 +11,10 @@ void *Display::tile_map_renderer(void *arg) {
 
     /* Acquire GWL before doing anything SFML   */
 
+    Monotonic rate_limit(0.1);
+
     pthread_mutex_lock(disp->gwl);
-    
+
     printf("Preparing Tile Map Buffer Display\n");
     fflush(stdout);
 
@@ -33,6 +35,8 @@ void *Display::tile_map_renderer(void *arg) {
     pthread_mutex_unlock(disp->gwl);
 
     while (! disp->request_destroy) {
+
+        rate_limit.rate_limit();
 
         uint16_t tile_row;
         uint16_t tile_col;

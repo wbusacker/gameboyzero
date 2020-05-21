@@ -9,6 +9,9 @@ void Display::perform_mode_1(uint8_t working_line) {
     // sem_post(&frame_sync);
     new_frame = true;
 
+    // monotonic_period(&main_render_monotonic);
+    rate_limit.rate_limit();
+
     // timespec timer_get;
     // double   cur_cycle_time;
 
