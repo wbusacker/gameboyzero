@@ -42,7 +42,7 @@ void *GB_Debugger::render_thread(void *arg) {
 
         double total_time_passed = cur_cycle_time - (gbdb->cpu_core->cpu_start_time_ns / 1000000000.0);
 
-        gbdb->cpu_core->cpu_frequency   = gbdb->cpu_core->num_clock_cycles / total_time_passed;
+        gbdb->cpu_core->cpu_frequency = gbdb->cpu_core->num_clock_cycles / total_time_passed;
 
         /* Grab the CPU Core Data   */
         uint8_t i;

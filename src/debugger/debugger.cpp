@@ -80,6 +80,8 @@ GB_Debugger::GB_Debugger(CPU::LR35902 *cc, pthread_mutex_t *global_window_lock) 
     cpu_core = cc;
     gwl      = global_window_lock;
 
+    pthread_mutex_lock(gwl);
+
     display_window.create(sf::VideoMode(Debug::DEBUG_WINDOWS_WIDTH, DEBUG_WINDOWS_HEIGHT), "Gameboy Zero Memory Map");
 
     /* Try to find the font */
@@ -156,6 +158,8 @@ GB_Debugger::GB_Debugger(CPU::LR35902 *cc, pthread_mutex_t *global_window_lock) 
     core_register_names[STALL_PROCESSOR].set_string(std::string("STALL_PROCESSOR"));
     core_register_names[CPU_CYCLES].set_string(std::string("CPU_CYCLES"));
     core_register_names[CPU_FREQUENCY].set_string(std::string("CPU_FREQUENCY"));
+
+    pthread_mutex_unlock(gwl);
 
     pthread_create(&frame_render_thread_handle, NULL, &GB_Debugger::render_thread, this);
 }

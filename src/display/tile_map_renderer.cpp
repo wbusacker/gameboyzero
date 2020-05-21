@@ -9,12 +9,12 @@ void *Display::tile_map_renderer(void *arg) {
 
     Graphics::Display *disp = reinterpret_cast<Graphics::Display *>(arg);
 
-    printf("Preparing to render frame\n");
-    fflush(stdout);
-
     /* Acquire GWL before doing anything SFML   */
 
     pthread_mutex_lock(disp->gwl);
+    
+    printf("Preparing Tile Map Buffer Display\n");
+    fflush(stdout);
 
     sf::RenderWindow window;
     sf::Image        tile_map_image;

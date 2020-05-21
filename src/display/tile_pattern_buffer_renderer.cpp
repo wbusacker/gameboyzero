@@ -9,26 +9,30 @@ void *Display::tile_pattern_buffer_renderer(void *arg) {
 
     Graphics::Display *disp = reinterpret_cast<Graphics::Display *>(arg);
 
-    /* Good chance this starts up before the rest of the system is ready to go
-        so sleep for a bit
-    */
-    // usleep(1000000);
+    /* Acquire GWL before doing anything SFML   */
 
-    // timespec timer_get;
-    // double   last_cycle_time;
-    // double   cur_cycle_time;
-
-    // clock_gettime(CLOCK_MONOTONIC, &timer_get);
-    // last_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
-
-    printf("Preparing to render frame\n");
+    pthread_mutex_lock(disp->gwl);
+    
+    printf("Preparing Tile Pattern Buffer Display\n");
     fflush(stdout);
 
-    sf::Image tile_pattern_image;
+    sf::RenderWindow window;
+    sf::Image        tile_pattern_image;
+    sf::Texture      texture;
+    sf::Sprite       sprite;
+    sf::Color        color(0, 0, 0, 255);
+
+    window.create(sf::VideoMode(TILE_DP_TILE_ROW * DISPLAY_PIXEL_SIZE * TILE_SIZE,
+                                TILE_DP_TILE_COL * DISPLAY_PIXEL_SIZE * TILE_SIZE),
+                  "Tile Pattern Buffer Display");
+
+    sprite.scale(Graphics::DISPLAY_PIXEL_SIZE, Graphics::DISPLAY_PIXEL_SIZE);
 
     tile_pattern_image.create(Graphics::TILE_DP_TILE_ROW * Graphics::TILE_SIZE,
                               Graphics::TILE_DP_TILE_COL * Graphics::TILE_SIZE,
                               sf::Color::Green);
+
+    pthread_mutex_unlock(disp->gwl);
 
     while (! disp->request_destroy) {
 
@@ -54,8 +58,6 @@ void *Display::tile_pattern_buffer_renderer(void *arg) {
 
                     val = (lsb >> (7 - bit)) & 0b1;
                     val |= ((msb >> (7 - bit)) & 0b1) << 1;
-
-                    sf::Color color(0, 0, 0, 255);
 
                     switch (val & 0b11) {
                         case 0:
@@ -91,20 +93,16 @@ void *Display::tile_pattern_buffer_renderer(void *arg) {
             }
         }
 
-        sf::Texture texture;
         texture.loadFromImage(tile_pattern_image);
-
-        sf::Sprite sprite(texture);
-
-        sprite.scale(Graphics::DISPLAY_PIXEL_SIZE, Graphics::DISPLAY_PIXEL_SIZE);
+        sprite.setTexture(texture);
 
         pthread_mutex_lock(disp->gwl);
 
-        disp->tile_pattern_buffer_display.clear();
+        window.clear();
 
-        disp->tile_pattern_buffer_display.draw(sprite);
+        window.draw(sprite);
 
-        disp->tile_pattern_buffer_display.display();
+        window.display();
 
         pthread_mutex_unlock(disp->gwl);
     }

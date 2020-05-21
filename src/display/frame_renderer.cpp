@@ -9,29 +9,28 @@ void *Display::frame_renderer(void *arg) {
 
     Graphics::Display *disp = reinterpret_cast<Graphics::Display *>(arg);
 
-    /* Good chance this starts up before the rest of the system is ready to go
-        so sleep for a bit
-    */
+    /* Acquire GWL before doing anything SFML   */
 
-    // usleep(1000000);
-
-    disp->frame_image.create(Graphics::DISPLAY_WIDTH, Graphics::DISPLAY_HEIGHT, sf::Color::Green);
-
-    // timespec timer_get;
-    // double   last_cycle_time;
-    // double   cur_cycle_time;
-
-    // clock_gettime(CLOCK_MONOTONIC, &timer_get);
-    // last_cycle_time = timer_get.tv_sec + (static_cast<double>(timer_get.tv_nsec) / 1E9);
-
-    printf("Preparing to render frame\n");
+    pthread_mutex_lock(disp->gwl);
+    
+    printf("Preparing main display\n");
     fflush(stdout);
 
-    sf::Texture texture;
-    sf::Sprite  sprite;
+    sf::RenderWindow window;
+    // sf::Image        frame_image;
+    sf::Texture      texture;
+    sf::Sprite       sprite;
+    sf::Color        pixel_color(0, 0, 0, 255);
+    sf::Event        event;
+
+    window.create(sf::VideoMode(DISPLAY_COL_COUNT * DISPLAY_PIXEL_SIZE, DISPLAY_ROW_COUNT * DISPLAY_PIXEL_SIZE),
+                  "Gameboy Zero Display");
+
+    // frame_image.create(Graphics::DISPLAY_WIDTH, Graphics::DISPLAY_HEIGHT, sf::Color::Green);
+
     sprite.scale(Graphics::DISPLAY_PIXEL_SIZE, Graphics::DISPLAY_PIXEL_SIZE);
 
-    sf::Event event;
+    pthread_mutex_unlock(disp->gwl);
 
     while (! disp->request_destroy) {
 
@@ -46,21 +45,70 @@ void *Display::frame_renderer(void *arg) {
 
         pthread_mutex_lock(disp->gwl);
 
-        disp->display_window.clear();
-        disp->display_window.draw(sprite);
-        disp->display_window.display();
-
-        pthread_mutex_unlock(disp->gwl);
+        window.clear();
+        window.draw(sprite);
+        window.display();
 
         /* Process events built up  */
-        while (disp->display_window.pollEvent(event)) {
+        while (window.pollEvent(event)) {
             switch (event.type) {
                 case sf::Event::Closed:
                     disp->request_destroy = true;
                     return NULL;
+                case sf::Event::Resized:
+                    break;
+                case sf::Event::LostFocus:
+                    break;
+                case sf::Event::GainedFocus:
+                    break;
+                case sf::Event::TextEntered:
+                    break;
+                case sf::Event::KeyPressed:
+                    break;
+                case sf::Event::KeyReleased:
+                    break;
+                case sf::Event::MouseWheelMoved:
+                    break;
+                case sf::Event::MouseWheelScrolled:
+                    break;
+                case sf::Event::MouseButtonPressed:
+                    break;
+                case sf::Event::MouseButtonReleased:
+                    break;
+                case sf::Event::MouseMoved:
+                    break;
+                case sf::Event::MouseEntered:
+                    break;
+                case sf::Event::MouseLeft:
+                    break;
+                case sf::Event::JoystickButtonPressed:
+                    break;
+                case sf::Event::JoystickButtonReleased:
+                    break;
+                case sf::Event::JoystickMoved:
+                    break;
+                case sf::Event::JoystickConnected:
+                    break;
+                case sf::Event::JoystickDisconnected:
+                    break;
+                case sf::Event::TouchBegan:
+                    break;
+                case sf::Event::TouchMoved:
+                    break;
+                case sf::Event::TouchEnded:
+                    break;
+                case sf::Event::SensorChanged:
+                    break;
+                case sf::Event::Count:
+                    break;
             }
         }
+
+        pthread_mutex_unlock(disp->gwl);
+        
     }
+
+    return NULL;
 }
 
 }    // namespace Graphics

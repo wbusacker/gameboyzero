@@ -8,12 +8,9 @@ Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *
     display_counter = 0;
     h_line          = 0;
 
-    display_window.create(sf::VideoMode(DISPLAY_COL_COUNT * DISPLAY_PIXEL_SIZE, DISPLAY_ROW_COUNT * DISPLAY_PIXEL_SIZE),
-                          "Gameboy Zero Display");
-
-    tile_pattern_buffer_display.create(sf::VideoMode(TILE_DP_TILE_ROW * DISPLAY_PIXEL_SIZE * TILE_SIZE,
-                                                     TILE_DP_TILE_COL * DISPLAY_PIXEL_SIZE * TILE_SIZE),
-                                       "Tile Pattern Buffer Display");
+    // display_window.create(sf::VideoMode(DISPLAY_COL_COUNT * DISPLAY_PIXEL_SIZE, DISPLAY_ROW_COUNT *
+    // DISPLAY_PIXEL_SIZE),
+    //                       "Gameboy Zero Display");
 
     frame_image.create(Graphics::DISPLAY_WIDTH, Graphics::DISPLAY_HEIGHT, sf::Color::Green);
 
