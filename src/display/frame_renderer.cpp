@@ -33,7 +33,7 @@ void *Display::frame_renderer(void *arg) {
 
     sf::Event event;
 
-    while (1) {
+    while (! disp->request_destroy) {
 
         // sem_wait(&(disp->frame_sync));
         while (disp->new_frame == false)

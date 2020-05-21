@@ -88,7 +88,7 @@ class Display {
     void update_control_registers(void);
 
     static void *frame_renderer(void *arg);
-
+    static void *tile_map_renderer(void *arg);
     static void *tile_pattern_buffer_renderer(void *arg);
 
     void kill_threads(void);
@@ -114,6 +114,7 @@ class Display {
 
     pthread_t frame_render_thread_handle;
     pthread_t tile_pattern_buffer_thread_handle;
+    pthread_t tile_map_thread_handle;
 
     sem_t frame_sync;
 

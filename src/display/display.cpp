@@ -43,7 +43,8 @@ Display::Display(IRQ::Controller &irq, Memory::Memory_Map &mm, pthread_mutex_t *
     new_frame       = false;
 
     pthread_create(&frame_render_thread_handle, NULL, &Display::frame_renderer, this);
-    // pthread_create(&tile_pattern_buffer_thread_handle, NULL, &Display::tile_pattern_buffer_renderer, this);
+    pthread_create(&tile_pattern_buffer_thread_handle, NULL, &Display::tile_pattern_buffer_renderer, this);
+    pthread_create(&tile_map_thread_handle, NULL, &Display::tile_map_renderer, this);
 }
 
 Display::~Display() {

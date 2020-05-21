@@ -46,6 +46,7 @@ IMG_CMD := objcopy
 
 # OPT 			:= -O0 -g -pg
 OPT 			:= -O3 -g
+# OPT 			:= -O0 -g
 INCLUDE_DIRS 	:= $(addprefix -I, $(SOURCE_DIRS)) $(addprefix -I, $(TEST_SOURCE_DIRS))
 WARN			:= -Wall
 LINK			:= -lpthread -lsfml-graphics -lsfml-window -lsfml-system -lrt -lX11

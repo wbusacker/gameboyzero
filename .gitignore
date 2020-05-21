@@ -4,6 +4,8 @@
 *.txt
 *.gb
 *.xlsx
+*.out
 
 bld/
 .vscode/
+gb-test-roms-master/
