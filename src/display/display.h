@@ -22,11 +22,26 @@ const uint16_t TILE_MAP_0_ADDR       = 0x9800;
 const uint16_t TILE_MAP_1_ADDR       = 0x9C00;
 const uint16_t TILE_PATTERN_BUFFER_0 = 0x8000;
 const uint16_t TILE_PATTERN_BUFFER_1 = 0x9000;
+const uint16_t OAM_BUFFER_ADDR       = 0xFE00;
 const uint16_t TILE_PATTERN_SIZE     = 16;
 const uint8_t  TILE_SIZE             = 8;
 const uint8_t  TILES_PER_ROW         = (Graphics::DISPLAY_WIDTH / Graphics::TILE_SIZE);
 const uint8_t  TILES_PER_COL         = (Graphics::DISPLAY_HEIGHT / Graphics::TILE_SIZE);
 const uint8_t  PIXEL_COLOR_DEPTH     = 4;
+const uint8_t  BYTES_PER_LINE        = 2;
+
+const uint8_t MAX_NUM_SPRITES    = 40;
+const uint8_t OAM_SIZE_BYTES     = 4;
+const uint8_t OAM_Y_LINE_OFFSET  = 0;
+const uint8_t OAM_X_LINE_OFFSET  = 1;
+const uint8_t OAM_PATTERN_OFFSET = 2;
+const uint8_t OAM_FLAG_OFFSET    = 3;
+const uint8_t OAM_PRIORITY_BIT   = 7;
+const uint8_t OAM_Y_FLIP_BIT     = 6;
+const uint8_t OAM_X_FLIP_BTT     = 5;
+const uint8_t OAM_PALETTE_BIT    = 4;
+const uint8_t SPRITE_Y_OFFSET    = 16;
+const uint8_t SPRITE_X_OFFSET    = 8;
 
 const uint16_t SYSTEM_TILE_COUNT = 256 + 128;
 const uint8_t  TILE_DP_TILE_ROW  = 16;
@@ -46,11 +61,15 @@ const uint16_t SCX_ADDR  = 0xFF43;
 const uint16_t LY_ADDR   = 0xFF44;
 const uint16_t LYC_ADDR  = 0xFF45;
 
-const uint16_t BGP_ADDR = 0xFF47;
+const uint16_t BGP_ADDR  = 0xFF47;
+const uint16_t OBP0_ADDR = 0xFF48;
+const uint16_t OBP1_ADDR = 0xFF49;
 
 const char *const MESSAGE_QUEUE_NAME = "/gameboy_zero/display";
 
 enum LCDC_Modes { MODE_0 = 0, MODE_1 = 1, MODE_2 = 2, MODE_3 = 3 };
+
+enum Pixel_Source { BACKGROUND_PIXEL, WINDOW_PIXEL, SPRITE_PIXEL_0, SPRITE_PIXEL_1 };
 
 struct LCDC_Register {
     bool     operation;           /* LCD On/Off                   */
@@ -78,22 +97,19 @@ struct Mode_List {
     struct Mode_List *next;
 };
 
-// struct Monotonic_Control_t {
-//     double last_release;
-//     double monotonic_rate;
-// };
-
-// void monotonic_period(struct Monotonic_Control_t *mc);
-
 class Monotonic {
     public:
-
     Monotonic(double rate);
 
     void rate_limit(void);
 
     double last_release;
     double monotonic_rate;
+};
+
+struct Line_Render_t {
+    uint8_t           pixel_color[Graphics::DISPLAY_COL_COUNT];
+    enum Pixel_Source source[Graphics::DISPLAY_COL_COUNT];
 };
 
 class Display {
@@ -124,7 +140,8 @@ class Display {
     uint32_t display_counter;
     uint32_t mode_counter;
 
-    uint8_t **grayscale_buffer;
+    // uint8_t **grayscale_buffer;
+    struct Line_Render_t line_buffer[Graphics::DISPLAY_ROW_COUNT];
 
     sf::RenderWindow display_window;
     sf::RenderWindow tile_pattern_buffer_display;
@@ -156,7 +173,9 @@ class Display {
 
     volatile bool new_frame;
 
-    sf::Color *background_pallete[Graphics::PIXEL_COLOR_DEPTH];
+    sf::Color *background_palette[Graphics::PIXEL_COLOR_DEPTH];
+    sf::Color *sprite_palette_0[Graphics::PIXEL_COLOR_DEPTH];
+    sf::Color *sprite_palette_1[Graphics::PIXEL_COLOR_DEPTH];
 
     bool request_destroy;
 

@@ -5,10 +5,10 @@
 
 namespace Graphics {
 
-void Monotonic::rate_limit(void){
+void Monotonic::rate_limit(void) {
     struct timespec timer_get;
-    double cur_time;
-    double sleep_time;
+    double          cur_time;
+    double          sleep_time;
 
     clock_gettime(CLOCK_MONOTONIC, &timer_get);
 
@@ -17,11 +17,11 @@ void Monotonic::rate_limit(void){
     /* Calculate needed speel time  */
     sleep_time = (last_release + monotonic_rate) - cur_time;
 
-    if(sleep_time > 0){
+    if (sleep_time > 0) {
         usleep(sleep_time * 1E6);
     }
 
     last_release += monotonic_rate;
 }
 
-}
+}    // namespace Graphics

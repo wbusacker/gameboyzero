@@ -36,6 +36,7 @@ void Display::update_control_registers(void) {
     scroll_x = main_memory.fetch_addr(Graphics::SCX_ADDR);
     scroll_y = main_memory.fetch_addr(Graphics::SCY_ADDR);
 
+    /* Update the background palette    */
     uint8_t pallete_map = main_memory.fetch_addr(Graphics::BGP_ADDR);
 
     uint8_t pallete_no;
@@ -44,16 +45,60 @@ void Display::update_control_registers(void) {
 
         switch (color) {
             case 0:
-                background_pallete[pallete_no] = &pixel_white;
+                background_palette[pallete_no] = &pixel_white;
                 break;
             case 1:
-                background_pallete[pallete_no] = &pixel_66;
+                background_palette[pallete_no] = &pixel_66;
                 break;
             case 2:
-                background_pallete[pallete_no] = &pixel_33;
+                background_palette[pallete_no] = &pixel_33;
                 break;
             case 3:
-                background_pallete[pallete_no] = &pixel_black;
+                background_palette[pallete_no] = &pixel_black;
+                break;
+        }
+    }
+
+    /* Update the sprite palette 0   */
+    pallete_map = main_memory.fetch_addr(Graphics::OBP0_ADDR);
+
+    for (pallete_no = 0; pallete_no < Graphics::PIXEL_COLOR_DEPTH; pallete_no++) {
+        uint8_t color = (pallete_map >> (pallete_no * 2)) & 0b11;
+
+        switch (color) {
+            case 0:
+                sprite_palette_0[pallete_no] = &pixel_white;
+                break;
+            case 1:
+                sprite_palette_0[pallete_no] = &pixel_66;
+                break;
+            case 2:
+                sprite_palette_0[pallete_no] = &pixel_33;
+                break;
+            case 3:
+                sprite_palette_0[pallete_no] = &pixel_black;
+                break;
+        }
+    }
+
+    /* Update the sprite palette 1   */
+    pallete_map = main_memory.fetch_addr(Graphics::OBP1_ADDR);
+
+    for (pallete_no = 0; pallete_no < Graphics::PIXEL_COLOR_DEPTH; pallete_no++) {
+        uint8_t color = (pallete_map >> (pallete_no * 2)) & 0b11;
+
+        switch (color) {
+            case 0:
+                sprite_palette_1[pallete_no] = &pixel_white;
+                break;
+            case 1:
+                sprite_palette_1[pallete_no] = &pixel_66;
+                break;
+            case 2:
+                sprite_palette_1[pallete_no] = &pixel_33;
+                break;
+            case 3:
+                sprite_palette_1[pallete_no] = &pixel_black;
                 break;
         }
     }

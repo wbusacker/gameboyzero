@@ -1,3 +1,4 @@
+#include <display.h>
 #include <memory_map.h>
 
 namespace Memory {
@@ -31,6 +32,11 @@ void Memory_Map::store_addr(uint16_t addr, uint8_t val) {
         // printf("[WRITE] Empty Unusable IO 1\n");
 
     } else if ((addr >= 0xFF00) && (addr < 0xFF4C)) {
+
+        /* Check if we're doing a DMA */
+        if (addr == Memory::DMA_ADDR) {
+            oam_dma(val);
+        }
         // printf("[WRITE] IO Ports %x\n", addr);
 
     } else if ((addr >= 0xFF4C) && (addr < 0xFF80)) {

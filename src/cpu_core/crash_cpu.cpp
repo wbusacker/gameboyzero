@@ -5,8 +5,6 @@ namespace CPU {
 
 void LR35902::crash_cpu(enum CPU_Failure_Modes mode) {
 
-    printf("\nCPU Is Crashing!\n");
-
     switch (mode) {
         case CPU::INVALID_INSTRUCTION:
             printf("Invalid Instruction\n");
@@ -25,7 +23,8 @@ void LR35902::crash_cpu(enum CPU_Failure_Modes mode) {
             break;
 
         case CPU::POWER_OFF:
-            printf("Power Off\n");
+            printf("System Power Off\n");
+            return;
             break;
 
         default:

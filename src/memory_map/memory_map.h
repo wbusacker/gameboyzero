@@ -7,6 +7,8 @@
 
 namespace Memory {
 
+const uint16_t DMA_ADDR = 0xFF46;
+
 class Memory_Map {
 
     public:
@@ -15,6 +17,8 @@ class Memory_Map {
     virtual uint8_t fetch_addr(uint16_t addr);
     virtual void    store_addr(uint16_t addr, uint8_t val);
     virtual uint8_t get_rom_bank(void) { return loaded_cartridge->get_rom_bank(); }
+
+    void oam_dma(uint8_t index);
 
     private:
     Cart::Cartridge *loaded_cartridge;

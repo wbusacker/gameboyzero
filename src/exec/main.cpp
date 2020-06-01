@@ -111,7 +111,7 @@ int main(void) {
     // cpu.enable_instruction_trace = true;
 
     /* Hookup the Debugger      */
-    Debug::GB_Debugger gbdb(&cpu, &gwl);
+    // Debug::GB_Debugger gbdb(&cpu, &gwl);
 
     /* Begin cycling the CPU at the appropriate rate    */
 
@@ -150,7 +150,7 @@ int main(void) {
     }
 
     disp.kill_threads();
-    gbdb.kill_threads();
+    // gbdb.kill_threads();
     cpu.crash_cpu(CPU::POWER_OFF);
 
     return 0;
